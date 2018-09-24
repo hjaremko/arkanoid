@@ -1,10 +1,74 @@
 #include <vector>
 #include <curses.h>
 
-// #include "Entity.hpp"
+#include <windows.h>
+#include <stdio.h>
+
 #include "Block.hpp"
 #include "Paddle.hpp"
 #include "Ball.hpp"
+#include "Map.hpp"
+#include "MapDrawing.hpp"
+
+HANDLE hStdin;
+DWORD  fdwSaveOldMode;
+Map    map;
+
+VOID ErrorExit ( const char* lpszMessage )
+{
+    fprintf( stderr, "%s\n", lpszMessage );
+
+    // Restore input mode on exit.
+    SetConsoleMode( ::hStdin, ::fdwSaveOldMode );
+    endwin();
+    ExitProcess( 0 );
+}
+
+// VOID KeyEventProc( KEY_EVENT_RECORD ker )
+// {
+//     // if( ker.bKeyDown )
+//     //     printf("key pressed\n");
+//     // else
+//         // printf("key released\n");
+// }
+
+VOID MouseEventProc( MOUSE_EVENT_RECORD mer )
+{
+    #ifndef MOUSE_HWHEELED
+    #define MOUSE_HWHEELED 0x0008
+    #endif
+
+    switch( mer.dwEventFlags )
+    {
+        case 0:
+
+            if ( mer.dwButtonState == FROM_LEFT_1ST_BUTTON_PRESSED )
+            {
+
+            }
+            else if( mer.dwButtonState == RIGHTMOST_BUTTON_PRESSED )
+            {
+                map.getPaddle()->shoot();
+            }
+            else
+            {
+                // printf("button press\n");
+            }
+
+            break;
+        case DOUBLE_CLICK:
+            break;
+        case MOUSE_HWHEELED:
+            break;
+        case MOUSE_MOVED:
+            map.getPaddle()->setPosition( Point( map.getPaddle()->gety(), mer.dwMousePosition.X ) );
+
+            break;
+        // case MOUSE_WHEELED:
+        default:
+            break;
+    }
+}
 
 void initColorPairs()
 {
@@ -16,6 +80,7 @@ void initColorPairs()
     init_pair( 6, COLOR_CYAN,    COLOR_BLACK );
     init_pair( 7, COLOR_WHITE,   COLOR_BLACK );
 }
+
 
 int main()
 {
@@ -33,56 +98,79 @@ int main()
     start_color();
     initColorPairs();
 
-    std::vector<Block> blocks{ static_cast<unsigned int>( getmaxx( stdscr ) ) };
+    map.initPaddle();
+    map.initBlocks();
 
-    int i = 0;
-    for ( Block& block : blocks )
-    {
-        block = Block();
-        block.setPosition( 1, i );
-        block.setColorPair( Entity::ColorPair::Red );
-        block.setAttribiutes( A_BOLD );
-        block.draw();
-        block.setPosition( i, 3 );
-        block.draw();
+    MapDrawing mapDrawing( &map );
+    std::thread drawingThread( mapDrawing );
+    drawingThread.detach();
 
-        i++;
-    }
+    DWORD cNumRead;
+    DWORD fdwMode;
+    DWORD i;
+    INPUT_RECORD irInBuf[ 128 ];
 
-    getch();
+    // Get the standard input handle.
+    ::hStdin = GetStdHandle( STD_INPUT_HANDLE );
+    if ( ::hStdin == INVALID_HANDLE_VALUE )
+        ErrorExit( "GetStdHandle" );
 
-    Paddle paletka;
-    paletka.setSize( 25 );
-    paletka.setPosition( 25, 5 );
-    paletka.draw();
+    // Save the current input mode, to be restored on exit.
+    if ( !GetConsoleMode( ::hStdin, &::fdwSaveOldMode ) )
+        ErrorExit( "GetConsoleMode" );
 
-    Ball ball;
-    ball.setPosition( 5, 5 );
-    ball.draw();
+    // Enable the window and mouse input events.
+    fdwMode = ENABLE_WINDOW_INPUT | ENABLE_MOUSE_INPUT;
+    if ( !SetConsoleMode( ::hStdin, fdwMode ) )
+        ErrorExit( "SetConsoleMode" );
 
-    getch();
-
-    paletka.getBall( &ball );
-
+    // Loop to read and handle next input events.
     while ( true )
     {
-        switch ( getch() )
+        // Wait for the events.
+        if ( !ReadConsoleInput (
+                ::hStdin,       // input buffer handle
+                irInBuf,        // buffer to read into
+                128,            // size of read buffer
+                &cNumRead ) )   // number of records read
+            ErrorExit( "ReadConsoleInput" );
+
+        // Dispatch the events to the appropriate handler.
+
+        for ( i = 0; i < cNumRead; ++i )
         {
-            case 'a':
-                paletka.move( 0, -1 );
-                break;
-            case 'd':
-                paletka.move( 0, 1 );
-                break;
-            case 'w':
-                paletka.shoot();
-                break;
-            default:
-                endwin();
-                return 0;
+            switch( irInBuf[ i ].EventType )
+            {
+                case KEY_EVENT: // keyboard input
+                    // KeyEventProc( irInBuf[ i ].Event.KeyEvent );
+                    // ErrorExit( "Exit" );
+                    if( irInBuf[ i ].Event.KeyEvent.bKeyDown )
+                    {
+                        endwin();
+                        return 0;
+                    }
+
+                    break;
+
+                case MOUSE_EVENT: // mouse input
+                    MouseEventProc( irInBuf[ i ].Event.MouseEvent );
+                    break;
+
+                case WINDOW_BUFFER_SIZE_EVENT: // disregard scrn buf. resizing
+                case FOCUS_EVENT:              // disregard focus events
+                case MENU_EVENT:               // disregard menu events
+                    break;
+
+                // default:
+                    // ErrorExit("Unknown event type");
+                    // break;
+            }
         }
     }
 
+    // Restore input mode on exit.
+    SetConsoleMode( ::hStdin, ::fdwSaveOldMode );
     endwin();
+
     return 0;
 }
