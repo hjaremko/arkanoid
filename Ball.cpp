@@ -42,9 +42,9 @@ void Ball::reflect( ReflectionAxis t_axis )
         m_velocity.x = -m_velocity.x;
     }
 
-    if ( m_speed > 90 && t_axis != ReflectionAxis::None )
+    if ( m_speed > 40 && t_axis != ReflectionAxis::None )
     {
-        m_speed -= 10;
+        m_speed -= 2;
     }
 }
 

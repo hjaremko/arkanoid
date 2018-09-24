@@ -40,7 +40,7 @@ class Ball : public Entity
         std::vector<Entity*>* m_map;
         Vector2D              m_velocity{ Vector2D( -1, 1 ) };
         char                  m_look{ 'O' };
-        int                   m_speed{ 150 };
+        int                   m_speed{ 130 };
 };
 
 #endif //BALL_H
