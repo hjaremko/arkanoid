@@ -1,8 +1,4 @@
-#include <curses.h>
-#include <iostream>
-
 #include "Ball.hpp"
-#include "Point.hpp"
 
 Ball::Ball()
 {

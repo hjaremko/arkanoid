@@ -9,6 +9,7 @@
 #include <curses.h>
 
 #include "Entity.hpp"
+#include "Point.hpp"
 #include "Vector2D.hpp"
 
 #define PI 3.14159265

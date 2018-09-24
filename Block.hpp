@@ -1,8 +1,10 @@
 #ifndef BLOCK_H
 #define BLOCK_H
 
+#include <vector>
+#include <curses.h>
+
 #include "Entity.hpp"
-#include "Glyph.hpp"
 
 class Block : public Entity
 {

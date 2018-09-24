@@ -1,6 +1,3 @@
-#include <vector>
-#include <curses.h>
-
 #include "Block.hpp"
 
 Block::Block()

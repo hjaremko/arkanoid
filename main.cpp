@@ -1,6 +1,4 @@
-#include <vector>
 #include <curses.h>
-
 #include <windows.h>
 #include <stdio.h>
 

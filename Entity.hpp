@@ -2,11 +2,8 @@
 #define ENTITY_H
 
 #include <curses.h>
-#include <utility>
-#include <stdexcept>
 
 #include "Point.hpp"
-#include "Glyph.hpp"
 
 class Entity
 {
@@ -34,7 +31,7 @@ class Entity
 
         void setPosition( const Point& t_pos )
         {
-                m_position = t_pos;
+            m_position = t_pos;
         }
 
         void setColorPair( const ColorPair t_color )

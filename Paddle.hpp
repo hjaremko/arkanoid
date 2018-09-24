@@ -3,12 +3,12 @@
 
 #include <thread>
 #include <chrono>
+#include <curses.h>
 
 #include "Entity.hpp"
 #include "Ball.hpp"
 #include "Point.hpp"
 #include "BallMovement.hpp"
-
 
 class Paddle : public Entity
 {
