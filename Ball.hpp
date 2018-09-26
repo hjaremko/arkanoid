@@ -14,6 +14,8 @@
 
 #define PI 3.14159265
 
+class BallState;
+
 class Ball : public Entity
 {
     public:
@@ -25,19 +27,31 @@ class Ball : public Entity
         };
 
         Ball();
-        Ball( std::vector<Entity*>* t_map ) : m_map( t_map ) {}
+        Ball( std::vector<Entity*>* );
 
         void           draw() const;
-        void           move( const int, const int );
+        void           moveBy( const int, const int );
         void           shoot();
         void           reflect( ReflectionAxis );
-        void           destroy( Entity* t_entity );
+        void           destroy( Entity* );
+        void           setVelocity( Vector2D& );
+        void           setVectorY( int );
+        void           setVectorX( int );
+        void           setSpeed( const int );
+        void           changeSpeedBy( const int );
         bool           isOut() const;
-        bool           intersects( const Point& t_point ) const;
+        bool           intersects( const Point& ) const;
+        char           getLook() const;
+        int            getSpeed() const;
         Vector2D       getVelocity() const;
         ReflectionAxis intersects(); //const!!
         ReflectionAxis out() const;
     private:
+        friend class BallState;
+        friend class BallNormal;
+        friend class BallAllBreaking;
+        BallState*   m_state;
+
         std::vector<Entity*>* m_map;
         Vector2D              m_velocity{ Vector2D( -1, 1 ) };
         char                  m_look{ 'O' };

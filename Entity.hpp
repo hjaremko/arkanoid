@@ -5,6 +5,8 @@
 
 #include "Point.hpp"
 
+class BallState;
+
 class Entity
 {
     public:
@@ -92,6 +94,16 @@ class Entity
         bool isDestroyable() const
         {
             return m_isDestroyable;
+        }
+
+        int getColor() const
+        {
+            return m_color;
+        }
+
+        int getAttributes() const
+        {
+            return m_attributes;
         }
 
     protected:

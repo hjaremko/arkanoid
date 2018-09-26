@@ -31,7 +31,6 @@ void Map::draw() const
     }
 
     m_paddle->draw();
-
     refresh();
 }
 
@@ -42,7 +41,6 @@ void Map::pushEntity( Entity* t_entity )
 
 Ball* Map::newBall()
 {
-    // newEntity( t_ball );
     Ball* tmp = new Ball( &m_entities );
     m_balls.push_back( tmp );
 

@@ -1,47 +1,35 @@
 #include "Ball.hpp"
+#include "BallState.hpp"
 
 Ball::Ball()
 {
 
 }
 
-void Ball::draw() const
+Ball::Ball( std::vector<Entity*>* t_map ) : m_map( t_map )
 {
-    // plot();
-
-    attron( COLOR_PAIR( m_color ) | m_attributes );
-    mvprintw( gety(), getx(), "%c", m_look );
-    attrset( A_NORMAL );
+    m_state = new BallNormal;
 }
 
-void Ball::move( const int t_y, const int t_x )
+void Ball::draw() const
+{
+    m_state->draw( this );
+}
+
+void Ball::moveBy( const int t_y, const int t_x )
 {
     setPosition( gety() + t_y, getx() + t_x );
 }
 
 void Ball::shoot()
 {
-    setPosition( Point( gety() + getVelocity().y, getx() + getVelocity().x ) );
-
-    std::this_thread::sleep_for( std::chrono::milliseconds( m_speed ) );
+    moveBy( getVelocity().y, getVelocity().x );
+    std::this_thread::sleep_for( std::chrono::milliseconds( getSpeed() ) );
 }
 
 void Ball::reflect( ReflectionAxis t_axis )
 {
-
-    if ( t_axis == ReflectionAxis::Vertical )
-    {
-        m_velocity.y = -m_velocity.y;
-    }
-    else if ( t_axis == ReflectionAxis::Horizontal )
-    {
-        m_velocity.x = -m_velocity.x;
-    }
-
-    if ( m_speed > 40 && t_axis != ReflectionAxis::None )
-    {
-        m_speed -= 2;
-    }
+    m_state->reflect( this, t_axis );
 }
 
 bool Ball::isOut() const
@@ -61,45 +49,20 @@ Vector2D Ball::getVelocity() const
 
 Ball::ReflectionAxis Ball::intersects()
 {
-    ReflectionAxis axis = ReflectionAxis::None;
-
-    for ( auto& entity : *m_map )
-    {
-        if ( entity->intersects( Point( gety() + getVelocity().y, getx() + getVelocity().x ) ) )
-        {
-            if ( ( getx()                   <  entity->getx()    &&
-                   getx() + getVelocity().x >= entity->getx() )  ||
-                 ( getx()                   >  entity->getx() + entity->getWidth() - 1     &&
-                   getx() + getVelocity().x <= entity->getx() + entity->getWidth() - 1 ) )
-            {
-                axis = ReflectionAxis::Horizontal;
-            }
-
-            if ( ( gety()                   <  entity->gety()    &&
-                   gety() + getVelocity().y >= entity->gety() )  ||
-                 ( gety()                   >  entity->gety() + entity->getHeight() - 1    &&
-                   gety() + getVelocity().y <= entity->gety() + entity->getHeight() - 1 ) )
-            {
-                axis = ReflectionAxis::Vertical;
-            }
-
-            if ( entity->isDestroyable() )
-            {
-                destroy( entity );
-            }
-        }
-    }
-
-    return axis;
+    return m_state->intersects( this );
 }
 
 Ball::ReflectionAxis Ball::out() const
 {
     if ( getx() + getVelocity().x >= getmaxx( stdscr ) || getx() + getVelocity().x < 0 )
+    {
         return ReflectionAxis::Horizontal;
+    }
 
     if ( gety() + getVelocity().y < 0 )
+    {
         return ReflectionAxis::Vertical;
+    }
 
     return ReflectionAxis::None;
 }
@@ -109,6 +72,41 @@ void Ball::destroy( Entity* t_entity )
     auto pos = std::find( m_map->begin(), m_map->end(), t_entity );
     delete *pos;
     m_map->erase( pos );
+}
+
+int Ball::getSpeed() const
+{
+    return m_speed;
+}
+
+void Ball::setSpeed( const int t_speed )
+{
+    m_speed = t_speed;
+}
+
+void Ball::changeSpeedBy( const int t_value )
+{
+    m_speed += t_value;
+}
+
+char Ball::getLook() const
+{
+    return m_look;
+}
+
+void Ball::setVelocity( Vector2D& t_velocity )
+{
+    m_velocity = t_velocity;
+}
+
+void Ball::setVectorY( int t_value )
+{
+    m_velocity.y = t_value;
+}
+
+void Ball::setVectorX( int t_value )
+{
+    m_velocity.x = t_value;
 }
 
 // double moveFunction( Point a, Point b, double x ) const

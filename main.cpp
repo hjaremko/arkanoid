@@ -42,11 +42,11 @@ VOID MouseEventProc( MOUSE_EVENT_RECORD mer )
 
             if ( mer.dwButtonState == FROM_LEFT_1ST_BUTTON_PRESSED )
             {
-
+                map.getPaddle()->shoot();
             }
             else if( mer.dwButtonState == RIGHTMOST_BUTTON_PRESSED )
             {
-                map.getPaddle()->shoot();
+                // map.getPaddle()->getBall( map.newBall() );
             }
             else
             {
