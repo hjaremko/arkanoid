@@ -8,7 +8,7 @@ Ball::Ball()
 
 Ball::Ball( std::vector<Entity*>* t_map ) : m_map( t_map )
 {
-    m_state = new BallNormal;
+    changeState( new BallAllBreaking );
 }
 
 void Ball::draw() const
@@ -23,8 +23,7 @@ void Ball::moveBy( const int t_y, const int t_x )
 
 void Ball::shoot()
 {
-    moveBy( getVelocity().y, getVelocity().x );
-    std::this_thread::sleep_for( std::chrono::milliseconds( getSpeed() ) );
+    m_state->shoot( this );
 }
 
 void Ball::reflect( ReflectionAxis t_axis )
@@ -107,6 +106,11 @@ void Ball::setVectorY( int t_value )
 void Ball::setVectorX( int t_value )
 {
     m_velocity.x = t_value;
+}
+
+void Ball::changeState( BallState* t_state )
+{
+    m_state = t_state;
 }
 
 // double moveFunction( Point a, Point b, double x ) const

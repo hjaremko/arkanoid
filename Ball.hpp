@@ -46,13 +46,16 @@ class Ball : public Entity
         Vector2D       getVelocity() const;
         ReflectionAxis intersects(); //const!!
         ReflectionAxis out() const;
+        void changeState( BallState* );
+
+        static const int MIN_SPEED{ 40 };
     private:
         friend class BallState;
         friend class BallNormal;
         friend class BallAllBreaking;
-        BallState*   m_state;
 
         std::vector<Entity*>* m_map;
+        BallState*            m_state;
         Vector2D              m_velocity{ Vector2D( -1, 1 ) };
         char                  m_look{ 'O' };
         int                   m_speed{ 130 };
