@@ -53,17 +53,19 @@ Ball::ReflectionAxis Ball::intersects()
 
 Ball::ReflectionAxis Ball::out() const
 {
-    if ( getx() + getVelocity().x >= getmaxx( stdscr ) || getx() + getVelocity().x < 0 )
+    auto axis = ReflectionAxis::None;
+
+    if ( ( getx() + getVelocity().x >= getmaxx( stdscr ) || getx() + getVelocity().x < 0 ) )
     {
-        return ReflectionAxis::Horizontal;
+        axis = static_cast<ReflectionAxis>( axis | ReflectionAxis::Horizontal );
     }
 
     if ( gety() + getVelocity().y < 0 )
     {
-        return ReflectionAxis::Vertical;
+        axis = static_cast<ReflectionAxis>( axis | ReflectionAxis::Vertical );
     }
 
-    return ReflectionAxis::None;
+    return axis;
 }
 
 void Ball::destroy( Entity* t_entity )

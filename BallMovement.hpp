@@ -13,8 +13,8 @@ class BallMovement
             while ( !m_ball->isOut() )
             {
                 m_ball->shoot();
-                m_ball->reflect( m_ball->intersects() );
                 m_ball->reflect( m_ball->out() );
+                m_ball->reflect( m_ball->intersects() );
             }
         }
 

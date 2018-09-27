@@ -59,7 +59,7 @@ void Map::initPaddle()
 
 void Map::initBlocks()
 {
-    int starty = 1;
+    int starty = 4;
     int startx = ( getmaxx( stdscr ) - 66 ) / 2;
     int color = 1;
     for ( int i = 0; i < 5; ++i )

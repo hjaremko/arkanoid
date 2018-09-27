@@ -35,11 +35,12 @@ class BallNormal : public BallState
 
         void reflect( Ball* t_ball, Ball::ReflectionAxis t_axis )
         {
-            if ( t_axis == Ball::ReflectionAxis::Vertical )
+            if ( t_axis & Ball::ReflectionAxis::Vertical )
             {
                 t_ball->setVectorY( -t_ball->getVelocity().y );
             }
-            else if ( t_axis == Ball::ReflectionAxis::Horizontal )
+
+            if ( t_axis & Ball::ReflectionAxis::Horizontal )
             {
                 t_ball->setVectorX( -t_ball->getVelocity().x );
             }
@@ -52,7 +53,7 @@ class BallNormal : public BallState
 
         Ball::ReflectionAxis intersects( Ball* t_ball )
         {
-            Ball::ReflectionAxis axis = Ball::ReflectionAxis::None;
+            auto axis = Ball::ReflectionAxis::None;
 
             for ( auto& entity : *t_ball->m_map )
             {
@@ -64,7 +65,7 @@ class BallNormal : public BallState
                          ( t_ball->getx()                           >  entity->getx() + entity->getWidth() - 1     &&
                            t_ball->getx() + t_ball->getVelocity().x <= entity->getx() + entity->getWidth() - 1 ) )
                     {
-                        axis = Ball::ReflectionAxis::Horizontal;
+                        axis = static_cast<Ball::ReflectionAxis>( axis | Ball::ReflectionAxis::Horizontal );
                     }
 
                     if ( ( t_ball->gety()                           <  entity->gety()    &&
@@ -72,7 +73,7 @@ class BallNormal : public BallState
                          ( t_ball->gety()                           >  entity->gety() + entity->getHeight() - 1    &&
                            t_ball->gety() + t_ball->getVelocity().y <= entity->gety() + entity->getHeight() - 1 ) )
                     {
-                        axis = Ball::ReflectionAxis::Vertical;
+                        axis = static_cast<Ball::ReflectionAxis>( axis | Ball::ReflectionAxis::Vertical );
                     }
 
                     if ( entity->isDestroyable() )
@@ -120,11 +121,12 @@ class BallAllBreaking : public BallState
 
         void reflect( Ball* t_ball, Ball::ReflectionAxis t_axis )
         {
-            if ( t_axis == Ball::ReflectionAxis::Vertical )
+            if ( t_axis & Ball::ReflectionAxis::Vertical )
             {
                 t_ball->setVectorY( -t_ball->getVelocity().y );
             }
-            else if ( t_axis == Ball::ReflectionAxis::Horizontal )
+
+            if ( t_axis & Ball::ReflectionAxis::Horizontal )
             {
                 t_ball->setVectorX( -t_ball->getVelocity().x );
             }
@@ -137,7 +139,7 @@ class BallAllBreaking : public BallState
 
         Ball::ReflectionAxis intersects( Ball* t_ball )
         {
-            Ball::ReflectionAxis axis = Ball::ReflectionAxis::None;
+            auto axis = Ball::ReflectionAxis::None;
 
             for ( auto& entity : *t_ball->m_map )
             {

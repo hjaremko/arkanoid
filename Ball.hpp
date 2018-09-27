@@ -19,11 +19,12 @@ class BallState;
 class Ball : public Entity
 {
     public:
-        enum class ReflectionAxis
+        enum ReflectionAxis
         {
-            Horizontal,
-            Vertical,
-            None
+            Horizontal = 1,
+            Vertical = 2,
+            Backwards = 3,
+            None = 0
         };
 
         Ball();
