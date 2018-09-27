@@ -1,9 +1,9 @@
 # Arkanoid
 
 <p align="center">
-  <img src ="https://i.imgur.com/m8Jr1GN.png" />
+  <img src ="https://i.imgur.com/BNLrko4.png"/>
 </p>
 
-### Dependencies:
+### Requires:
 - ncurses/PDCurses
 - Windows
