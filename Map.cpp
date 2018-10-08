@@ -27,7 +27,10 @@ void Map::draw() const
 
     for ( const auto& ball : m_balls )
     {
-        ball->draw();
+        if ( !ball->isNull() )
+        {
+            ball->draw();
+        }
     }
 
     m_paddle->draw();

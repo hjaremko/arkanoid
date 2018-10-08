@@ -7,6 +7,7 @@
 #include "Ball.hpp"
 #include "Map.hpp"
 #include "MapDrawing.hpp"
+#include "BallState.hpp"
 
 HANDLE hStdin;
 DWORD  fdwSaveOldMode;
@@ -46,7 +47,9 @@ VOID MouseEventProc( MOUSE_EVENT_RECORD mer )
             }
             else if( mer.dwButtonState == RIGHTMOST_BUTTON_PRESSED )
             {
-                // map.getPaddle()->getBall( map.newBall() );
+                auto ball = map.getPaddle()->getBall( map.newBall() );
+                ball->changeState( new BallBullet );
+                map.getPaddle()->shoot();
             }
             else
             {
@@ -59,7 +62,8 @@ VOID MouseEventProc( MOUSE_EVENT_RECORD mer )
         case MOUSE_HWHEELED:
             break;
         case MOUSE_MOVED:
-            map.getPaddle()->setPosition( Point( map.getPaddle()->gety(), mer.dwMousePosition.X ) );
+            map.getPaddle()->setPosition( Point( map.getPaddle()->gety(),
+                                                 mer.dwMousePosition.X - ( map.getPaddle()->getWidth() / 2 ) ) );
 
             break;
         // case MOUSE_WHEELED:
@@ -156,6 +160,8 @@ int main()
 
                 case WINDOW_BUFFER_SIZE_EVENT: // disregard scrn buf. resizing
                 case FOCUS_EVENT:              // disregard focus events
+                    SetCursor(NULL);
+                    break;
                 case MENU_EVENT:               // disregard menu events
                     break;
 

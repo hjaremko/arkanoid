@@ -6,7 +6,7 @@
 class MapDrawing
 {
     public:
-        MapDrawing( Map* t_map ) : m_map( t_map ) {}
+        explicit MapDrawing( Map* t_map ) : m_map( t_map ) {}
 
         void operator()() const
         {

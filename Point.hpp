@@ -21,14 +21,6 @@ class Point
         {
             return y;
         }
-
-        static bool isOut( const Point& t_point )
-        {
-            return t_point.gety() < 0 || t_point.gety() > getmaxy( stdscr ) - 1 || t_point.getx() < 0 || t_point.getx() > getmaxx( stdscr ) - 1;
-        }
-        
-    private:
-
 };
 
 #endif //POINT_H

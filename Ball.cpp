@@ -8,6 +8,7 @@ Ball::Ball()
 
 Ball::Ball( std::vector<Entity*>* t_map ) : m_map( t_map )
 {
+    // changeState( new BallNormal );
     changeState( new BallAllBreaking );
 }
 
@@ -33,7 +34,9 @@ void Ball::reflect( ReflectionAxis t_axis )
 
 bool Ball::isOut() const
 {
-    return gety() < 0 || gety() > getmaxy( stdscr ) - 1 || getx() < 0 || getx() > getmaxx( stdscr ) - 1;
+    bool isOut = ( gety() < 0 || gety() > getmaxy( stdscr ) - 1 || getx() < 0 || getx() > getmaxx( stdscr ) - 1 );
+
+    return isOut;
 }
 
 bool Ball::intersects( const Point& t_point ) const
@@ -46,12 +49,25 @@ Vector2D Ball::getVelocity() const
     return m_velocity;
 }
 
-Ball::ReflectionAxis Ball::intersects()
+Entity* Ball::collides() const
 {
-    return m_state->intersects( this );
+    for ( auto& entity : *m_map )
+    {
+        if ( entity->intersects( Point( gety() + getVelocity().y,
+                                        getx() + getVelocity().x ) ) )
+        {
+            return entity;
+        }
+    }
+    return nullptr;
 }
 
-Ball::ReflectionAxis Ball::out() const
+Ball::ReflectionAxis Ball::getReflectionAxis( Entity* entity ) const
+{
+    return m_state->getReflectionAxis( this, entity );
+}
+
+Ball::ReflectionAxis Ball::getWallReflectionAxis() const
 {
     auto axis = ReflectionAxis::None;
 
@@ -87,7 +103,10 @@ void Ball::setSpeed( const int t_speed )
 
 void Ball::changeSpeedBy( const int t_value )
 {
-    m_speed += t_value;
+    if ( m_speed >= MIN_SPEED )
+    {
+        m_speed += t_value;
+    }
 }
 
 char Ball::getLook() const
@@ -112,7 +131,22 @@ void Ball::setVectorX( int t_value )
 
 void Ball::changeState( BallState* t_state )
 {
+    if ( m_state )
+    {
+        delete m_state;
+    }
+
     m_state = t_state;
+}
+
+BallState* Ball::getState() const
+{
+    return m_state;
+}
+
+bool Ball::isNull() const
+{
+    return m_state->isNull();
 }
 
 // double moveFunction( Point a, Point b, double x ) const

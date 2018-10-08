@@ -14,26 +14,45 @@ class BallState
         virtual void draw( const Ball* );
         virtual void shoot( Ball* );
         virtual void reflect( Ball*, Ball::ReflectionAxis );
-        virtual Ball::ReflectionAxis intersects( Ball* );
+        virtual Ball::ReflectionAxis getReflectionAxis( const Ball*, Entity* ) const;
+ 
+        virtual bool isNull() const
+        {
+            return false;
+        }
+};
+
+class BallNull : public BallState
+{
+    public:
+        void draw( const Ball* t_ball ) override {}
+        void shoot( Ball* t_ball ) override {}
+        void reflect( Ball* t_ball, Ball::ReflectionAxis t_axis ) override {}
+        Ball::ReflectionAxis getReflectionAxis( const Ball*, Entity* ) const override {}
+
+        bool isNull() const override
+        {
+            return true;
+        }
 };
 
 class BallNormal : public BallState
 {
     public:
-        void draw( const Ball* t_ball )
+        void draw( const Ball* t_ball ) override
         {
             attron( COLOR_PAIR( t_ball->getColor() ) | t_ball->getAttributes() );
             mvprintw( t_ball->gety(), t_ball->getx(), "%c", t_ball->getLook() );
             attrset( A_NORMAL );
         }
 
-        void shoot( Ball* t_ball )
+        void shoot( Ball* t_ball ) override
         {
             t_ball->moveBy( t_ball->getVelocity().y, t_ball->getVelocity().x );
             std::this_thread::sleep_for( std::chrono::milliseconds( t_ball->getSpeed() ) );
         }
 
-        void reflect( Ball* t_ball, Ball::ReflectionAxis t_axis )
+        void reflect( Ball* t_ball, Ball::ReflectionAxis t_axis ) override
         {
             if ( t_axis & Ball::ReflectionAxis::Vertical )
             {
@@ -44,47 +63,31 @@ class BallNormal : public BallState
             {
                 t_ball->setVectorX( -t_ball->getVelocity().x );
             }
-
-            if ( t_ball->getSpeed() > Ball::MIN_SPEED && t_axis != Ball::ReflectionAxis::None )
-            {
-                t_ball->changeSpeedBy( -2 );
-            }
         }
 
-        Ball::ReflectionAxis intersects( Ball* t_ball )
+        Ball::ReflectionAxis getReflectionAxis( const Ball* t_ball, Entity* entity ) const override
         {
             auto axis = Ball::ReflectionAxis::None;
 
-            for ( auto& entity : *t_ball->m_map )
+            if ( ( t_ball->getx()                           <  entity->getx()    &&
+                   t_ball->getx() + t_ball->getVelocity().x >= entity->getx() )  ||
+                 ( t_ball->getx()                           >  entity->getx() + entity->getWidth() - 1     &&
+                   t_ball->getx() + t_ball->getVelocity().x <= entity->getx() + entity->getWidth() - 1 ) )
             {
-                if ( entity->intersects( Point( t_ball->gety() + t_ball->getVelocity().y,
-                                                t_ball->getx() + t_ball->getVelocity().x ) ) )
-                {
-                    if ( ( t_ball->getx()                           <  entity->getx()    &&
-                           t_ball->getx() + t_ball->getVelocity().x >= entity->getx() )  ||
-                         ( t_ball->getx()                           >  entity->getx() + entity->getWidth() - 1     &&
-                           t_ball->getx() + t_ball->getVelocity().x <= entity->getx() + entity->getWidth() - 1 ) )
-                    {
-                        axis = static_cast<Ball::ReflectionAxis>( axis | Ball::ReflectionAxis::Horizontal );
-                    }
+                axis = static_cast<Ball::ReflectionAxis>( axis | Ball::ReflectionAxis::Horizontal );
+            }
 
-                    if ( ( t_ball->gety()                           <  entity->gety()    &&
-                           t_ball->gety() + t_ball->getVelocity().y >= entity->gety() )  ||
-                         ( t_ball->gety()                           >  entity->gety() + entity->getHeight() - 1    &&
-                           t_ball->gety() + t_ball->getVelocity().y <= entity->gety() + entity->getHeight() - 1 ) )
-                    {
-                        axis = static_cast<Ball::ReflectionAxis>( axis | Ball::ReflectionAxis::Vertical );
-                    }
-
-                    if ( entity->isDestroyable() )
-                    {
-                        t_ball->destroy( entity );
-                    }
-                }
+            if ( ( t_ball->gety()                           <  entity->gety()    &&
+                   t_ball->gety() + t_ball->getVelocity().y >= entity->gety() )  ||
+                 ( t_ball->gety()                           >  entity->gety() + entity->getHeight() - 1    &&
+                   t_ball->gety() + t_ball->getVelocity().y <= entity->gety() + entity->getHeight() - 1 ) )
+            {
+                axis = static_cast<Ball::ReflectionAxis>( axis | Ball::ReflectionAxis::Vertical );
             }
 
             return axis;
         }
+
 };
 
 class BallAllBreaking : public BallState
@@ -95,7 +98,7 @@ class BallAllBreaking : public BallState
             startTimePoint = std::chrono::steady_clock::now();
         }
 
-        void draw( const Ball* t_ball )
+        void draw( const Ball* t_ball ) override
         {
             attron( COLOR_PAIR( Entity::ColorPair::Red ) | t_ball->getAttributes() | A_BOLD );
 
@@ -105,7 +108,7 @@ class BallAllBreaking : public BallState
             attrset( A_NORMAL );
         }
 
-        void shoot( Ball* t_ball )
+        void shoot( Ball* t_ball ) override
         {
             lastPosition = t_ball->getPosition();
             t_ball->moveBy( t_ball->getVelocity().y, t_ball->getVelocity().x );
@@ -119,7 +122,7 @@ class BallAllBreaking : public BallState
             }
         }
 
-        void reflect( Ball* t_ball, Ball::ReflectionAxis t_axis )
+        void reflect( Ball* t_ball, Ball::ReflectionAxis t_axis ) override
         {
             if ( t_axis & Ball::ReflectionAxis::Vertical )
             {
@@ -130,40 +133,48 @@ class BallAllBreaking : public BallState
             {
                 t_ball->setVectorX( -t_ball->getVelocity().x );
             }
-
-            if ( t_ball->getSpeed() > Ball::MIN_SPEED && t_axis != Ball::ReflectionAxis::None )
-            {
-                t_ball->changeSpeedBy( -5 );
-            }
         }
 
-        Ball::ReflectionAxis intersects( Ball* t_ball )
+        Ball::ReflectionAxis getReflectionAxis( const Ball* t_ball, Entity* entity ) const override
         {
-            auto axis = Ball::ReflectionAxis::None;
-
-            for ( auto& entity : *t_ball->m_map )
-            {
-                if ( entity->intersects( Point( t_ball->gety() + t_ball->getVelocity().y,
-                                                t_ball->getx() + t_ball->getVelocity().x ) ) )
-                {
-                    if ( entity->isDestroyable() )
-                    {
-                        t_ball->destroy( entity );
-                    }
-                    else if ( dynamic_cast<Paddle*>( entity ) )
-                    {
-                        axis = Ball::ReflectionAxis::Vertical;
-                    }
-                }
-            }
-
-            return axis;
+            return ( dynamic_cast<Paddle*>( entity ) ) ? Ball::ReflectionAxis::Vertical : Ball::ReflectionAxis::None; //bad
         }
 
     private:
         std::chrono::steady_clock::time_point startTimePoint;
         Point lastPosition;
-        int duration{ 10 };
+        int   duration{ 10 };
+};
+
+class BallBullet : public BallState
+{
+    public:
+        void draw( const Ball* t_ball ) override
+        {
+            attron( COLOR_PAIR( Entity::ColorPair::White ) | A_BOLD | t_ball->getAttributes() );
+            mvprintw( t_ball->gety(), t_ball->getx(), "|" );
+            attrset( A_NORMAL );
+        }
+
+        void shoot( Ball* t_ball ) override
+        {
+            t_ball->setVectorX( 0 );
+            t_ball->moveBy( t_ball->getVelocity().y, 0 );
+            std::this_thread::sleep_for( std::chrono::milliseconds( 50 ) );
+        }
+
+        void reflect( Ball* t_ball, Ball::ReflectionAxis t_axis ) override
+        {
+            if ( t_axis != Ball::ReflectionAxis::None )
+            {
+                t_ball->changeState( new BallNull );
+            }
+        }
+
+        Ball::ReflectionAxis getReflectionAxis( const Ball*, Entity* ) const override
+        {
+            return Ball::ReflectionAxis::Horizontal;
+        }
 };
 
 #endif

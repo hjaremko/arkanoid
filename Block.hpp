@@ -11,10 +11,10 @@ class Block : public Entity
     public:
         Block();
         Block( ColorPair, chtype, const Point& );
-        void draw() const;
+        void draw() const override;
         void destroy() const;
 
-        bool intersects( const Point& t_point ) const
+        bool intersects( const Point& t_point ) const override
         {
             return  t_point.y >= gety() && t_point.y < ( gety() + getHeight() ) &&
                     t_point.x >= getx() && t_point.x < ( getx() + getWidth()  );
