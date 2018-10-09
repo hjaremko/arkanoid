@@ -112,7 +112,7 @@ class BallAllBreaking : public BallState
         {
             lastPosition = t_ball->getPosition();
             t_ball->moveBy( t_ball->getVelocity().y, t_ball->getVelocity().x );
-            std::this_thread::sleep_for( std::chrono::milliseconds( t_ball->getSpeed() - 50 ) );
+            std::this_thread::sleep_for( std::chrono::milliseconds( t_ball->getSpeed() - 30 ) );
 
             auto end = std::chrono::steady_clock::now();
 
