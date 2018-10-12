@@ -14,6 +14,7 @@ class MapDrawing
             {
                 clear();
                 m_map->draw();
+                refresh();
             }
         }
 

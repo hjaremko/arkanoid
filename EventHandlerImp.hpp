@@ -8,7 +8,7 @@ class EventHandlerImp
     public:
         EventHandlerImp() {}
         virtual ~EventHandlerImp() {}
-        virtual Event* devGetEvent() = 0;
+        virtual bool devGetEvent( Event& ) = 0;
 };
 
 #endif

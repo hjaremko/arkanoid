@@ -11,41 +11,55 @@ class CursesEventHandlerImp : public EventHandlerImp
         {
             keypad( stdscr, TRUE );
             mousemask( ALL_MOUSE_EVENTS | REPORT_MOUSE_POSITION, NULL );
+            printf( "\033[?1003h\n" );
         }
 
         ~CursesEventHandlerImp() {}
 
-        Event* devGetEvent()
+        bool devGetEvent( Event& t_event )
         {
             int c = wgetch( stdscr );
+
             switch( c )
             {
                 MEVENT event;
+
                 case KEY_MOUSE:
                 {
 
                     if ( nc_getmouse( &event ) == OK )
                     {
+
                         if ( event.bstate & BUTTON1_CLICKED )
                         {
-                            return new Event( Event::Button::Mouse1, event.y, event.x );
+                            t_event.type = Event::Type::MouseButtonPressed;
+                            t_event.mouseButton.button = Mouse::Button::Button1;
                         }
-
-                        if ( event.bstate & BUTTON3_CLICKED )
+                        else if ( event.bstate & BUTTON3_CLICKED )
                         {
-                            return new Event( Event::Button::Mouse3, event.y, event.x );
+                            t_event.type = Event::Type::MouseButtonPressed;
+                            t_event.mouseButton.button = Mouse::Button::Button3;
+                        }
+                        else
+                        {
+                            t_event.type = Event::Type::MouseMoved;
+                            t_event.mouseMove.y = event.y;
+                            t_event.mouseMove.x = event.x;
                         }
                     }
 
-                    return new Event( Event::Button::Other, event.y, event.x );
+                    break;
                 }
                 case 'q':
-                    return new Event( Event::Button::Q, event.y, event.x );
+                    t_event.type = Event::Type::KeyPressed;
+                    t_event.key.code = Keyboard::Key::Q;
+
                     break;
                 default:
-                    return new Event( Event::Button::Other, event.y, event.x );
-
+                    break;
             }
+
+            return true;
         }
 
     private:

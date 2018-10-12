@@ -34,7 +34,6 @@ void Map::draw() const
     }
 
     m_paddle->draw();
-    refresh();
 }
 
 void Map::pushEntity( Entity* t_entity )

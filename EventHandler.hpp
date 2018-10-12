@@ -2,11 +2,12 @@
 #define EVENTHANDLER_H
 
 #include "EventHandlerImp.hpp"
-#include "CursesEventHandlerImp.hpp"
 #include "Event.hpp"
 
 #if defined(WIN32) || defined(_WIN32) || defined(__WIN32) && !defined(__CYGWIN__)
     #include "WindowsEventHandlerImp.hpp"
+#else
+    #include "CursesEventHandlerImp.hpp"
 #endif
 
 class EventHandler
@@ -20,11 +21,12 @@ class EventHandler
                 m_handler = new CursesEventHandlerImp;
             #endif
         }
+
         ~EventHandler() {}
 
-        Event* getEvent()
+        bool getEvent( Event& t_event )
         {
-            return m_handler->devGetEvent();
+            return m_handler->devGetEvent( t_event );
         }
 
     private:

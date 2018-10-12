@@ -1,66 +1,58 @@
 #ifndef EVENT_H
 #define EVENT_H
 
-class Event
+struct Keyboard
 {
-    public:
-        enum class Button
-        {
-            Mouse1,
-            Mouse3,
-            Q,
-            Other
-        };
+    enum class Key
+    {
+        Unknown,
+        Q
+    };
+};
 
-        enum class Type
-        {
-            Mouse,
-            Key,
-            Other
-        };
+struct Mouse
+{
+    enum class Button
+    {
+        Unknown,
+        Button1,
+        Button3
+    };
+};
 
-        Event()
-        {
+struct KeyEvent
+{
+    Keyboard::Key code{ Keyboard::Key::Unknown };
+};
 
-        }
+struct MouseButtonEvent
+{
+    Mouse::Button button{ Mouse::Button::Unknown };
+};
 
-        Event( Event::Button t_button, int t_y, int t_x ) : m_button( t_button ), m_y( t_y ), m_x( t_x )
-        {
-            m_type = Type::Mouse;
-        }
+struct MouseMoveEvent
+{
+    int y{ -1 };
+    int x{ -1 };
+};
 
-        Event( Event::Button t_button ) : m_button( t_button )
-        {
-            m_type = Type::Key;
-        }
+struct Event
+{
+    enum class Type
+    {
+        Unknown,
+        KeyPressed,
+        MouseButtonPressed,
+        MouseMoved
+    };
 
-        virtual ~Event() {}
+    Event() {}
+    virtual ~Event() {}
 
-        Event::Type type()
-        {
-            return m_type;
-        }
-
-        Event::Button pressed()
-        {
-            return m_button;
-        }
-
-        int getMousePosX()
-        {
-            return m_x;
-        }
-
-        int getMousePosY()
-        {
-            return m_y;
-        }
-
-    protected:
-        Button m_button{ Button::Other };
-        Type m_type{ Type::Other };
-        int  m_y{ -1 };
-        int  m_x{ -1 };
+    Type             type{ Type::Unknown };
+    KeyEvent         key;
+    MouseButtonEvent mouseButton;
+    MouseMoveEvent   mouseMove;
 };
 
 #endif

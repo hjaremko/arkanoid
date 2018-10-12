@@ -30,6 +30,7 @@ int main()
     {  
         endwin();
         printf( "Your terminal does not support color\n" );
+
         return 1;
     }
 
@@ -40,48 +41,68 @@ int main()
     map.initPaddle();
     map.initBlocks();
 
-    MapDrawing mapDrawing( &map );
+    MapDrawing  mapDrawing( &map );
     std::thread drawingThread( mapDrawing );
     drawingThread.detach();
 
     EventHandler eventHandler;
+    Event        event;
 
     while ( true )
     {
-        auto event = eventHandler.getEvent();
+        eventHandler.getEvent( event );
 
-        if ( event )
+        switch ( event.type )
         {
-            switch ( event->pressed() )
+            case Event::Type::KeyPressed:
             {
-                case Event::Button::Mouse1:
-                {
-                    map.getPaddle()->shoot();
-
-                    break;
-                }
-                case Event::Button::Mouse3:
-                {
-                    auto ball = map.getPaddle()->getBall( map.newBall() );
-                    ball->changeState( new BallBullet );
-                    map.getPaddle()->shoot();
-
-                    break;
-                }
-                case Event::Button::Q:
+                if ( event.key.code == Keyboard::Key::Q )
                 {
                     endwin();
                     return 0;
-
-                    break;
                 }
+
+                break;
             }
 
-            if ( event->type() == Event::Type::Mouse )
+            case Event::Type::MouseButtonPressed:
             {
-                map.getPaddle()->setPosition( Point( map.getPaddle()->gety(),
-                                                     event->getMousePosX() - ( map.getPaddle()->getWidth() / 2 ) ) );
+                switch ( event.mouseButton.button )
+                {
+                    case Mouse::Button::Button1:
+                    {
+                        map.getPaddle()->shoot();
+
+                        break;
+                    }
+
+                    case Mouse::Button::Button3:
+                    {
+                        auto ball = map.getPaddle()->getBall( map.newBall() );
+                        ball->changeState( new BallBullet );
+                        map.getPaddle()->shoot();
+
+                        break;
+                    }
+
+                    default:
+                        break;
+                }
+
+                break;
             }
+
+            case Event::Type::MouseMoved:
+            {
+                map.getPaddle()->setPosition(
+                    Point( map.getPaddle()->gety(),
+                    event.mouseMove.x - ( map.getPaddle()->getWidth() / 2 ) ) );
+
+                break;
+            }
+
+            default:
+                break;
         }
     }
 

@@ -47,11 +47,13 @@ class WindowsEventHandlerImp : public EventHandlerImp
             //     printf("key released\n");
         // }
 
-        Event* MouseEventProc( MOUSE_EVENT_RECORD mer )
+        void MouseEventProc( MOUSE_EVENT_RECORD mer, Event& t_event )
         {
             #ifndef MOUSE_HWHEELED
             #define MOUSE_HWHEELED 0x0008
             #endif
+
+            t_event.type = Event::Type::MouseButtonPressed;
 
             switch ( mer.dwEventFlags )
             {
@@ -59,64 +61,67 @@ class WindowsEventHandlerImp : public EventHandlerImp
 
                     if ( mer.dwButtonState == FROM_LEFT_1ST_BUTTON_PRESSED )
                     {
-                        return new Event( Event::Button::Mouse1, mer.dwMousePosition.Y, mer.dwMousePosition.X );
+                        t_event.mouseButton.button = Mouse::Button::Button1;
                     }
                     else if ( mer.dwButtonState == RIGHTMOST_BUTTON_PRESSED )
                     {
-                        return new Event( Event::Button::Mouse3, mer.dwMousePosition.Y, mer.dwMousePosition.X );
+                        t_event.mouseButton.button = Mouse::Button::Button3;
                     }
 
                     break;
                 case DOUBLE_CLICK:
                 case MOUSE_HWHEELED:
                 case MOUSE_MOVED:
-                    return new Event( Event::Button::Other, mer.dwMousePosition.Y, mer.dwMousePosition.X );
+                    t_event.type        = Event::Type::MouseMoved;
+                    t_event.mouseMove.y = mer.dwMousePosition.Y;
+                    t_event.mouseMove.x = mer.dwMousePosition.X;
                     break;
+
                 default:
-                    return nullptr;
                     break;
             }
         }
 
-    Event* devGetEvent()
-    {
-        if ( !ReadConsoleInput (
-                hStdin,         // input buffer handle
-                irInBuf,        // buffer to read into
-                128,            // size of read buffer
-                &cNumRead ) )   // number of records read
-            ErrorExit( "ReadConsoleInput" );
-
-        for ( i = 0; i < cNumRead; ++i )
+        bool devGetEvent( Event& t_event )
         {
-            switch ( irInBuf[ i ].EventType )
+            if ( !ReadConsoleInput (
+                    hStdin,         // input buffer handle
+                    irInBuf,        // buffer to read into
+                    128,            // size of read buffer
+                    &cNumRead ) )   // number of records read
+                ErrorExit( "ReadConsoleInput" );
+
+            for ( i = 0; i < cNumRead; ++i )
             {
-                case KEY_EVENT: // keyboard input
-                    // KeyEventProc( irInBuf[ i ].Event.KeyEvent );
-                    if ( irInBuf[ i ].Event.KeyEvent.wVirtualKeyCode == 0x51 )
-                    {
-                        return new Event( Event::Button::Q );
-                    }
-                    else
-                    {
-                        return new Event( Event::Button::Other );
-                    }
-                    break;
+                switch ( irInBuf[ i ].EventType )
+                {
+                    case KEY_EVENT: // keyboard input
+                        // KeyEventProc( irInBuf[ i ].Event.KeyEvent );
+                        if ( irInBuf[ i ].Event.KeyEvent.wVirtualKeyCode == 0x51 )
+                        {
+                            t_event.type     = Event::Type::KeyPressed;
+                            t_event.key.code = Keyboard::Key::Q;
+                        }
 
-                case MOUSE_EVENT: // mouse input
-                    return MouseEventProc( irInBuf[ i ].Event.MouseEvent );
-                    break;
+                        break;
 
-                // case WINDOW_BUFFER_SIZE_EVENT: // disregard scrn buf. resizing
-                // case FOCUS_EVENT:              // disregard focus events
-                // case MENU_EVENT:               // disregard menu events
-                default:
-                    // ErrorExit("Unknown event type");
-                    return nullptr;
-                    break;
+                    case MOUSE_EVENT: // mouse input
+                        MouseEventProc( irInBuf[ i ].Event.MouseEvent, t_event );
+
+                        break;
+
+                    // case WINDOW_BUFFER_SIZE_EVENT: // disregard scrn buf. resizing
+                    // case FOCUS_EVENT:              // disregard focus events
+                    // case MENU_EVENT:               // disregard menu events
+                    default:
+                        // ErrorExit("Unknown event type");
+                        break;
+                }
+
             }
+
+            return cNumRead > 0;
         }
-    }
 
     private:
         HANDLE hStdin;

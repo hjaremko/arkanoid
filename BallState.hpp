@@ -11,15 +11,18 @@ class BallState
     public:
         virtual ~BallState() {}
 
-        virtual void draw( const Ball* );
-        virtual void shoot( Ball* );
-        virtual void reflect( Ball*, Ball::ReflectionAxis );
-        virtual Ball::ReflectionAxis getReflectionAxis( const Ball*, Entity* ) const;
+        virtual void draw( const Ball* ) = 0;
+        virtual void shoot( Ball* ) = 0;
+        virtual void reflect( Ball*, Ball::ReflectionAxis ) = 0;
+        virtual Ball::ReflectionAxis getReflectionAxis( const Ball*, Entity* ) const = 0;
  
         virtual bool isNull() const
         {
-            return false;
+            return m_null;
         }
+
+    private:
+        bool m_null{ false };
 };
 
 class BallNull : public BallState
@@ -100,7 +103,7 @@ class BallAllBreaking : public BallState
 
         void draw( const Ball* t_ball ) override
         {
-            attron( COLOR_PAIR( Entity::ColorPair::Red ) | t_ball->getAttributes() | A_BOLD );
+            attron( COLOR_PAIR( static_cast<int>( Entity::ColorPair::Red ) ) | t_ball->getAttributes() | A_BOLD );
 
             mvprintw( lastPosition.gety(), lastPosition.getx(), "*" );
             mvprintw( t_ball->gety(), t_ball->getx(), "%c", t_ball->getLook() );
@@ -151,7 +154,7 @@ class BallBullet : public BallState
     public:
         void draw( const Ball* t_ball ) override
         {
-            attron( COLOR_PAIR( Entity::ColorPair::White ) | A_BOLD | t_ball->getAttributes() );
+            attron( COLOR_PAIR( static_cast<int>( Entity::ColorPair::White ) ) | A_BOLD | t_ball->getAttributes() );
             mvprintw( t_ball->gety(), t_ball->getx(), "|" );
             attrset( A_NORMAL );
         }
