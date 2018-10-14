@@ -69,7 +69,7 @@ class PowerUpMovement
 
         void operator()() const
         {
-            while ( !Map::instance()->getPaddle()->intersects( m_power->getPosition() ) )
+            while ( !Map::instance()->getPaddle()->intersects( m_power->getPosition() ) ) //out
             {
                 m_power->setPosition( m_power->gety() + 1, m_power->getx() );
                 std::this_thread::sleep_for(

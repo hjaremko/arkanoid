@@ -51,6 +51,7 @@ class Ball : public Entity
         Entity*        collides() const;
 
         static const int MIN_SPEED{ 40 };
+        static const int DEF_SPEED{ 100 };
     private:
         friend class BallState;
         friend class BallNormal;
@@ -60,7 +61,7 @@ class Ball : public Entity
         BallState* m_state{ nullptr };
         Vector2D   m_velocity{ Vector2D( -1, 1 ) };
         char       m_look{ 'O' };
-        int        m_speed{ 130 };
+        int        m_speed{ DEF_SPEED };
 };
 
 #endif //BALL_H

@@ -92,9 +92,11 @@ void Ball::setSpeed( const int t_speed )
 
 void Ball::changeSpeedBy( const int t_value )
 {
-    if ( m_speed >= MIN_SPEED )
+    m_speed += t_value;
+
+    if ( m_speed < MIN_SPEED )
     {
-        m_speed += t_value;
+        m_speed = MIN_SPEED;
     }
 }
 
@@ -126,6 +128,7 @@ void Ball::changeState( BallState* t_state )
     }
 
     m_state = t_state;
+    setSpeed( DEF_SPEED );
 }
 
 BallState* Ball::getState() const

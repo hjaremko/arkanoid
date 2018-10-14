@@ -40,7 +40,7 @@ int main()
     Map::instance()->initPaddle();
     Map::instance()->initBlocks();
 
-    MapDrawing  mapDrawing( Map::instance() );
+    MapDrawing mapDrawing;
     std::thread drawingThread( mapDrawing );
     drawingThread.detach();
 
