@@ -8,7 +8,6 @@
 #include "Entity.hpp"
 #include "Ball.hpp"
 #include "Point.hpp"
-#include "BallMovement.hpp"
 
 class Paddle : public Entity
 {
@@ -26,16 +25,7 @@ class Paddle : public Entity
             return m_ball;
         }
 
-        void shoot()
-        {
-            if ( m_ball )
-            {
-                BallMovement bm( m_ball );
-                std::thread shootingThread( bm );
-                shootingThread.detach();
-                m_ball = nullptr;
-            }
-        }
+        void shoot();
 
         void setPosition( const Point& t_pos )
         {

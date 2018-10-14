@@ -28,13 +28,11 @@ class Ball : public Entity
         };
 
         Ball();
-        explicit Ball( std::vector<Entity*>* );
 
         void           draw() const override;
         void           moveBy( const int, const int );
         void           shoot();
         void           reflect( ReflectionAxis );
-        void           destroy( Entity* );
         void           setVelocity( Vector2D& );
         void           setVectorY( int );
         void           setVectorX( int );
@@ -53,17 +51,16 @@ class Ball : public Entity
         Entity*        collides() const;
 
         static const int MIN_SPEED{ 40 };
-        std::vector<Entity*>* m_map;
     private:
         friend class BallState;
         friend class BallNormal;
         friend class BallAllBreaking;
         friend class BallBullet;
 
-        BallState*            m_state{ nullptr };
-        Vector2D              m_velocity{ Vector2D( -1, 1 ) };
-        char                  m_look{ 'O' };
-        int                   m_speed{ 130 };
+        BallState* m_state{ nullptr };
+        Vector2D   m_velocity{ Vector2D( -1, 1 ) };
+        char       m_look{ 'O' };
+        int        m_speed{ 130 };
 };
 
 #endif //BALL_H

@@ -1,5 +1,5 @@
-
 #include "Paddle.hpp"
+#include "BallMovement.hpp"
 
 Paddle::Paddle()
 {
@@ -40,5 +40,16 @@ void Paddle::move( const int t_y, const int t_x )
     if ( m_ball )
     {
         m_ball->setPosition( Point( gety() - 1, getx() + static_cast<int>( getWidth() / 2 ) ) );
+    }
+}
+
+void Paddle::shoot()
+{
+    if ( m_ball )
+    {
+        BallMovement bm( m_ball );
+        std::thread shootingThread( bm );
+        shootingThread.detach();
+        m_ball = nullptr;
     }
 }

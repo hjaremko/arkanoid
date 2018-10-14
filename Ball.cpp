@@ -1,15 +1,10 @@
 #include "Ball.hpp"
 #include "BallState.hpp"
+#include "PowerUp.hpp"
 
 Ball::Ball()
 {
-
-}
-
-Ball::Ball( std::vector<Entity*>* t_map ) : m_map( t_map )
-{
-    // changeState( new BallNormal );
-    changeState( new BallAllBreaking );
+    changeState( new BallNormal );
 }
 
 void Ball::draw() const
@@ -34,7 +29,8 @@ void Ball::reflect( ReflectionAxis t_axis )
 
 bool Ball::isOut() const
 {
-    bool isOut = ( gety() < 0 || gety() > getmaxy( stdscr ) - 1 || getx() < 0 || getx() > getmaxx( stdscr ) - 1 );
+    bool isOut = ( gety() < 0 || gety() > getmaxy( stdscr ) - 1 ||
+                   getx() < 0 || getx() > getmaxx( stdscr ) - 1 );
 
     return isOut;
 }
@@ -51,7 +47,7 @@ Vector2D Ball::getVelocity() const
 
 Entity* Ball::collides() const
 {
-    for ( auto& entity : *m_map )
+    for ( auto& entity : *Map::instance()->getEntities() )
     {
         if ( entity->intersects( Point( gety() + getVelocity().y,
                                         getx() + getVelocity().x ) ) )
@@ -82,13 +78,6 @@ Ball::ReflectionAxis Ball::getWallReflectionAxis() const
     }
 
     return axis;
-}
-
-void Ball::destroy( Entity* t_entity )
-{
-    auto pos = std::find( m_map->begin(), m_map->end(), t_entity );
-    delete *pos;
-    m_map->erase( pos );
 }
 
 int Ball::getSpeed() const

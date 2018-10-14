@@ -6,5 +6,5 @@ $(error Path to curses is not set)
 endif
 
 all:
-	g++ $(CFLAGS) main.cpp Block.cpp Paddle.cpp Ball.cpp Map.cpp -o arkanoid -I$(CURSESPATH) -L$(CURSESPATH) -lpdcurses
-	
+	g++ $(CFLAGS) main.cpp Entity.cpp Block.cpp Paddle.cpp Ball.cpp Map.cpp -o arkanoid -I$(CURSESPATH) -L$(CURSESPATH) -lpdcurses
+

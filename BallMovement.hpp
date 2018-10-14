@@ -1,6 +1,10 @@
- #ifndef BALLMOVEMENT_H
+#ifndef BALLMOVEMENT_H
 #define BALLMOVEMENT_H
 
+#include <cstdlib>
+#include <ctime>
+
+#include "Map.hpp"
 #include "Ball.hpp"
 
 class BallMovement
@@ -10,6 +14,8 @@ class BallMovement
 
         void operator()() const
         {
+            srand( time( NULL ) );
+
             while ( !m_ball->isNull() )
             {
                 m_ball->shoot();
@@ -21,7 +27,12 @@ class BallMovement
 
                     if ( entity->isDestroyable() )
                     {
-                        m_ball->destroy( entity );
+                        Map::instance()->destroy( entity );
+
+                        if ( ( rand() % 10 ) == 0 )
+                        {
+                            Map::instance()->spawnPowerUp( m_ball->getPosition() );
+                        }
                     }
                 }
                 else

@@ -13,22 +13,31 @@
 class Map
 {
     public:
-        Map();
         ~Map();
         void    draw() const;
-        void    destroy( const int t_entity );
-        void    pushEntity( Entity* t_entity );
+        void    destroyAt( const int );
+        void    destroy( Entity* );
+        void    pushEntity( Entity* );
         void    initPaddle();
         void    initBlocks();
         Ball*   newBall();
-        Ball*   getBall( const int t_id ) const;
-        Entity* getEntity( const int t_id ) const;
+        Ball*   getBall( const int ) const;
+        Entity* getEntityAt( const int ) const;
         Paddle* getPaddle() const;
+        void    spawnPowerUp( const Point& t_point );
+        std::vector<Entity*>* getEntities();
+
+        static Map* instance();
+
+    protected:
+        Map();
 
     private:
         std::vector<Entity*> m_entities;
         std::vector<Ball*>   m_balls;
         Paddle*              m_paddle{ nullptr };
+
+        static Map* m_instance;
 };
 
 #endif //MAP_H

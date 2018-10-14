@@ -1,10 +1,10 @@
 #include <curses.h>
 #include <stdio.h>
 
+#include "Map.hpp"
 #include "Block.hpp"
 #include "Paddle.hpp"
 #include "Ball.hpp"
-#include "Map.hpp"
 #include "MapDrawing.hpp"
 #include "BallState.hpp"
 #include "EventHandler.hpp"
@@ -37,11 +37,10 @@ int main()
     start_color();
     initColorPairs();
 
-    Map map;
-    map.initPaddle();
-    map.initBlocks();
+    Map::instance()->initPaddle();
+    Map::instance()->initBlocks();
 
-    MapDrawing  mapDrawing( &map );
+    MapDrawing  mapDrawing( Map::instance() );
     std::thread drawingThread( mapDrawing );
     drawingThread.detach();
 
@@ -71,16 +70,17 @@ int main()
                 {
                     case Mouse::Button::Button1:
                     {
-                        map.getPaddle()->shoot();
+                        Map::instance()->getPaddle()->shoot();
 
                         break;
                     }
 
                     case Mouse::Button::Button3:
                     {
-                        auto ball = map.getPaddle()->getBall( map.newBall() );
+                        auto ball = Map::instance()->getPaddle()->getBall(
+                            Map::instance()->newBall() );
                         ball->changeState( new BallBullet );
-                        map.getPaddle()->shoot();
+                        Map::instance()->getPaddle()->shoot();
 
                         break;
                     }
@@ -94,9 +94,10 @@ int main()
 
             case Event::Type::MouseMoved:
             {
-                map.getPaddle()->setPosition(
-                    Point( map.getPaddle()->gety(),
-                    event.mouseMove.x - ( map.getPaddle()->getWidth() / 2 ) ) );
+                Map::instance()->getPaddle()->setPosition(
+                    Point( Map::instance()->getPaddle()->gety(),
+                           event.mouseMove.x -
+                           ( Map::instance()->getPaddle()->getWidth() / 2 ) ) );
 
                 break;
             }

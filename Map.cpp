@@ -1,4 +1,17 @@
 #include "Map.hpp"
+#include "PowerUp.hpp"
+
+Map* Map::m_instance = 0;
+
+Map* Map::instance()
+{
+    if ( m_instance == 0 )
+    {
+        m_instance = new Map();
+    }
+
+    return m_instance;
+}
 
 Map::Map()
 {
@@ -43,7 +56,7 @@ void Map::pushEntity( Entity* t_entity )
 
 Ball* Map::newBall()
 {
-    Ball* tmp = new Ball( &m_entities );
+    Ball* tmp = new Ball;
     m_balls.push_back( tmp );
 
     return tmp;
@@ -88,13 +101,36 @@ Ball* Map::getBall( const int t_id ) const
     return m_balls.at( t_id );
 }
 
-Entity* Map::getEntity( const int t_id ) const
+Entity* Map::getEntityAt( const int t_id ) const
 {
     return m_entities.at( t_id );
 }
 
-void Map::destroy( const int t_entity )
+void Map::destroyAt( const int t_entity )
 {
     delete m_entities.at( t_entity );
     m_entities.erase( begin( m_entities ) + t_entity );
+}
+
+void Map::destroy( Entity* t_entity )
+{
+    auto pos = std::find( m_entities.begin(), m_entities.end(), t_entity );
+    delete *pos;
+    m_entities.erase( pos );
 } 
+
+std::vector<Entity*>* Map::getEntities()
+{
+    return &m_entities;
+}
+
+void Map::spawnPowerUp( const Point& t_point )
+{
+    PowerUp* power = new PowerUp;
+    power->setPosition( t_point );
+    m_entities.push_back( power );
+
+    PowerUpMovement bm( power );
+    std::thread powerUpThread( bm );
+    powerUpThread.detach();
+}
