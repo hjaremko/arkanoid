@@ -1,13 +1,13 @@
 #include "Map.hpp"
 #include "PowerUp.hpp"
 
-Map* Map::m_instance = 0;
+Map* Map::m_instance = nullptr;
 
 Map* Map::instance()
 {
-    if ( m_instance == 0 )
+    if ( m_instance == nullptr )
     {
-        m_instance = new Map();
+        m_instance = new Map;
     }
 
     return m_instance;
@@ -33,6 +33,8 @@ Map::~Map()
 
 void Map::draw() const
 {
+    m_paddle->draw();
+
     for ( const auto& entity : m_entities )
     {
         entity->draw();
@@ -45,8 +47,6 @@ void Map::draw() const
             ball->draw();
         }
     }
-
-    m_paddle->draw();
 }
 
 void Map::pushEntity( Entity* t_entity )
@@ -67,7 +67,7 @@ void Map::initPaddle()
     m_paddle = new Paddle;
     m_paddle->setWidth( 15 );
     m_paddle->setHeight( 1 );
-    m_paddle->setPosition( Point( 25, 5 ) );
+    m_paddle->setPosition( Point( getmaxy( stdscr ) - 5, 5 ) );
     m_paddle->getBall( newBall() );
     pushEntity( m_paddle );
 }
@@ -116,6 +116,7 @@ void Map::destroy( Entity* t_entity )
 {
     auto pos = std::find( m_entities.begin(), m_entities.end(), t_entity );
     delete *pos;
+    *pos = nullptr;
     m_entities.erase( pos );
 } 
 
@@ -126,7 +127,7 @@ std::vector<Entity*>* Map::getEntities()
 
 void Map::spawnPowerUp( const Point& t_point )
 {
-    PowerUp* power = new PowerUp;
+    auto power = PowerUpFactory::createRandom();
     power->setPosition( t_point );
     m_entities.push_back( power );
 

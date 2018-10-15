@@ -50,8 +50,8 @@ class Ball : public Entity
         BallState*     getState() const;
         Entity*        collides() const;
 
-        static const int MIN_SPEED{ 40 };
-        static const int DEF_SPEED{ 100 };
+        static const int MIN_SPEED{ 30 };
+        static const int DEF_SPEED{ 80 };
     private:
         friend class BallState;
         friend class BallNormal;

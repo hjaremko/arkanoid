@@ -9,6 +9,8 @@
 #include "Ball.hpp"
 #include "Point.hpp"
 
+class PaddleState;
+
 class Paddle : public Entity
 {
     public:
@@ -16,44 +18,18 @@ class Paddle : public Entity
         ~Paddle();
         void draw() const override;
         void move( const int, const int );
-
-        Ball* getBall( Ball* t_ball )
-        {
-            m_ball = t_ball;
-            m_ball->setPosition( Point( gety() - 1, getx() + static_cast<int>( getWidth() / 2 ) ) );
-
-            return m_ball;
-        }
-
+        Ball* getBall( Ball* );
         void shoot();
-
-        void setPosition( const Point& t_pos )
-        {
-            Entity::setPosition( t_pos );
-
-            if ( m_ball )
-            {
-                m_ball->setPosition( Point( gety() - 1, getx() + static_cast<int>( getWidth() / 2 ) ) );
-            }
-        }
-
-        void setWidth( const int t_width )
-        {
-            m_width = t_width;
-        }
-
-        int getWidth() const
-        {
-            return m_width;
-        }
-
-        bool intersects( const Point& t_point ) const override
-        {
-            return gety() == t_point.y && t_point.x >= getx() && t_point.x < ( getx() + getWidth() );
-        }
+        void setPosition( const Point& );
+        void setWidth( const int );
+        int  getWidth() const;
+        bool intersects( const Point& ) const override;
+        void secondaryAction();
+        void changeState( PaddleState* );
 
     private:
         Ball* m_ball{ nullptr };
+        PaddleState* m_state{ nullptr };
 };
 
 #endif //PADDLE_H

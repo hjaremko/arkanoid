@@ -77,10 +77,7 @@ int main()
 
                     case Mouse::Button::Button3:
                     {
-                        auto ball = Map::instance()->getPaddle()->getBall(
-                            Map::instance()->newBall() );
-                        ball->changeState( new BallBullet );
-                        Map::instance()->getPaddle()->shoot();
+                        Map::instance()->getPaddle()->secondaryAction();
 
                         break;
                     }

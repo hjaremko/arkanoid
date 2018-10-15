@@ -37,7 +37,13 @@ class BallMovement
                 }
                 else
                 {
-                    m_ball->reflect( m_ball->getWallReflectionAxis() );
+                    auto wallReflection = m_ball->getWallReflectionAxis();
+
+                    if ( wallReflection != Ball::ReflectionAxis::None )
+                    {
+                        m_ball->reflect( m_ball->getWallReflectionAxis() );
+                        m_ball->changeSpeedBy( -2 );
+                    }
                 }
             }
         }

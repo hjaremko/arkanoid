@@ -1,9 +1,13 @@
 #include "Paddle.hpp"
 #include "BallMovement.hpp"
+#include "PaddleState.hpp"
 
 Paddle::Paddle()
 {
     m_isDestroyable = false;
+    m_state = new PaddleNormal;
+    // m_state = new PaddleShooter;
+    // m_state = new PaddleSticky;
 }
 
 Paddle::~Paddle()
@@ -13,24 +17,7 @@ Paddle::~Paddle()
 
 void Paddle::draw() const
 {
-    attron( COLOR_PAIR( m_color ) | m_attributes );
-
-    for ( int i = 0; i < m_height; ++i )
-    {
-        for ( int j = 0; j < m_width; ++j )
-        {
-            mvprintw( gety(), getx() + j, "@" );
-        }
-    }
-
-    attrset( A_NORMAL );
-
-    // int mid = getx() + static_cast<int>( m_width / 2 );
-
-    // for ( int y = 0; y < getmaxy( stdscr ); ++y )
-    // {
-    //     mvprintw( y, mid, "|" );
-    // }
+    m_state->draw( this );
 }
 
 void Paddle::move( const int t_y, const int t_x )
@@ -39,8 +26,17 @@ void Paddle::move( const int t_y, const int t_x )
 
     if ( m_ball )
     {
-        m_ball->setPosition( Point( gety() - 1, getx() + static_cast<int>( getWidth() / 2 ) ) );
+        m_ball->setPosition( Point( gety() - 1, getx() +
+                                    static_cast<int>( getWidth() / 2 ) ) );
     }
+}
+
+Ball* Paddle::getBall( Ball* t_ball )
+{
+    m_ball = t_ball;
+    m_ball->setPosition( Point( gety() - 1, getx() + static_cast<int>( getWidth() / 2 ) ) );
+
+    return m_ball;
 }
 
 void Paddle::shoot()
@@ -52,4 +48,47 @@ void Paddle::shoot()
         shootingThread.detach();
         m_ball = nullptr;
     }
+}
+
+void Paddle::secondaryAction()
+{
+    m_state->secondaryAction( this );
+}
+
+
+void Paddle::setPosition( const Point& t_pos )
+{
+    Entity::setPosition( t_pos );
+
+    if ( m_ball )
+    {
+        m_ball->setPosition( Point( gety() - 1, getx() +
+                                    static_cast<int>( getWidth() / 2 ) ) );
+    }
+}
+
+void Paddle::setWidth( const int t_width )
+{
+    m_width = t_width;
+}
+
+int Paddle::getWidth() const
+{
+    return m_width;
+}
+
+bool Paddle::intersects( const Point& t_point ) const
+{
+    return gety() == t_point.y && t_point.x >= getx() &&
+           t_point.x < ( getx() + getWidth() );
+}
+
+void Paddle::changeState( PaddleState* t_state )
+{
+    if ( m_state )
+    {
+        delete m_state;
+    }
+
+    m_state = t_state;
 }
