@@ -1,5 +1,7 @@
 #include "Map.hpp"
 #include "PowerUp.hpp"
+#include "PowerUpFactory.hpp"
+#include "PowerUpMovement.hpp"
 
 Map* Map::m_instance = nullptr;
 
