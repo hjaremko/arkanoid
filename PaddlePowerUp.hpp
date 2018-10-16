@@ -42,11 +42,11 @@ class PaddlePowerUp : public PowerUp
         {
             if ( m_power == Power::Enlarge )
             {
-                Map::instance()->getPaddle()->setWidth( Map::instance()->getPaddle()->getWidth() + 4 );
+                Map::instance()->getPaddle()->changeSizeBy( 4 );
             }
             else if ( m_power == Power::Shrink )
             {
-                Map::instance()->getPaddle()->setWidth( Map::instance()->getPaddle()->getWidth() - 4 );
+                Map::instance()->getPaddle()->changeSizeBy( -4 );
             }
             else
             {

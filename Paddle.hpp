@@ -26,7 +26,10 @@ class Paddle : public Entity
         bool intersects( const Point& ) const override;
         void secondaryAction();
         void changeState( PaddleState* );
+        void changeSizeBy( const int );
 
+        static const int MAX_WIDTH = 37;
+        static const int MIN_WIDTH = 5;
     private:
         Ball* m_ball{ nullptr };
         PaddleState* m_state{ nullptr };

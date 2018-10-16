@@ -34,7 +34,8 @@ void Paddle::move( const int t_y, const int t_x )
 Ball* Paddle::getBall( Ball* t_ball )
 {
     m_ball = t_ball;
-    m_ball->setPosition( Point( gety() - 1, getx() + static_cast<int>( getWidth() / 2 ) ) );
+    m_ball->setPosition( Point( gety() - 1, getx() +
+                                static_cast<int>( getWidth() / 2 ) ) );
 
     return m_ball;
 }
@@ -54,7 +55,6 @@ void Paddle::secondaryAction()
 {
     m_state->secondaryAction( this );
 }
-
 
 void Paddle::setPosition( const Point& t_pos )
 {
@@ -91,4 +91,18 @@ void Paddle::changeState( PaddleState* t_state )
     }
 
     m_state = t_state;
+}
+
+void Paddle::changeSizeBy( const int t_value )
+{
+    setWidth( getWidth() + t_value );
+
+    if ( getWidth() < MIN_WIDTH )
+    {
+        setWidth( MIN_WIDTH );
+    }
+    else if ( getWidth() > MAX_WIDTH )
+    {
+        setWidth( MAX_WIDTH );
+    }
 }
