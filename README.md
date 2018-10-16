@@ -5,5 +5,4 @@
 </p>
 
 ### Requires:
-- ncurses/PDCurses
-- Windows
+- ncurses
