@@ -1,13 +1,11 @@
 #include "Paddle.hpp"
 #include "BallMovement.hpp"
-#include "PaddleState.hpp"
+#include "PaddleNormal.hpp"
 
 Paddle::Paddle()
 {
     m_isDestroyable = false;
     m_state = new PaddleNormal;
-    // m_state = new PaddleShooter;
-    // m_state = new PaddleSticky;
 }
 
 Paddle::~Paddle()

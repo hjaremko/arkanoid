@@ -7,8 +7,8 @@
 
 #include "Entity.hpp"
 #include "Map.hpp"
-#include "BallState.hpp"
-#include "PaddleState.hpp"
+// #include "BallState.hpp"
+// #include "PaddleState.hpp"
 
 class PowerUp : public Entity
 {

@@ -1,5 +1,5 @@
 #include "Ball.hpp"
-#include "BallState.hpp"
+#include "BallNormal.hpp"
 #include "PowerUp.hpp"
 
 Ball::Ball()

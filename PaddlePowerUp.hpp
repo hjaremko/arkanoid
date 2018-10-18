@@ -2,6 +2,7 @@
 #define PADDLEPOWERUP_H
 
 #include "PowerUp.hpp"
+#include "PaddleShooter.hpp"
 
 class PaddlePowerUp : public PowerUp
 {

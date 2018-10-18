@@ -2,6 +2,9 @@
 #define BALLPOWERUP_H
 
 #include "PowerUp.hpp"
+#include "BallAllBreaking.hpp"
+#include "BallSlow.hpp"
+#include "BallSticky.hpp"
 
 class BallPowerUp : public PowerUp
 {
