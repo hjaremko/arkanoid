@@ -21,8 +21,12 @@ class BallPowerUp : public PowerUp
                     setColorPair( Entity::ColorPair::Yellow );
 
                     break;
+                case Power::StickyBall:
+                    setColorPair( Entity::ColorPair::Green );
+
+                    break;
                 case Power::Shooter:
-                case Power::Sticky:
+                // case Power::Sticky:
                 case Power::Enlarge:
                 case Power::Shrink:
                 case Power::None:
@@ -48,8 +52,12 @@ class BallPowerUp : public PowerUp
                     m_state = new BallSlow;
 
                     break;
+                case Power::StickyBall:
+                    m_state = new BallSticky;
+
+                    break;
                 case Power::Shooter:
-                case Power::Sticky:
+                // case Power::Sticky:
                 case Power::Enlarge:
                 case Power::Shrink:
                 case Power::None:

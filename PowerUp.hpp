@@ -28,7 +28,8 @@ class PowerUp : public Entity
             AllBreaking,
             Slow,
             Shooter,
-            Sticky,
+            // Sticky,
+            StickyBall,
             Enlarge,
             Shrink,
             None

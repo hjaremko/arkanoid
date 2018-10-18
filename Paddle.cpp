@@ -26,16 +26,14 @@ void Paddle::move( const int t_y, const int t_x )
 
     if ( m_ball )
     {
-        m_ball->setPosition( Point( gety() - 1, getx() +
-                                    static_cast<int>( getWidth() / 2 ) ) );
+        m_ball->setPosition( Point( m_ball->gety() - 1, m_ball->getx() + t_x ) );
     }
 }
 
 Ball* Paddle::getBall( Ball* t_ball )
 {
     m_ball = t_ball;
-    m_ball->setPosition( Point( gety() - 1, getx() +
-                                static_cast<int>( getWidth() / 2 ) ) );
+    m_ball->setStopped( true );
 
     return m_ball;
 }
@@ -44,6 +42,7 @@ void Paddle::shoot()
 {
     if ( m_ball )
     {
+        m_ball->setStopped( false );
         BallMovement bm( m_ball );
         std::thread shootingThread( bm );
         shootingThread.detach();
@@ -58,13 +57,12 @@ void Paddle::secondaryAction()
 
 void Paddle::setPosition( const Point& t_pos )
 {
-    Entity::setPosition( t_pos );
-
     if ( m_ball )
     {
-        m_ball->setPosition( Point( gety() - 1, getx() +
-                                    static_cast<int>( getWidth() / 2 ) ) );
+        m_ball->moveBy( 0, t_pos.getx() - getx() );
     }
+
+    Entity::setPosition( t_pos );
 }
 
 void Paddle::setWidth( const int t_width )

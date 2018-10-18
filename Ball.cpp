@@ -141,6 +141,16 @@ bool Ball::isNull() const
     return m_state->isNull();
 }
 
+void Ball::setStopped( const bool t_stop )
+{
+    m_stopped = t_stop;
+}
+
+bool Ball::isStopped() const
+{
+    return m_stopped;
+}
+
 // double moveFunction( Point a, Point b, double x ) const
 // {
 //     if ( ( a.x - b.x ) == 0 || ( a.x - b.x ) == 0 )

@@ -17,8 +17,8 @@ class PaddlePowerUp : public PowerUp
                     setColorPair( Entity::ColorPair::Cyan );
 
                     break;
-                case Power::Sticky:
-                    setColorPair( Entity::ColorPair::Green );
+                // case Power::Sticky:
+                    // setColorPair( Entity::ColorPair::Green );
 
                     break;
                 case Power::Enlarge:
@@ -31,6 +31,7 @@ class PaddlePowerUp : public PowerUp
                     setColorPair( Entity::ColorPair::Red );
 
                     break;
+                case Power::StickyBall:
                 case Power::AllBreaking:
                 case Power::Slow:
                 case Power::None:
@@ -63,10 +64,11 @@ class PaddlePowerUp : public PowerUp
                     m_state = new PaddleShooter;
 
                     break;
-                case Power::Sticky:
-                    m_state = new PaddleSticky;
+                // case Power::Sticky:
+                    // m_state = new PaddleSticky;
 
-                    break;
+                    // break;
+                case Power::StickyBall:
                 case Power::Enlarge:
                 case Power::Shrink:
                 case Power::AllBreaking:

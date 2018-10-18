@@ -33,6 +33,7 @@ class PowerUpFactory
             {
                 case PowerUp::Power::AllBreaking:
                 case PowerUp::Power::Slow:
+                case PowerUp::Power::StickyBall:
                 {
                     power = create( PowerUp::Type::Ball, powerUpId );
 
@@ -40,7 +41,7 @@ class PowerUpFactory
                 }
 
                 case PowerUp::Power::Shooter:
-                case PowerUp::Power::Sticky:
+                // case PowerUp::Power::Sticky:
                 case PowerUp::Power::Enlarge:
                 case PowerUp::Power::Shrink:
                 {

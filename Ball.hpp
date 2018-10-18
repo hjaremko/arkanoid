@@ -49,6 +49,8 @@ class Ball : public Entity
         ReflectionAxis getReflectionAxis( Entity* ) const;
         BallState*     getState() const;
         Entity*        collides() const;
+        void           setStopped( const bool );
+        bool           isStopped() const;
 
         static const int MIN_SPEED{ 30 };
         static const int DEF_SPEED{ 80 };
@@ -62,6 +64,7 @@ class Ball : public Entity
         Vector2D   m_velocity{ Vector2D( -1, 1 ) };
         char       m_look{ 'O' };
         int        m_speed{ DEF_SPEED };
+        bool       m_stopped{ true };
 };
 
 #endif //BALL_H

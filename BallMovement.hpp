@@ -16,7 +16,7 @@ class BallMovement
         {
             srand( time( NULL ) );
 
-            while ( !m_ball->isNull() )
+            while ( !m_ball->isNull() && !m_ball->isStopped() )
             {
                 m_ball->shoot();
 

@@ -70,7 +70,10 @@ void Map::initPaddle()
     m_paddle->setWidth( 15 );
     m_paddle->setHeight( 1 );
     m_paddle->setPosition( Point( getmaxy( stdscr ) - 5, 5 ) );
-    m_paddle->getBall( newBall() );
+    auto tmp = newBall();
+    tmp->setPosition( Point( m_paddle->gety() - 1, m_paddle->getx() +
+                             static_cast<int>( m_paddle->getWidth() / 2 ) ) );
+    m_paddle->getBall( tmp );
     pushEntity( m_paddle );
 }
 

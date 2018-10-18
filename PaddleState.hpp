@@ -76,7 +76,11 @@ class PaddleShooter : public PaddleState
 
         void secondaryAction( Paddle* t_paddle ) override
         {
+
             auto ball = t_paddle->getBall( Map::instance()->newBall() );
+            ball->setPosition( Point( t_paddle->gety() - 1, t_paddle->getx() +
+                               static_cast<int>( t_paddle->getWidth() / 2 ) ) );
+
 
             ball->changeState( new BallBullet );
             t_paddle->shoot();
@@ -95,41 +99,41 @@ class PaddleShooter : public PaddleState
         int duration{ 5 };
 };
 
-class PaddleSticky : public PaddleState
-{
-    public:
-        PaddleSticky()
-        {
-            // Map::instance()->getPaddle()->getBall( Map::instance()->getBall( 0 ) );
-        }
+// class PaddleSticky : public PaddleState
+// {
+//     public:
+//         PaddleSticky()
+//         {
+//             // Map::instance()->getPaddle()->getBall( Map::instance()->getBall( 0 ) );
+//         }
 
-        void draw( const Paddle* t_paddle ) const override
-        {
-            attron( COLOR_PAIR( t_paddle->getColor() ) | t_paddle->getAttributes() );
+//         void draw( const Paddle* t_paddle ) const override
+//         {
+//             attron( COLOR_PAIR( t_paddle->getColor() ) | t_paddle->getAttributes() );
 
-            for ( int i = 0; i < t_paddle->getHeight(); ++i )
-            {
-                for ( int j = 0; j < t_paddle->getWidth(); ++j )
-                {
-                    attron( COLOR_PAIR( Entity::ColorPair::Green ) | A_BOLD );
-                    mvprintw( t_paddle->gety()-1, t_paddle->getx() + j, "_" );
-                    mvprintw( t_paddle->gety(), t_paddle->getx()-1, "/" );
-                    mvprintw( t_paddle->gety(), t_paddle->getx() + t_paddle->getWidth(), "\\" );
+//             for ( int i = 0; i < t_paddle->getHeight(); ++i )
+//             {
+//                 for ( int j = 0; j < t_paddle->getWidth(); ++j )
+//                 {
+//                     attron( COLOR_PAIR( Entity::ColorPair::Green ) | A_BOLD );
+//                     mvprintw( t_paddle->gety()-1, t_paddle->getx() + j, "_" );
+//                     mvprintw( t_paddle->gety(), t_paddle->getx()-1, "/" );
+//                     mvprintw( t_paddle->gety(), t_paddle->getx() + t_paddle->getWidth(), "\\" );
 
-                    attrset( A_NORMAL );
+//                     attrset( A_NORMAL );
 
-                    mvprintw( t_paddle->gety(), t_paddle->getx() + j, "@" );
-                }
-            }
+//                     mvprintw( t_paddle->gety(), t_paddle->getx() + j, "@" );
+//                 }
+//             }
 
-            attrset( A_NORMAL );
-        }
+//             attrset( A_NORMAL );
+//         }
 
-        void secondaryAction( Paddle* t_paddle ) override
-        {
+//         void secondaryAction( Paddle* t_paddle ) override
+//         {
 
-        }
-};
+//         }
+// };
 
 
 #endif
