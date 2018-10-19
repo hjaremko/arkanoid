@@ -11,10 +11,13 @@ Paddle::~Paddle()
 {
     delete m_state;
 
-    if ( m_ball )
+    for ( auto& ball : m_balls )
     {
-        delete m_ball;
+        ball = nullptr;
+        delete ball;
     }
+
+    m_balls.clear();
 }
 
 void Paddle::draw() const
@@ -26,30 +29,31 @@ void Paddle::move( const int t_y, const int t_x )
 {
     setPosition( Point( gety() + t_y, getx() + t_x ) );
 
-    if ( m_ball )
+    for ( auto& ball : m_balls )
     {
-        m_ball->setPosition( Point( m_ball->gety() - 1, m_ball->getx() + t_x ) );
+        ball->setPosition( ball->gety() - 1, ball->getx() + t_x );
     }
 }
 
 Ball* Paddle::getBall( Ball* t_ball )
 {
-    m_ball = t_ball;
-    m_ball->setStopped( true );
+    t_ball->setStopped( true );
+    m_balls.push_back( t_ball );
 
-    return m_ball;
+    return t_ball;
 }
 
 void Paddle::shoot()
 {
-    if ( m_ball )
+    for ( auto& ball : m_balls )
     {
-        m_ball->setStopped( false );
-        BallMovement bm( m_ball );
+        ball->setStopped( false );
+        BallMovement bm( ball );
         std::thread shootingThread( bm );
         shootingThread.detach();
-        m_ball = nullptr;
     }
+
+    m_balls.clear();
 }
 
 void Paddle::secondaryAction()
@@ -59,9 +63,9 @@ void Paddle::secondaryAction()
 
 void Paddle::setPosition( const Point& t_pos )
 {
-    if ( m_ball )
+    for ( auto& ball : m_balls )
     {
-        m_ball->moveBy( 0, t_pos.getx() - getx() );
+        ball->moveBy( 0, t_pos.getx() - getx() );
     }
 
     Entity::setPosition( t_pos );
@@ -69,9 +73,9 @@ void Paddle::setPosition( const Point& t_pos )
 
 void Paddle::setPosition( const int t_y, const int t_x )
 {
-    if ( m_ball )
+    for ( auto& ball : m_balls )
     {
-        m_ball->moveBy( 0, t_x - getx() );
+        ball->moveBy( 0, t_x - getx() );
     }
 
     Entity::setPosition( t_y, t_x );
@@ -89,8 +93,8 @@ int Paddle::getWidth() const
 
 bool Paddle::intersects( const Point& t_point ) const
 {
-    return gety() == t_point.y && t_point.x >= getx() &&
-           t_point.x < ( getx() + getWidth() );
+    return gety() == t_point.y &&
+           t_point.x >= getx() && t_point.x < ( getx() + getWidth() );
 }
 
 void Paddle::changeState( PaddleState* t_state )

@@ -34,8 +34,8 @@ class Paddle : public Entity
         static const int MAX_WIDTH = 37;
         static const int MIN_WIDTH = 5;
     private:
-        Ball* m_ball{ nullptr };
-        PaddleState* m_state{ nullptr };
+        std::vector<Ball*> m_balls;
+        PaddleState*       m_state{ nullptr };
 };
 
 #endif //PADDLE_H
