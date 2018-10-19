@@ -67,12 +67,12 @@ int Entity::getHeight() const
 
 bool Entity::isDestroyable() const
 {
-    return m_isDestroyable;
+    return true;
 }
 
 bool Entity::isCollidable() const
 {
-    return m_isCollidable;
+    return true;
 }
 
 int Entity::getColor() const

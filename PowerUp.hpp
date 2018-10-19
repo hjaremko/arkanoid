@@ -58,10 +58,18 @@ class PowerUp : public Entity
             m_power = t_powerType;
         }
 
+        bool isDestroyable() const override
+        {
+            return false;
+        }
+
+        bool isCollidable() const override
+        {
+            return false;
+        }
+
         char m_look{ '%' };
     protected:
-        bool  m_isDestroyable{ false };
-        bool  m_isCollidable{ false };
         Power m_power{ Power::None };
         Type  m_type{ Type::None };
 };

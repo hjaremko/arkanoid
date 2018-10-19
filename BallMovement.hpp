@@ -1,11 +1,10 @@
 #ifndef BALLMOVEMENT_H
 #define BALLMOVEMENT_H
 
-#include <cstdlib>
-#include <ctime>
-
 #include "Map.hpp"
 #include "Ball.hpp"
+
+int random( int min, int max );
 
 class BallMovement
 {
@@ -14,8 +13,6 @@ class BallMovement
 
         void operator()() const
         {
-            srand( time( NULL ) );
-
             while ( !m_ball->isNull() && !m_ball->isStopped() )
             {
                 m_ball->shoot();
@@ -30,7 +27,7 @@ class BallMovement
                     {
                         Map::instance()->destroy( entity );
 
-                        if ( ( rand() % 10 ) == 0 )
+                        if ( random( 0, 10 ) == 0 )
                         {
                             Map::instance()->spawnPowerUp( m_ball->getPosition() );
                         }

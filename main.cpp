@@ -1,5 +1,6 @@
 #include <curses.h>
-#include <stdio.h>
+#include <cstdio>
+#include <random>
 
 #include "Map.hpp"
 #include "Block.hpp"
@@ -8,6 +9,13 @@
 #include "MapDrawing.hpp"
 #include "BallState.hpp"
 #include "EventHandler.hpp"
+
+std::mt19937 engine( time( nullptr ) );
+
+int random( int min, int max )
+{
+    return std::uniform_int_distribution<int>{ min, max }( engine );
+}
 
 void initColorPairs()
 {

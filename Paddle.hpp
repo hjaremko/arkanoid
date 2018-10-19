@@ -16,9 +16,10 @@ class Paddle : public Entity
     public:
         Paddle();
         ~Paddle();
+
+        Ball* getBall( Ball* );
         void draw() const override;
         void move( const int, const int );
-        Ball* getBall( Ball* );
         void shoot();
         void setPosition( const Point& );
         void setPosition( const int, const int );
@@ -28,6 +29,7 @@ class Paddle : public Entity
         void secondaryAction();
         void changeState( PaddleState* );
         void changeSizeBy( const int );
+        bool isDestroyable() const override;
 
         static const int MAX_WIDTH = 37;
         static const int MIN_WIDTH = 5;

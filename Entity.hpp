@@ -25,6 +25,8 @@ class Entity
         virtual ~Entity() {}
         virtual void draw() const = 0;
         virtual bool intersects( const Point& t_point ) const = 0;
+        virtual bool isDestroyable() const;
+        virtual bool isCollidable() const;
 
         void  setPosition( const int t_y, const int t_x );
         void  setPosition( const Point& t_pos );
@@ -40,8 +42,6 @@ class Entity
         int   getHeight() const;
         int   getColor() const;
         int   getAttributes() const;
-        bool  isDestroyable() const;
-        bool  isCollidable() const;
         Point getPosition() const;
 
     protected:
@@ -50,8 +50,8 @@ class Entity
         int   m_height{ 0 };
         int   m_color{ 0 };
         int   m_attributes{ 0 };
-        bool  m_isDestroyable{ true };
-        bool  m_isCollidable{ true };
+        // bool  m_isDestroyable{ true };
+        // bool  m_isCollidable{ true };
 };
 
 #endif //ENTITY_H

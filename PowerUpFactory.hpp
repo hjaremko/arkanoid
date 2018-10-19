@@ -5,6 +5,8 @@
 #include "BallPowerUp.hpp"
 #include "PaddlePowerUp.hpp"
 
+int random( int min, int max );
+
 class PowerUpFactory
 {
     public:
@@ -26,16 +28,17 @@ class PowerUpFactory
 
         static PowerUp* createRandom()
         {
-            PowerUp::Power powerUpId = static_cast<PowerUp::Power>( rand() % PowerUp::Power::None );
+            auto powerUpId = random( PowerUp::Power::AllBreaking, PowerUp::Power::None - 1 );
+            PowerUp::Power randomPower = static_cast<PowerUp::Power>( powerUpId );
             PowerUp* power = nullptr;
 
-            switch ( powerUpId )
+            switch ( randomPower )
             {
                 case PowerUp::Power::AllBreaking:
                 case PowerUp::Power::Slow:
                 case PowerUp::Power::StickyBall:
                 {
-                    power = create( PowerUp::Type::Ball, powerUpId );
+                    power = create( PowerUp::Type::Ball, randomPower );
 
                     break;
                 }
@@ -45,7 +48,7 @@ class PowerUpFactory
                 case PowerUp::Power::Enlarge:
                 case PowerUp::Power::Shrink:
                 {
-                    power = create( PowerUp::Type::Paddle, powerUpId );
+                    power = create( PowerUp::Type::Paddle, randomPower );
 
                     break;
                 }

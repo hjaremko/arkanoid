@@ -4,7 +4,6 @@
 
 Paddle::Paddle()
 {
-    m_isDestroyable = false;
     m_state = new PaddleNormal;
 }
 
@@ -116,4 +115,9 @@ void Paddle::changeSizeBy( const int t_value )
     {
         setWidth( MAX_WIDTH );
     }
+}
+
+bool Paddle::isDestroyable() const
+{
+    return false;
 }
