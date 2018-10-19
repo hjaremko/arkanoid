@@ -91,10 +91,10 @@ int main()
 
             case Event::Type::MouseMoved:
             {
-                Map::instance()->getPaddle()->setPosition(
-                    Point( Map::instance()->getPaddle()->gety(),
-                           event.mouseMove.x -
-                           ( Map::instance()->getPaddle()->getWidth() / 2 ) ) );
+                Point newPosition( Map::instance()->getPaddle()->gety(),
+                                   event.mouseMove.x -
+                                   ( Map::instance()->getPaddle()->getWidth() / 2 ) );
+                Map::instance()->getPaddle()->setPosition( newPosition );
 
                 break;
             }

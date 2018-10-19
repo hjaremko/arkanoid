@@ -61,8 +61,6 @@ class CursesEventHandlerImp : public EventHandlerImp
 
             return true;
         }
-
-    private:
 };
 
 #endif

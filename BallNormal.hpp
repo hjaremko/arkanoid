@@ -16,8 +16,10 @@ class BallNormal : public BallState
 
         void shoot( Ball* t_ball ) override
         {
-            t_ball->moveBy( t_ball->getVelocity().y, t_ball->getVelocity().x );
-            std::this_thread::sleep_for( std::chrono::milliseconds( t_ball->getSpeed() ) );
+            t_ball->moveBy( t_ball->getVelocity() );
+
+            std::this_thread::sleep_for(
+                std::chrono::milliseconds( t_ball->getSpeed() ) );
         }
 
         void reflect( Ball* t_ball, Ball::ReflectionAxis t_axis ) override

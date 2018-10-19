@@ -19,8 +19,9 @@ class BallMovement
             while ( !m_ball->isNull() && !m_ball->isStopped() )
             {
                 m_ball->shoot();
+                auto entity = m_ball->collides();
 
-                if ( auto entity = m_ball->collides() )
+                if ( entity && entity->isCollidable() )
                 {
                     m_ball->reflect( m_ball->getReflectionAxis( entity ) );
                     m_ball->changeSpeedBy( -2 );

@@ -9,9 +9,6 @@ class Point
         Point() {};
         Point( int t_y, int t_x ) : y( t_y ), x( t_x ) {}
 
-        int y{ 0 };
-        int x{ 0 };
-
         int getx() const
         {
             return x;
@@ -21,6 +18,14 @@ class Point
         {
             return y;
         }
+
+        Point operator+( const Point& t_right ) const
+        {
+            return Point( y + t_right.y, x + t_right.x );
+        }
+
+        int y{ 0 };
+        int x{ 0 };
 };
 
 #endif //POINT_H

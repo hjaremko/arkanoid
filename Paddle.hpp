@@ -21,6 +21,7 @@ class Paddle : public Entity
         Ball* getBall( Ball* );
         void shoot();
         void setPosition( const Point& );
+        void setPosition( const int, const int );
         void setWidth( const int );
         int  getWidth() const;
         bool intersects( const Point& ) const override;

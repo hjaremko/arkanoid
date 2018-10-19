@@ -22,7 +22,10 @@ class EventHandler
             #endif
         }
 
-        ~EventHandler() {}
+        ~EventHandler()
+        {
+            delete m_handler;
+        }
 
         bool getEvent( Event& t_event )
         {

@@ -16,9 +16,11 @@ class BallAllBreaking : public BallState
         void draw( const Ball* t_ball ) override
         {
             auto end = std::chrono::steady_clock::now();
-            auto left = duration - std::chrono::duration_cast<std::chrono::seconds>( end - startTimePoint ).count();
+            auto left = duration -
+                        std::chrono::duration_cast<std::chrono::seconds>
+                        ( end - startTimePoint ).count();
 
-            attron( COLOR_PAIR( static_cast<int>( Entity::ColorPair::Red ) ) | t_ball->getAttributes() | A_BOLD );
+            attron( COLOR_PAIR( static_cast<int>( Entity::ColorPair::Red ) ) | A_BOLD );
 
             mvprintw( 2, 5, "*O  : %d", left );
 
@@ -31,14 +33,18 @@ class BallAllBreaking : public BallState
         void shoot( Ball* t_ball ) override
         {
             lastPosition = t_ball->getPosition();
-            t_ball->changeSpeedBy( -5 );
 
-            t_ball->moveBy( t_ball->getVelocity().y, t_ball->getVelocity().x );
-            std::this_thread::sleep_for( std::chrono::milliseconds( t_ball->getSpeed() ) );
+            t_ball->changeSpeedBy( -5 );
+            t_ball->moveBy( t_ball->getVelocity() );
+
+            std::this_thread::sleep_for(
+                std::chrono::milliseconds( t_ball->getSpeed() ) );
 
             auto end = std::chrono::steady_clock::now();
+            auto elapsed = std::chrono::duration_cast<std::chrono::seconds>
+                           ( end - startTimePoint ).count();
 
-            if ( std::chrono::duration_cast<std::chrono::seconds>( end - startTimePoint ).count() >= duration )
+            if ( elapsed >= duration )
             {
                 t_ball->changeState( new BallNormal );
             }

@@ -1,6 +1,5 @@
 #include "Ball.hpp"
 #include "BallNormal.hpp"
-#include "PowerUp.hpp"
 
 Ball::Ball()
 {
@@ -15,6 +14,11 @@ void Ball::draw() const
 void Ball::moveBy( const int t_y, const int t_x )
 {
     setPosition( gety() + t_y, getx() + t_x );
+}
+
+void Ball::moveBy( const Point& t_point )
+{
+    setPosition( getPosition() + t_point );
 }
 
 void Ball::shoot()
@@ -40,7 +44,7 @@ bool Ball::intersects( const Point& t_point ) const
     return getx() == t_point.y && getx() == t_point.x;
 }
 
-Vector2D Ball::getVelocity() const
+Point Ball::getVelocity() const
 {
     return m_velocity;
 }
@@ -49,12 +53,12 @@ Entity* Ball::collides() const
 {
     for ( auto& entity : *Map::instance()->getEntities() )
     {
-        if ( entity->intersects( Point( gety() + getVelocity().y,
-                                        getx() + getVelocity().x ) ) )
+        if ( entity->intersects( getPosition() + getVelocity() ) )
         {
             return entity;
         }
     }
+
     return nullptr;
 }
 
@@ -66,13 +70,14 @@ Ball::ReflectionAxis Ball::getReflectionAxis( Entity* entity ) const
 Ball::ReflectionAxis Ball::getWallReflectionAxis() const
 {
     auto axis = ReflectionAxis::None;
+    auto nextPosition = getPosition() + getVelocity();
 
-    if ( ( getx() + getVelocity().x >= getmaxx( stdscr ) || getx() + getVelocity().x < 0 ) )
+    if ( ( nextPosition.x >= getmaxx( stdscr ) || nextPosition.x < 0 ) )
     {
         axis = static_cast<ReflectionAxis>( axis | ReflectionAxis::Horizontal );
     }
 
-    if ( gety() + getVelocity().y < 0 )
+    if ( nextPosition.y < 0 )
     {
         axis = static_cast<ReflectionAxis>( axis | ReflectionAxis::Vertical );
     }
@@ -105,7 +110,7 @@ char Ball::getLook() const
     return m_look;
 }
 
-void Ball::setVelocity( Vector2D& t_velocity )
+void Ball::setVelocity( const Point& t_velocity )
 {
     m_velocity = t_velocity;
 }

@@ -26,14 +26,4 @@ class BallState
         bool m_null{ false };
 };
 
-
-
-
-
-
-
-
-
-
-
 #endif

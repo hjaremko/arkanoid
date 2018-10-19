@@ -7,8 +7,6 @@
 
 #include "Entity.hpp"
 #include "Map.hpp"
-// #include "BallState.hpp"
-// #include "PaddleState.hpp"
 
 class PowerUp : public Entity
 {
@@ -62,7 +60,8 @@ class PowerUp : public Entity
 
         char m_look{ '%' };
     protected:
-        bool m_isDestroyable{ false };
+        bool  m_isDestroyable{ false };
+        bool  m_isCollidable{ false };
         Power m_power{ Power::None };
         Type  m_type{ Type::None };
 };

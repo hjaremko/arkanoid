@@ -2,15 +2,10 @@
 #define BALL_H
 
 #include <vector>
-#include <thread>
-#include <chrono>
-#include <algorithm>
-// #include <cmath>
 #include <curses.h>
 
 #include "Entity.hpp"
 #include "Point.hpp"
-#include "Vector2D.hpp"
 
 // #define PI 3.14159265
 
@@ -31,26 +26,27 @@ class Ball : public Entity
 
         void           draw() const override;
         void           moveBy( const int, const int );
+        void           moveBy( const Point& );
         void           shoot();
         void           reflect( ReflectionAxis );
-        void           setVelocity( Vector2D& );
+        void           setVelocity( const Point& );
         void           setVectorY( int );
         void           setVectorX( int );
         void           setSpeed( const int );
         void           changeSpeedBy( const int );
         void           changeState( BallState* );
+        void           setStopped( const bool );
+        bool           isStopped() const;
         bool           isOut() const;
         bool           isNull() const;
         bool           intersects( const Point& ) const override;
         char           getLook() const;
         int            getSpeed() const;
-        Vector2D       getVelocity() const;
+        Point          getVelocity() const;
         ReflectionAxis getWallReflectionAxis() const;
         ReflectionAxis getReflectionAxis( Entity* ) const;
         BallState*     getState() const;
         Entity*        collides() const;
-        void           setStopped( const bool );
-        bool           isStopped() const;
 
         static const int MIN_SPEED{ 30 };
         static const int DEF_SPEED{ 80 };
@@ -61,7 +57,7 @@ class Ball : public Entity
         friend class BallBullet;
 
         BallState* m_state{ nullptr };
-        Vector2D   m_velocity{ Vector2D( -1, 1 ) };
+        Point      m_velocity{ Point( -1, 1 ) };
         char       m_look{ 'O' };
         int        m_speed{ DEF_SPEED };
         bool       m_stopped{ true };

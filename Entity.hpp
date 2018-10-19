@@ -41,6 +41,7 @@ class Entity
         int   getColor() const;
         int   getAttributes() const;
         bool  isDestroyable() const;
+        bool  isCollidable() const;
         Point getPosition() const;
 
     protected:
@@ -50,7 +51,7 @@ class Entity
         int   m_color{ 0 };
         int   m_attributes{ 0 };
         bool  m_isDestroyable{ true };
-        // bool  m_isCollidable{ true }; !!
+        bool  m_isCollidable{ true };
 };
 
 #endif //ENTITY_H

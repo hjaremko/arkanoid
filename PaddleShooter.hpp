@@ -17,7 +17,9 @@ class PaddleShooter : public PaddleState
         void draw( const Paddle* t_paddle ) const override
         {
             auto end = std::chrono::steady_clock::now();
-            auto left = duration - std::chrono::duration_cast<std::chrono::seconds>( end - startTimePoint ).count();
+            auto left = duration -
+                        std::chrono::duration_cast<std::chrono::seconds>
+                        ( end - startTimePoint ).count();
 
             attron( COLOR_PAIR( t_paddle->getColor() ) | t_paddle->getAttributes() );
 
@@ -46,17 +48,18 @@ class PaddleShooter : public PaddleState
         {
 
             auto ball = t_paddle->getBall( Map::instance()->newBall() );
-            ball->setPosition( Point( t_paddle->gety() - 1, t_paddle->getx() +
-                               static_cast<int>( t_paddle->getWidth() / 2 ) ) );
+            ball->setPosition( t_paddle->gety() - 1, t_paddle->getx() +
+                               static_cast<int>( t_paddle->getWidth() / 2 ) );
 
 
             ball->changeState( new BallBullet );
             t_paddle->shoot();
 
-
             auto end = std::chrono::steady_clock::now();
+            auto elapsed = std::chrono::duration_cast<std::chrono::seconds>
+                           ( end - startTimePoint ).count();
 
-            if ( std::chrono::duration_cast<std::chrono::seconds>( end - startTimePoint ).count() >= duration )
+            if ( elapsed >= duration )
             {
                 t_paddle->changeState( new PaddleNormal );
             }

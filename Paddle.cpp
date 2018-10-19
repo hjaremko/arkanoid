@@ -10,7 +10,12 @@ Paddle::Paddle()
 
 Paddle::~Paddle()
 {
+    delete m_state;
 
+    if ( m_ball )
+    {
+        delete m_ball;
+    }
 }
 
 void Paddle::draw() const
@@ -61,6 +66,16 @@ void Paddle::setPosition( const Point& t_pos )
     }
 
     Entity::setPosition( t_pos );
+}
+
+void Paddle::setPosition( const int t_y, const int t_x )
+{
+    if ( m_ball )
+    {
+        m_ball->moveBy( 0, t_x - getx() );
+    }
+
+    Entity::setPosition( t_y, t_x );
 }
 
 void Paddle::setWidth( const int t_width )

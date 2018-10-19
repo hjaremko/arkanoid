@@ -16,11 +16,15 @@ class BallSticky : public BallNormal
         void draw( const Ball* t_ball ) override
         {
             auto end = std::chrono::steady_clock::now();
-            auto left = duration - std::chrono::duration_cast<std::chrono::seconds>( end - startTimePoint ).count();
+            auto left = duration -
+                        std::chrono::duration_cast<std::chrono::seconds>
+                        ( end - startTimePoint ).count();
 
-            attron( COLOR_PAIR( static_cast<int>( Entity::ColorPair::Green ) ) | A_BOLD | t_ball->getAttributes() );
+            attron( COLOR_PAIR( static_cast<int>( Entity::ColorPair::Green ) ) | A_BOLD );
+
             mvprintw( 2, 5, "O   : %d", left );
             mvprintw( t_ball->gety(), t_ball->getx(), "O" );
+
             attrset( A_NORMAL );
         }
 
@@ -29,8 +33,10 @@ class BallSticky : public BallNormal
             BallNormal::shoot( t_ball );
 
             auto end = std::chrono::steady_clock::now();
+            auto elapsed = std::chrono::duration_cast<std::chrono::seconds>
+                           ( end - startTimePoint ).count();
 
-            if ( std::chrono::duration_cast<std::chrono::seconds>( end - startTimePoint ).count() >= duration )
+            if ( elapsed >= duration )
             {
                 t_ball->changeState( new BallNormal );
             }
@@ -38,7 +44,7 @@ class BallSticky : public BallNormal
 
         Ball::ReflectionAxis getReflectionAxis( const Ball* t_ball, Entity* t_entity ) const override
         {
-            if ( dynamic_cast<Paddle*>( t_entity ) )
+            if ( dynamic_cast<Paddle*>( t_entity ) ) //bad
             {
                 Map::instance()->getPaddle()->getBall( const_cast<Ball*>( t_ball ) );
             }

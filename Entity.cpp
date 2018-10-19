@@ -70,6 +70,11 @@ bool Entity::isDestroyable() const
     return m_isDestroyable;
 }
 
+bool Entity::isCollidable() const
+{
+    return m_isCollidable;
+}
+
 int Entity::getColor() const
 {
     return m_color;
