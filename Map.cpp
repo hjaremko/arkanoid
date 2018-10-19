@@ -69,7 +69,6 @@ Ball* Map::newBall()
 void Map::initPaddle()
 {
     m_paddle = new Paddle;
-    m_paddle->changeState( new PaddleShooter );
     m_paddle->setWidth( 15 );
     m_paddle->setHeight( 1 );
     m_paddle->setPosition( getmaxy( stdscr ) - 5, 5 );
