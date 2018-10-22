@@ -1,7 +1,11 @@
 #ifndef POWERUPMOVEMENT_H
 #define POWERUPMOVEMENT_H
 
+#include <mutex>
+
 #include "PowerUp.hpp"
+
+extern std::mutex m;
 
 class PowerUpMovement
 {
@@ -16,6 +20,8 @@ class PowerUpMovement
                 std::this_thread::sleep_for(
                     std::chrono::milliseconds( 200 ) );
             }
+
+            std::lock_guard<std::mutex> lock( m );
 
             m_power->apply();
             Map::instance()->destroy( m_power );

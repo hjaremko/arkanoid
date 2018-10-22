@@ -1,9 +1,12 @@
 #ifndef BALLMOVEMENT_H
 #define BALLMOVEMENT_H
 
+#include <mutex>
+
 #include "Map.hpp"
 #include "Ball.hpp"
 
+extern std::mutex m;
 int random( int min, int max );
 
 class BallMovement
@@ -16,6 +19,9 @@ class BallMovement
             while ( !m_ball->isNull() && !m_ball->isStopped() )
             {
                 m_ball->shoot();
+
+                std::lock_guard<std::mutex> lock( m );
+
                 auto entity = m_ball->collides();
 
                 if ( entity && entity->isCollidable() )

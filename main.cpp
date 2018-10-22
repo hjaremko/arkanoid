@@ -1,5 +1,6 @@
 #include <curses.h>
 #include <cstdio>
+#include <mutex>
 #include <random>
 
 #include "Map.hpp"
@@ -10,6 +11,7 @@
 #include "BallState.hpp"
 #include "EventHandler.hpp"
 
+std::mutex m;
 std::mt19937 engine( time( nullptr ) );
 
 int random( int min, int max )
