@@ -1,12 +1,10 @@
 #include "Paddle.hpp"
 #include "BallMovement.hpp"
 #include "PaddleNormal.hpp"
-#include "PaddleShooter.hpp"
 
 Paddle::Paddle()
 {
-    // m_state = new PaddleNormal;
-    m_state = new PaddleShooter;
+    m_state = new PaddleNormal;
 }
 
 Paddle::~Paddle()
