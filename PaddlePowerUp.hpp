@@ -32,6 +32,7 @@ class PaddlePowerUp : public PowerUp
                     setColorPair( Entity::ColorPair::Red );
 
                     break;
+                case Power::Extra:
                 case Power::StickyBall:
                 case Power::AllBreaking:
                 case Power::Slow:
@@ -69,6 +70,7 @@ class PaddlePowerUp : public PowerUp
                     // m_state = new PaddleSticky;
 
                     // break;
+                case Power::Extra:
                 case Power::StickyBall:
                 case Power::Enlarge:
                 case Power::Shrink:

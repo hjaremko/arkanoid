@@ -3,7 +3,7 @@
 
 Ball::Ball()
 {
-    changeState( new BallNormal );
+    m_state = new BallNormal;
 }
 
 void Ball::draw() const
@@ -31,14 +31,6 @@ void Ball::reflect( ReflectionAxis t_axis )
     m_state->reflect( this, t_axis );
 }
 
-bool Ball::isOut() const
-{
-    bool isOut = ( gety() < 0 || gety() > getmaxy( stdscr ) - 1 ||
-                   getx() < 0 || getx() > getmaxx( stdscr ) - 1 );
-
-    return isOut;
-}
-
 bool Ball::intersects( const Point& t_point ) const
 {
     return getx() == t_point.y && getx() == t_point.x;
@@ -51,7 +43,7 @@ Point Ball::getVelocity() const
 
 Entity* Ball::collides() const
 {
-    for ( auto& entity : *Map::instance()->getEntities() )
+    for ( auto& entity : Map::instance()->getEntities() )
     {
         if ( entity->intersects( getPosition() + getVelocity() ) )
         {
@@ -127,23 +119,12 @@ void Ball::setVectorX( int t_value )
 
 void Ball::changeState( BallState* t_state )
 {
-    if ( m_state )
-    {
-        delete m_state;
-    }
-
-    m_state = t_state;
-    setSpeed( DEF_SPEED );
+    m_state->changeState( this, t_state );
 }
 
 BallState* Ball::getState() const
 {
     return m_state;
-}
-
-bool Ball::isNull() const
-{
-    return m_state->isNull();
 }
 
 void Ball::setStopped( const bool t_stop )

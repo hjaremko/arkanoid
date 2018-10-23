@@ -26,13 +26,18 @@ class BallBullet : public BallState
         {
             if ( t_axis != Ball::ReflectionAxis::None )
             {
-                t_ball->changeState( new BallNull );
+                t_ball->setStopped( true );
+                Map::instance()->destroyBall( t_ball );
             }
         }
 
         Ball::ReflectionAxis getReflectionAxis( const Ball*, Entity* ) const override
         {
             return Ball::ReflectionAxis::Horizontal;
+        }
+
+        virtual void changeState( Ball* t_ball, BallState* t_state ) override
+        {
         }
 };
 

@@ -37,8 +37,6 @@ class Ball : public Entity
         void           changeState( BallState* );
         void           setStopped( const bool );
         bool           isStopped() const;
-        bool           isOut() const;
-        bool           isNull() const;
         bool           intersects( const Point& ) const override;
         char           getLook() const;
         int            getSpeed() const;

@@ -28,6 +28,10 @@ class BallPowerUp : public PowerUp
                     setColorPair( Entity::ColorPair::Green );
 
                     break;
+                case Power::Extra:
+                    setColorPair( Entity::ColorPair::White );
+
+                    break;
                 case Power::Shooter:
                 // case Power::Sticky:
                 case Power::Enlarge:
@@ -39,8 +43,22 @@ class BallPowerUp : public PowerUp
 
         void apply() override
         {
-            createPower();
-            Map::instance()->getBall( 0 )->changeState( m_state );
+            if ( m_power == Power::Extra )
+            {
+                auto ball = Map::instance()->newBall();
+                ball->setPosition( Map::instance()->getBalls().front()->getPosition() );
+                Map::instance()->getPaddle()->getBall( ball );  //
+                Map::instance()->getPaddle()->shoot();          //!
+            }
+            else
+            {
+                createPower();
+
+                for ( auto& ball : Map::instance()->getBalls() )
+                {
+                    ball->changeState( m_state );
+                }
+            }
         }
 
         void createPower() override
@@ -59,6 +77,7 @@ class BallPowerUp : public PowerUp
                     m_state = new BallSticky;
 
                     break;
+                case Power::Extra:
                 case Power::Shooter:
                 // case Power::Sticky:
                 case Power::Enlarge:

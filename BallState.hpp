@@ -16,6 +16,17 @@ class BallState
         virtual void shoot( Ball* ) = 0;
         virtual void reflect( Ball*, Ball::ReflectionAxis ) = 0;
         virtual Ball::ReflectionAxis getReflectionAxis( const Ball*, Entity* ) const = 0;
+
+        virtual void changeState( Ball* t_ball, BallState* t_state )
+        {
+            if ( t_ball->m_state )
+            {
+                delete t_ball->m_state;
+            }
+
+            t_ball->m_state = t_state;
+            t_ball->setSpeed( Ball::DEF_SPEED );
+        }
  
         virtual bool isNull() const
         {

@@ -19,6 +19,12 @@ class Point
             return y;
         }
 
+        bool isOut()
+        {
+            return ( gety() < 0 || gety() > getmaxy( stdscr ) - 1 ||
+                     getx() < 0 || getx() > getmaxx( stdscr ) - 1 );
+        }
+
         Point operator+( const Point& t_right ) const
         {
             return Point( y + t_right.y, x + t_right.x );

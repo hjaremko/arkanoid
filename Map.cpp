@@ -46,10 +46,7 @@ void Map::draw() const
 
     for ( const auto& ball : m_balls )
     {
-        if ( !ball->isNull() )
-        {
-            ball->draw();
-        }
+        ball->draw();
     }
 }
 
@@ -122,14 +119,37 @@ void Map::destroyAt( const int t_entity )
 void Map::destroy( Entity* t_entity )
 {
     auto pos = std::find( m_entities.begin(), m_entities.end(), t_entity );
-    delete *pos;
-    *pos = nullptr;
-    m_entities.erase( pos );
+    if ( pos != m_entities.end() )
+    {
+        // delete *pos;
+        // *pos = nullptr;
+        m_entities.erase( pos );
+    }
 } 
 
-std::vector<Entity*>* Map::getEntities()
+void Map::destroyBall( Ball* t_entity )
 {
-    return &m_entities;
+    std::mutex mutex;
+    auto pos = std::find( m_balls.begin(), m_balls.end(), t_entity );
+
+    if ( pos != m_balls.end() )
+    {
+        mutex.lock();
+        // delete *pos;
+        // *pos = nullptr;
+        m_balls.erase( pos );
+        mutex.unlock();
+    }
+}
+
+std::vector<Entity*>& Map::getEntities()
+{
+    return m_entities;
+}
+
+std::vector<Ball*>& Map::getBalls()
+{
+    return m_balls;
 }
 
 void Map::spawnPowerUp( const Point& t_point )

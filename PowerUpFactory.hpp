@@ -37,6 +37,7 @@ class PowerUpFactory
                 case PowerUp::Power::AllBreaking:
                 case PowerUp::Power::Slow:
                 case PowerUp::Power::StickyBall:
+                case PowerUp::Power::Extra:
                 {
                     power = create( PowerUp::Type::Ball, randomPower );
 

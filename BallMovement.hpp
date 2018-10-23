@@ -16,7 +16,7 @@ class BallMovement
 
         void operator()() const
         {
-            while ( !m_ball->isNull() && !m_ball->isStopped() )
+            while ( !m_ball->getPosition().isOut() && !m_ball->isStopped() )
             {
                 m_ball->shoot();
 
@@ -49,6 +49,11 @@ class BallMovement
                         m_ball->changeSpeedBy( -2 );
                     }
                 }
+            }
+
+            if ( m_ball->getPosition().isOut() )
+            {
+                Map::instance()->destroyBall( m_ball );
             }
         }
 

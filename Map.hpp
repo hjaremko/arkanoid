@@ -17,6 +17,7 @@ class Map
         void    draw() const;
         void    destroyAt( const int );
         void    destroy( Entity* );
+        void    destroyBall( Ball* );
         void    pushEntity( Entity* );
         void    initPaddle();
         void    initBlocks();
@@ -25,7 +26,8 @@ class Map
         Entity* getEntityAt( const int ) const;
         Paddle* getPaddle() const;
         void    spawnPowerUp( const Point& t_point );
-        std::vector<Entity*>* getEntities();
+        std::vector<Entity*>& getEntities();
+        std::vector<Ball*>&   getBalls();
 
         static Map* instance();
 
