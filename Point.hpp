@@ -21,17 +21,26 @@ class Point
 
         bool isOut()
         {
-            return ( gety() < 0 || gety() > getmaxy( stdscr ) - 1 ||
-                     getx() < 0 || getx() > getmaxx( stdscr ) - 1 );
+            return ( gety() < 0 || gety() > getmaxy( stdscr ) ||
+                     getx() < 0 || getx() > getmaxx( stdscr ) );
         }
 
-        Point operator+( const Point& t_right ) const
+        Point& operator+=( const Point& rhs )
         {
-            return Point( y + t_right.y, x + t_right.x );
+            y += rhs.y;
+            x += rhs.x;
+
+            return *this;
         }
 
         int y{ 0 };
         int x{ 0 };
 };
+
+inline Point operator+( Point lhs, const Point& rhs )
+{
+    lhs += rhs;
+    return lhs;
+}
 
 #endif //POINT_H

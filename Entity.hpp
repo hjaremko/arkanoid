@@ -50,8 +50,6 @@ class Entity
         int   m_height{ 0 };
         int   m_color{ 0 };
         int   m_attributes{ 0 };
-        // bool  m_isDestroyable{ true };
-        // bool  m_isCollidable{ true };
 };
 
 #endif //ENTITY_H

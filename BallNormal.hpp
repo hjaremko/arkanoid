@@ -38,19 +38,21 @@ class BallNormal : public BallState
         Ball::ReflectionAxis getReflectionAxis( const Ball* t_ball, Entity* entity ) const override
         {
             auto axis = Ball::ReflectionAxis::None;
+            auto currentPosition = t_ball->getPosition();
+            auto nextPosition    = t_ball->getPosition() + t_ball->getVelocity();
+            auto entityStart     = entity->getPosition();
+            auto entityEnd       = entity->getPosition() + Point( entity->getHeight() - 1,
+                                                                  entity->getWidth()  - 1 );
 
-            if ( ( t_ball->getx()                           <  entity->getx()    &&
-                   t_ball->getx() + t_ball->getVelocity().x >= entity->getx() )  ||
-                 ( t_ball->getx()                           >  entity->getx() + entity->getWidth() - 1     &&
-                   t_ball->getx() + t_ball->getVelocity().x <= entity->getx() + entity->getWidth() - 1 ) )
+
+            if ( ( currentPosition.x < entityStart.x && nextPosition.x >= entityStart.x ) ||
+                 ( currentPosition.x > entityEnd.x   && nextPosition.x <= entityEnd.x ) )
             {
                 axis = static_cast<Ball::ReflectionAxis>( axis | Ball::ReflectionAxis::Horizontal );
             }
 
-            if ( ( t_ball->gety()                           <  entity->gety()    &&
-                   t_ball->gety() + t_ball->getVelocity().y >= entity->gety() )  ||
-                 ( t_ball->gety()                           >  entity->gety() + entity->getHeight() - 1    &&
-                   t_ball->gety() + t_ball->getVelocity().y <= entity->gety() + entity->getHeight() - 1 ) )
+            if ( ( currentPosition.y < entityStart.y && nextPosition.y >= entityStart.y ) ||
+                 ( currentPosition.y > entityEnd.y   && nextPosition.y <= entityEnd.y ) )
             {
                 axis = static_cast<Ball::ReflectionAxis>( axis | Ball::ReflectionAxis::Vertical );
             }
