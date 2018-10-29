@@ -1,13 +1,13 @@
-#ifndef BALLSLOW_H
-#define BALLSLOW_H
+#ifndef BALLFAST_H
+#define BALLFAST_H
 
 #include "Ball.hpp"
 #include "BallNormal.hpp"
 
-class BallSlow : public BallNormal
+class BallFast : public BallNormal
 {
     public:
-        BallSlow()
+        BallFast()
         {
             startTimePoint = steady_clock::now();
         }
@@ -18,7 +18,7 @@ class BallSlow : public BallNormal
             auto left = duration -
                         duration_cast<seconds>( end - startTimePoint ).count();
 
-            attron( COLOR_PAIR( static_cast<int>( Entity::ColorPair::Yellow ) ) | A_BOLD );
+            attron( COLOR_PAIR( static_cast<int>( Entity::ColorPair::Magenta ) ) | A_BOLD );
 
             mvprintw( 2, 5, "O   : %d", left );
             mvprintw( t_ball->gety(), t_ball->getx(), "O" );
@@ -30,7 +30,7 @@ class BallSlow : public BallNormal
         {
             t_ball->moveBy( t_ball->getVelocity() );
 
-            std::this_thread::sleep_for( milliseconds( 500 ) );
+            std::this_thread::sleep_for( milliseconds( 16 ) );
 
             auto end = steady_clock::now();
             auto elapsed = duration_cast<seconds>( end - startTimePoint ).count();
@@ -43,7 +43,7 @@ class BallSlow : public BallNormal
 
     private:
         steady_clock::time_point startTimePoint;
-        int  duration{ 10 };
+        int  duration{ 5 };
 };
 
 #endif

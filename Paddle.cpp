@@ -1,6 +1,7 @@
 #include "Paddle.hpp"
 #include "BallMovement.hpp"
 #include "PaddleNormal.hpp"
+#include "PaddleBarrier.hpp"
 
 Paddle::Paddle()
 {

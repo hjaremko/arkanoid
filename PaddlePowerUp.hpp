@@ -3,6 +3,7 @@
 
 #include "PowerUp.hpp"
 #include "PaddleShooter.hpp"
+#include "PaddleBarrier.hpp"
 
 class PaddlePowerUp : public PowerUp
 {
@@ -16,6 +17,7 @@ class PaddlePowerUp : public PowerUp
             Shooter,
             Enlarge,
             Shrink,
+            Barrier,
             None
         };
 
@@ -47,6 +49,10 @@ class PaddlePowerUp : public PowerUp
             {
                 case Shooter:
                     m_state = new PaddleShooter;
+
+                    break;
+                case Barrier:
+                    m_state = new PaddleBarrier;
 
                     break;
                 default:

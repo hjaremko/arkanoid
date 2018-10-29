@@ -45,7 +45,6 @@ class PaddleShooter : public PaddleState
 
         void secondaryAction( Paddle* t_paddle ) override
         {
-
             auto ball = t_paddle->getBall( Map::instance()->newBall() );
             ball->setPosition( t_paddle->gety() - 1, t_paddle->getx() +
                                static_cast<int>( t_paddle->getWidth() / 2 ) );

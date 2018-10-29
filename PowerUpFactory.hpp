@@ -13,27 +13,28 @@ class BallPowerUpFactory
         static PowerUp* create( BallPowerUp::Type t_type )
         {
             auto power = new BallPowerUp();
+            power->setPower( t_type );
 
             switch ( t_type )
             {
                 case BallPowerUp::Type::AllBreaking:
                     power->setColorPair( Entity::ColorPair::Red );
-                    power->setPower( BallPowerUp::Type::AllBreaking );
 
                     break;
                 case BallPowerUp::Type::Slow:
                     power->setColorPair( Entity::ColorPair::Yellow );
-                    power->setPower( BallPowerUp::Type::Slow );
+
+                    break;
+                case BallPowerUp::Type::Fast:
+                    power->setColorPair( Entity::ColorPair::Magenta );
 
                     break;
                 case BallPowerUp::Type::StickyBall:
                     power->setColorPair( Entity::ColorPair::Green );
-                    power->setPower( BallPowerUp::Type::StickyBall );
 
                     break;
                 case BallPowerUp::Type::Extra:
                     power->setColorPair( Entity::ColorPair::White );
-                    power->setPower( BallPowerUp::Type::Extra );
 
                     break;
                 case BallPowerUp::Type::None:
@@ -65,6 +66,11 @@ class PaddlePowerUpFactory
             {
                 case PaddlePowerUp::Type::Shooter:
                     power->setColorPair( Entity::ColorPair::Cyan );
+
+                    break;
+                case PaddlePowerUp::Type::Barrier:
+                    power->m_look = '~';
+                    power->setColorPair( Entity::ColorPair::Green );
 
                     break;
                 case PaddlePowerUp::Type::Enlarge:

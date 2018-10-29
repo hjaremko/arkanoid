@@ -4,6 +4,7 @@
 #include "PowerUp.hpp"
 #include "BallAllBreaking.hpp"
 #include "BallSlow.hpp"
+#include "BallFast.hpp"
 #include "BallSticky.hpp"
 
 class BallPowerUp : public PowerUp
@@ -17,6 +18,7 @@ class BallPowerUp : public PowerUp
         {
             AllBreaking,
             Slow,
+            Fast,
             Extra,
             StickyBall,
             None
@@ -57,6 +59,10 @@ class BallPowerUp : public PowerUp
                     break;
                 case Slow:
                     m_state = new BallSlow;
+
+                    break;
+                case Fast:
+                    m_state = new BallFast;
 
                     break;
                 case StickyBall:

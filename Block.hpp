@@ -24,4 +24,20 @@ class Block : public Entity
         char m_look{ '#' };
 };
 
+class UnbreakableBlock : public Block
+{
+    public:
+        UnbreakableBlock( ColorPair t_color, chtype t_attributes, const Point& t_point = Point( 0, 0 ) )
+        {
+            setColorPair( t_color );
+            setAttribiutes( t_attributes );
+            Entity::setPosition( t_point );
+        }
+
+        bool isDestroyable() const
+        {
+            return false;
+        }
+};
+
 #endif //BLOCK_H
