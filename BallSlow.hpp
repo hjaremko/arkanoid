@@ -9,15 +9,14 @@ class BallSlow : public BallNormal
     public:
         BallSlow()
         {
-            startTimePoint = std::chrono::steady_clock::now();
+            startTimePoint = steady_clock::now();
         }
 
         void draw( const Ball* t_ball ) override
         {
-            auto end = std::chrono::steady_clock::now();
+            auto end = steady_clock::now();
             auto left = duration -
-                        std::chrono::duration_cast<std::chrono::seconds>
-                        ( end - startTimePoint ).count();
+                        duration_cast<seconds>( end - startTimePoint ).count();
 
             attron( COLOR_PAIR( static_cast<int>( Entity::ColorPair::Yellow ) ) | A_BOLD );
 
@@ -31,11 +30,10 @@ class BallSlow : public BallNormal
         {
             t_ball->moveBy( t_ball->getVelocity() );
 
-            std::this_thread::sleep_for( std::chrono::milliseconds( 500 ) );
+            std::this_thread::sleep_for( milliseconds( 500 ) );
 
-            auto end = std::chrono::steady_clock::now();
-            auto elapsed = std::chrono::duration_cast<std::chrono::seconds>
-                           ( end - startTimePoint ).count();
+            auto end = steady_clock::now();
+            auto elapsed = duration_cast<seconds>( end - startTimePoint ).count();
 
             if ( elapsed >= duration )
             {
@@ -44,7 +42,7 @@ class BallSlow : public BallNormal
         }
 
     private:
-        std::chrono::steady_clock::time_point startTimePoint;
+        steady_clock::time_point startTimePoint;
         int  duration{ 10 };
 };
 

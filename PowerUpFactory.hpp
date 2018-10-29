@@ -7,55 +7,107 @@
 
 int random( int min, int max );
 
-class PowerUpFactory
+class BallPowerUpFactory
 {
     public:
-        static PowerUp* create( PowerUp::Type t_type, PowerUp::Power t_powerId )
+        static PowerUp* create( BallPowerUp::Type t_type )
         {
-            if ( t_type == PowerUp::Type::Ball )
+            auto power = new BallPowerUp();
+
+            switch ( t_type )
             {
-                return new BallPowerUp( t_powerId );
+                case BallPowerUp::Type::AllBreaking:
+                    power->setColorPair( Entity::ColorPair::Red );
+                    power->setPower( BallPowerUp::Type::AllBreaking );
+
+                    break;
+                case BallPowerUp::Type::Slow:
+                    power->setColorPair( Entity::ColorPair::Yellow );
+                    power->setPower( BallPowerUp::Type::Slow );
+
+                    break;
+                case BallPowerUp::Type::StickyBall:
+                    power->setColorPair( Entity::ColorPair::Green );
+                    power->setPower( BallPowerUp::Type::StickyBall );
+
+                    break;
+                case BallPowerUp::Type::Extra:
+                    power->setColorPair( Entity::ColorPair::White );
+                    power->setPower( BallPowerUp::Type::Extra );
+
+                    break;
+                case BallPowerUp::Type::None:
+                    power = nullptr;
+
+                    break;
             }
-            else if ( t_type == PowerUp::Type::Paddle )
-            {
-                return new PaddlePowerUp( t_powerId );
-            }
-            else
-            {
-                return nullptr;
-            }
+
+            return power;
         }
 
         static PowerUp* createRandom()
         {
-            auto powerUpId = random( PowerUp::Power::AllBreaking, PowerUp::Power::None - 1 );
-            PowerUp::Power randomPower = static_cast<PowerUp::Power>( powerUpId );
+            auto randomPowerId = random( BallPowerUp::Type::AllBreaking, BallPowerUp::Type::None - 1 );
+
+            return create( static_cast<BallPowerUp::Type>( randomPowerId ) );
+        }
+};
+
+class PaddlePowerUpFactory
+{
+    public:
+        static PowerUp* create( PaddlePowerUp::Type t_type )
+        {
+            auto power = new PaddlePowerUp();
+            power->setPower( t_type );
+
+            switch ( t_type )
+            {
+                case PaddlePowerUp::Type::Shooter:
+                    power->setColorPair( Entity::ColorPair::Cyan );
+
+                    break;
+                case PaddlePowerUp::Type::Enlarge:
+                    power->m_look = '+';
+                    power->setColorPair( Entity::ColorPair::Green );
+
+                    break;
+                case PaddlePowerUp::Type::Shrink:
+                    power->m_look = '-';
+                    power->setColorPair( Entity::ColorPair::Red );
+
+                    break;
+                case PaddlePowerUp::Type::None:
+                    power = nullptr;
+
+                    break;
+            }
+
+            return power;
+        }
+
+        static PowerUp* createRandom()
+        {
+            auto randomPowerId = random( PaddlePowerUp::Type::Shooter, PaddlePowerUp::Type::None - 1 );
+
+            return create( static_cast<PaddlePowerUp::Type>( randomPowerId ) );
+        }
+};
+
+class PowerUpFactory
+{
+    public:
+        static PowerUp* createRandom()
+        {
             PowerUp* power = nullptr;
 
-            switch ( randomPower )
+            if ( random( 0, 1 ) )
             {
-                case PowerUp::Power::AllBreaking:
-                case PowerUp::Power::Slow:
-                case PowerUp::Power::StickyBall:
-                case PowerUp::Power::Extra:
-                {
-                    power = create( PowerUp::Type::Ball, randomPower );
-
-                    break;
-                }
-
-                case PowerUp::Power::Shooter:
-                // case PowerUp::Power::Sticky:
-                case PowerUp::Power::Enlarge:
-                case PowerUp::Power::Shrink:
-                {
-                    power = create( PowerUp::Type::Paddle, randomPower );
-
-                    break;
-                }
-
-                case PowerUp::Power::None:
-                    break;
+                return BallPowerUpFactory::createRandom();
+            }
+            else
+            {
+                return PaddlePowerUpFactory::createRandom();
             }
 
             return power;

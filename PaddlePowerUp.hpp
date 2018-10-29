@@ -7,47 +7,30 @@
 class PaddlePowerUp : public PowerUp
 {
     public:
-        PaddlePowerUp( PowerUp::Power t_power )
+        PaddlePowerUp()
         {
-            m_power = t_power;
-            setAttribiutes( A_BOLD );
+        }
 
-            switch ( m_power )
-            {
-                case Power::Shooter:
-                    setColorPair( Entity::ColorPair::Cyan );
+        enum Type
+        {
+            Shooter,
+            Enlarge,
+            Shrink,
+            None
+        };
 
-                    break;
-                // case Power::Sticky:
-                    // setColorPair( Entity::ColorPair::Green );
-
-                    break;
-                case Power::Enlarge:
-                    m_look = '+';
-                    setColorPair( Entity::ColorPair::Green );
-
-                    break;
-                case Power::Shrink:
-                    m_look = '-';
-                    setColorPair( Entity::ColorPair::Red );
-
-                    break;
-                case Power::Extra:
-                case Power::StickyBall:
-                case Power::AllBreaking:
-                case Power::Slow:
-                case Power::None:
-                    break;
-            }
+        void setPower( Type t_powerType )
+        {
+            m_power = t_powerType;
         }
 
         void apply() override
         {
-            if ( m_power == Power::Enlarge )
+            if ( m_power == Enlarge )
             {
                 Map::instance()->getPaddle()->changeSizeBy( 4 );
             }
-            else if ( m_power == Power::Shrink )
+            else if ( m_power == Shrink )
             {
                 Map::instance()->getPaddle()->changeSizeBy( -4 );
             }
@@ -62,27 +45,18 @@ class PaddlePowerUp : public PowerUp
         {
             switch ( m_power ) 
             {
-                case Power::Shooter:
+                case Shooter:
                     m_state = new PaddleShooter;
 
                     break;
-                // case Power::Sticky:
-                    // m_state = new PaddleSticky;
-
-                    // break;
-                case Power::Extra:
-                case Power::StickyBall:
-                case Power::Enlarge:
-                case Power::Shrink:
-                case Power::AllBreaking:
-                case Power::Slow:
-                case Power::None:
+                default:
                     break;
             }
         }
 
     private:
         PaddleState* m_state{ nullptr };
+        Type m_power{ Type::None };
 };
 
 #endif

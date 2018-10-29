@@ -7,6 +7,11 @@
 #include "Ball.hpp"
 #include "Paddle.hpp"
 
+using std::chrono::steady_clock;
+using std::chrono::duration_cast;
+using std::chrono::seconds;
+using std::chrono::milliseconds;
+
 class BallState
 {
     public:

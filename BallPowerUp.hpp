@@ -9,41 +9,27 @@
 class BallPowerUp : public PowerUp
 {
     public:
-        BallPowerUp( PowerUp::Power t_power )
+        BallPowerUp()
         {
-            m_power = t_power;
-            setAttribiutes( A_BOLD );
+        }
 
-            switch ( m_power )
-            {
-                case Power::AllBreaking:
-                    setColorPair( Entity::ColorPair::Red );
+        enum Type
+        {
+            AllBreaking,
+            Slow,
+            Extra,
+            StickyBall,
+            None
+        };
 
-                    break;
-                case Power::Slow:
-                    setColorPair( Entity::ColorPair::Yellow );
-
-                    break;
-                case Power::StickyBall:
-                    setColorPair( Entity::ColorPair::Green );
-
-                    break;
-                case Power::Extra:
-                    setColorPair( Entity::ColorPair::White );
-
-                    break;
-                case Power::Shooter:
-                // case Power::Sticky:
-                case Power::Enlarge:
-                case Power::Shrink:
-                case Power::None:
-                    break;
-            }
+        void setPower( Type t_powerType )
+        {
+            m_power = t_powerType;
         }
 
         void apply() override
         {
-            if ( m_power == Power::Extra )
+            if ( m_power == Extra )
             {
                 auto ball = Map::instance()->newBall();
                 ball->setPosition( Map::instance()->getBalls().front()->getPosition() );
@@ -65,30 +51,27 @@ class BallPowerUp : public PowerUp
         {
             switch ( m_power )
             {
-                case Power::AllBreaking:
+                case AllBreaking:
                     m_state = new BallAllBreaking;
 
                     break;
-                case Power::Slow:
+                case Slow:
                     m_state = new BallSlow;
 
                     break;
-                case Power::StickyBall:
+                case StickyBall:
                     m_state = new BallSticky;
 
                     break;
-                case Power::Extra:
-                case Power::Shooter:
-                // case Power::Sticky:
-                case Power::Enlarge:
-                case Power::Shrink:
-                case Power::None:
+                case Extra:
+                case None:
                     break;
             }
         }
 
     private:
         BallState* m_state{ nullptr };
+        Type m_power{ Type::None };
 };
 
 #endif

@@ -11,28 +11,12 @@
 class PowerUp : public Entity
 {
     public:
-        PowerUp() {}
+        PowerUp()
+        {
+            setAttribiutes( A_BOLD );
+        }
+
         ~PowerUp() {};
-
-        enum class Type
-        {
-            Ball,
-            Paddle,
-            None
-        };
-
-        enum Power
-        {
-            AllBreaking,
-            Slow,
-            Extra,
-            StickyBall,
-            Shooter,
-            // Sticky,
-            Enlarge,
-            Shrink,
-            None
-        };
 
         virtual void apply() = 0;
         virtual void createPower() = 0;
@@ -49,16 +33,6 @@ class PowerUp : public Entity
             return getx() == t_point.y && getx() == t_point.x;
         }
 
-        void setType( Type t_powerType )
-        {
-            m_type = t_powerType;
-        }
-
-        void setPower( Power t_powerType )
-        {
-            m_power = t_powerType;
-        }
-
         bool isDestroyable() const override
         {
             return false;
@@ -71,8 +45,6 @@ class PowerUp : public Entity
 
         char m_look{ '%' };
     protected:
-        Power m_power{ Power::None };
-        Type  m_type{ Type::None };
 };
 
 #endif

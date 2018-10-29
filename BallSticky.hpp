@@ -10,7 +10,6 @@ class BallSticky : public BallNormal
     public:
         BallSticky()
         {
-
         }
 
         void draw( const Ball* t_ball ) override
@@ -45,7 +44,6 @@ class BallSticky : public BallNormal
         }
 
     private:
-        std::chrono::steady_clock::time_point startTimePoint;
         mutable int m_uses{ 5 };
 };
 
