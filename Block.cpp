@@ -26,3 +26,8 @@ void Block::draw() const
 
     attrset( A_NORMAL );
 }
+
+void Block::setLook( char t_look )
+{
+    m_look = t_look;
+}

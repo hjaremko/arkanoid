@@ -12,7 +12,7 @@ class Block : public Entity
         Block();
         Block( ColorPair, chtype, const Point& );
         void draw() const override;
-        void destroy() const;
+        void setLook( char );
 
         bool intersects( const Point& t_point ) const override
         {
@@ -32,6 +32,7 @@ class UnbreakableBlock : public Block
             setColorPair( t_color );
             setAttribiutes( t_attributes );
             Entity::setPosition( t_point );
+            setLook( 'X' );
         }
 
         bool isDestroyable() const

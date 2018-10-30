@@ -1,17 +1,30 @@
-#ifndef PADDLESHOOTER_H
-#define PADDLESHOOTER_H
+#ifndef PADDLEBARRIER_H
+#define PADDLEBARRIER_H
 
 #include "Paddle.hpp"
-#include "PaddleState.hpp"
 #include "PaddleNormal.hpp"
-#include "BallBullet.hpp"
 
-class PaddleShooter : public PaddleState
+class PaddleBarrier : public PaddleState
 {
     public:
-        PaddleShooter()
+        PaddleBarrier()
         {
             startTimePoint = steady_clock::now();
+
+            m_barrier = new UnbreakableBlock( Entity::ColorPair::Green, 0, Point( getmaxy( stdscr ) - 2, 0 ) );
+            m_barrier->setWidth( getmaxx( stdscr ) );
+            m_barrier->setHeight( 1 );
+            m_barrier->setLook( '~' );
+
+            Map::instance()->pushEntity( m_barrier );
+        }
+
+        ~PaddleBarrier()
+        {
+            if ( m_barrier )
+            {
+                Map::instance()->destroy( m_barrier );
+            }
         }
 
         void draw( const Paddle* t_paddle ) const override
@@ -30,15 +43,9 @@ class PaddleShooter : public PaddleState
                 }
             }
 
-            attron( COLOR_PAIR( Entity::ColorPair::Cyan ) | A_BOLD );
+            attron( COLOR_PAIR( Entity::ColorPair::Green ) | A_BOLD );
 
-            int mid = t_paddle->getx() + static_cast<int>( t_paddle->getWidth() / 2 );
-
-            mvprintw( 3, 5, "$^$ : %d", left );
-            // mvprintw( t_paddle->gety() - 1, mid,      "^"  );
-            mvprintw( t_paddle->gety(),     mid - 1, "$^$" );
-            mvprintw( t_paddle->gety(), t_paddle->getx(), "$" );
-            mvprintw( t_paddle->gety(), t_paddle->getx() + t_paddle->getWidth() - 1, "$" );
+            mvprintw( 3, 5, "~~~ : %d", left );
 
             attrset( A_NORMAL );
 
@@ -48,23 +55,19 @@ class PaddleShooter : public PaddleState
             if ( elapsed >= duration )
             {
                 const_cast<Paddle*>( t_paddle )->changeState( new PaddleNormal );
+                Map::instance()->destroy( m_barrier );
             }
+
         }
 
         void secondaryAction( Paddle* t_paddle ) override
         {
-            auto ball = t_paddle->getBall( Map::instance()->newBall() );
-            ball->setPosition( t_paddle->gety() - 1, t_paddle->getx() +
-                               static_cast<int>( t_paddle->getWidth() / 2 ) );
-
-
-            ball->changeState( new BallBullet );
-            t_paddle->shoot();
         }
 
     private:
         steady_clock::time_point startTimePoint;
-        int duration{ 5 };
+        UnbreakableBlock* m_barrier{ nullptr };
+        int duration{ 15 };
 };
 
 #endif

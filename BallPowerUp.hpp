@@ -6,6 +6,7 @@
 #include "BallSlow.hpp"
 #include "BallFast.hpp"
 #include "BallSticky.hpp"
+#include "BallWeird.hpp"
 
 class BallPowerUp : public PowerUp
 {
@@ -20,7 +21,8 @@ class BallPowerUp : public PowerUp
             Slow,
             Fast,
             Extra,
-            StickyBall,
+            Sticky,
+            Weird,
             None
         };
 
@@ -65,8 +67,12 @@ class BallPowerUp : public PowerUp
                     m_state = new BallFast;
 
                     break;
-                case StickyBall:
+                case Sticky:
                     m_state = new BallSticky;
+
+                    break;
+                case Weird:
+                    m_state = new BallWeird;
 
                     break;
                 case Extra:

@@ -29,12 +29,16 @@ class BallPowerUpFactory
                     power->setColorPair( Entity::ColorPair::Magenta );
 
                     break;
-                case BallPowerUp::Type::StickyBall:
+                case BallPowerUp::Type::Sticky:
                     power->setColorPair( Entity::ColorPair::Green );
 
                     break;
                 case BallPowerUp::Type::Extra:
                     power->setColorPair( Entity::ColorPair::White );
+
+                    break;
+                case BallPowerUp::Type::Weird:
+                    power->setColorPair( Entity::ColorPair::Cyan );
 
                     break;
                 case BallPowerUp::Type::None:
@@ -65,6 +69,7 @@ class PaddlePowerUpFactory
             switch ( t_type )
             {
                 case PaddlePowerUp::Type::Shooter:
+                    power->m_look = '^';
                     power->setColorPair( Entity::ColorPair::Cyan );
 
                     break;

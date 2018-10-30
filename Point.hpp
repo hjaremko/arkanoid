@@ -21,8 +21,8 @@ class Point
 
         bool isOut()
         {
-            return ( gety() < 0 || gety() > getmaxy( stdscr ) ||
-                     getx() < 0 || getx() > getmaxx( stdscr ) );
+            return ( gety() <  0 || gety() > getmaxy( stdscr ) ||
+                     getx() < -1 || getx() > getmaxx( stdscr ) );
         }
 
         Point& operator+=( const Point& rhs )

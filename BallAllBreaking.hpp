@@ -49,7 +49,18 @@ class BallAllBreaking : public BallNormal
 
         Ball::ReflectionAxis getReflectionAxis( const Ball* t_ball, Entity* entity ) const override
         {
-            return ( dynamic_cast<Paddle*>( entity ) ) ? Ball::ReflectionAxis::Vertical : Ball::ReflectionAxis::None; //bad
+            auto axis = Ball::ReflectionAxis::None;
+
+            if ( dynamic_cast<Paddle*>( entity ) ) //bad
+            {
+                axis = Ball::ReflectionAxis::Vertical;
+            }
+            else if ( dynamic_cast<UnbreakableBlock*>( entity ) )
+            {
+                axis = BallNormal::getReflectionAxis( t_ball, entity );
+            }
+
+            return axis;
         }
 
     private:
