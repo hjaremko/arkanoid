@@ -95,6 +95,50 @@ void Map::initBlocks()
     }
 }
 
+bool Map::readCurrentLevel()
+{
+    std::stringstream levelPath;
+    levelPath << "levels/level" << currentLevel << ".txt";
+    std::ifstream levelFile( levelPath.str().c_str() );
+    std::string blockData;
+
+    if ( levelFile.is_open() )
+    {
+        while ( std::getline( levelFile, blockData ) )
+        {
+            std::stringstream s( blockData );
+
+            int y = 0;
+            int x = 0;
+            int width = 0;
+            int height = 0;
+            int color = 1;
+            int bold = 1;
+            int breakable = 1;
+
+            s >> y >> x >> width >> height >> color >> bold >> breakable;
+
+            Entity* tmp;
+            int boldAttr = ( bold ? A_BOLD : 0 );
+
+            if ( breakable == 1 )
+            {
+                tmp = new Block( static_cast<Entity::ColorPair>( color ), boldAttr, Point( y, x ) );
+            }
+            else
+            {
+                tmp = new UnbreakableBlock( static_cast<Entity::ColorPair>( color ), boldAttr, Point( y, x ) );
+            }
+
+            tmp->setHeight( height );
+            tmp->setWidth( width );
+            pushEntity( tmp );
+        }
+
+        levelFile.close();
+    }
+}
+
 Paddle* Map::getPaddle() const
 {
     return m_paddle;

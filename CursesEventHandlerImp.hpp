@@ -1,6 +1,7 @@
 #ifndef CURSESEVENTHANDLERIMP_H
 #define CURSESEVENTHANDLERIMP_H
 
+#include "curses.h"
 #include "EventHandlerImp.hpp"
 #include "Event.hpp"
 
@@ -11,7 +12,7 @@ class CursesEventHandlerImp : public EventHandlerImp
         {
             keypad( stdscr, TRUE );
             mousemask( ALL_MOUSE_EVENTS | REPORT_MOUSE_POSITION, NULL );
-            printf( "\033[?1003h\n" );
+            // printf( "\033[?1003h\n" );
         }
 
         ~CursesEventHandlerImp() {}
@@ -29,6 +30,8 @@ class CursesEventHandlerImp : public EventHandlerImp
 
                     if ( nc_getmouse( &event ) == OK )
                     {
+                        mvprintw( 1, 1, "%d", event.bstate );
+                        std::this_thread::sleep_for( seconds( 10 ) );
 
                         if ( event.bstate & BUTTON1_CLICKED )
                         {

@@ -1,8 +1,10 @@
 #ifndef MAP_H
 #define MAP_H
 
-#include <vector>
 #include <algorithm>
+#include <vector>
+#include <fstream>
+#include <sstream>
 #include <curses.h>
 
 #include "Entity.hpp"
@@ -21,15 +23,17 @@ class Map
         void    pushEntity( Entity* );
         void    initPaddle();
         void    initBlocks();
+        void    spawnPowerUp( const Point& t_point );
         Ball*   newBall();
         Ball*   getBall( const int ) const;
         Entity* getEntityAt( const int ) const;
         Paddle* getPaddle() const;
-        void    spawnPowerUp( const Point& t_point );
         std::vector<Entity*>& getEntities();
         std::vector<Ball*>&   getBalls();
+        bool readCurrentLevel();
 
         static Map* instance();
+
 
     protected:
         Map();
@@ -38,6 +42,7 @@ class Map
         std::vector<Entity*> m_entities;
         std::vector<Ball*>   m_balls;
         Paddle*              m_paddle{ nullptr };
+        int                  currentLevel{ 1 };
 
         static Map* m_instance;
 };

@@ -48,7 +48,8 @@ int main()
     initColorPairs();
 
     Map::instance()->initPaddle();
-    Map::instance()->initBlocks();
+    Map::instance()->readCurrentLevel();
+    // Map::instance()->initBlocks();
 
     MapDrawing mapDrawing;
     std::thread drawingThread( mapDrawing );
