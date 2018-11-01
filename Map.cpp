@@ -68,7 +68,7 @@ void Map::initPaddle()
     m_paddle = new Paddle;
     m_paddle->setWidth( 15 );
     m_paddle->setHeight( 1 );
-    m_paddle->setPosition( getmaxy( stdscr ) - 5, 5 );
+    m_paddle->setPosition( getmaxy( stdscr ) - 5, getmaxx( stdscr ) / 2 - 7 );
     auto tmp = newBall();
     tmp->setPosition( m_paddle->gety() - 1, m_paddle->getx() +
                       static_cast<int>( m_paddle->getWidth() / 2 ) );
@@ -85,7 +85,8 @@ void Map::initBlocks()
     {
         for ( int j = 0; j < 11; ++j )
         {
-            auto tmp = new Block( static_cast<Entity::ColorPair>( color % 5 + 1 ), A_BOLD, Point( i * 3 + starty, j * 6 + startx ) );
+            auto tmp = new Block( static_cast<Entity::ColorPair>( color % 5 + 1 ), A_BOLD,
+                                  Point( i * 3 + starty, j * 6 + startx ) );
             tmp->setHeight( 3 );
             tmp->setWidth( 6 );
             m_entities.push_back( tmp );
