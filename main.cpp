@@ -47,9 +47,11 @@ int main()
     start_color();
     initColorPairs();
 
-    Map::instance()->initPaddle();
-    Map::instance()->readCurrentLevel();
-    // Map::instance()->initBlocks();
+    if ( !Map::instance()->readCurrentLevel() )
+    {
+        Map::instance()->initPaddle();
+        Map::instance()->initBlocks();
+    }
 
     MapDrawing mapDrawing;
     std::thread drawingThread( mapDrawing );
@@ -77,6 +79,8 @@ int main()
 
             case Event::Type::MouseButtonPressed:
             {
+                Map::instance()->setMessage( "" );
+
                 switch ( event.mouseButton.button )
                 {
                     case Mouse::Button::Button1:

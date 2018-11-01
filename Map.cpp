@@ -104,6 +104,14 @@ bool Map::readCurrentLevel()
 
     if ( levelFile.is_open() )
     {
+        m_entities.clear();
+
+        for ( auto& ball : m_balls )
+            ball->setStopped( true );
+
+        m_balls.clear();
+        initPaddle();
+
         while ( std::getline( levelFile, blockData ) )
         {
             std::stringstream s( blockData );
@@ -136,6 +144,12 @@ bool Map::readCurrentLevel()
         }
 
         levelFile.close();
+
+        return true;
+    }
+    else
+    {
+        return false;
     }
 }
 

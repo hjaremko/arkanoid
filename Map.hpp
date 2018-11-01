@@ -32,17 +32,27 @@ class Map
         std::vector<Ball*>&   getBalls();
         bool readCurrentLevel();
 
+        void setMessage( std::string  t_msg )
+        {
+            m_message = t_msg;
+        }
+
+        void drawMessage()
+        {
+            mvprintw( 1, 5, "%s", m_message.c_str() );
+        }
+
         static Map* instance();
 
-
+        int currentLevel{ 1 };
     protected:
         Map();
 
     private:
         std::vector<Entity*> m_entities;
         std::vector<Ball*>   m_balls;
+        std::string          m_message{ "" };
         Paddle*              m_paddle{ nullptr };
-        int                  currentLevel{ 1 };
 
         static Map* m_instance;
 };

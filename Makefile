@@ -1,5 +1,5 @@
 CFLAGS = -std=c++14 -O2 -Wall -Wextra -Wshadow -Wnon-virtual-dtor -pedantic -Wmisleading-indentation -Wnull-dereference
-CURSESPATH = C:\Users\Hubert\Dropbox\C++\Biblioteki\pd
+#CURSESPATH = <YOUR PATH>
 
 ifndef CURSESPATH
 $(error Path to curses is not set)
