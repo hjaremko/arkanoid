@@ -53,6 +53,11 @@ int main()
         Map::instance()->initBlocks();
     }
 
+    if ( getmaxx( stdscr ) < 120 || getmaxy( stdscr ) < 50 )
+    {
+        Map::instance()->setMessage( "Please resize your terminal to at least 120 x 50 characters." );
+    }
+
     MapDrawing mapDrawing;
     std::thread drawingThread( mapDrawing );
     drawingThread.detach();
