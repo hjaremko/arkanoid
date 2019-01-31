@@ -7,5 +7,7 @@
 ### Requires
 - ncurses
 
-### Building on Windows with MinGW nad PDCurses
-cmake -G "MinGW Makefiles" -DCURSES_LIBRARY="pdcurses" -DCURSES_INCLUDE_PATH="<path to pdcurses"
+### Building on Windows with MinGW and PDCurses
+```
+cmake -G "MinGW Makefiles" -DCURSES_LIBRARY="pdcurses" -DCURSES_INCLUDE_PATH="<path to pdcurses>"
+```
