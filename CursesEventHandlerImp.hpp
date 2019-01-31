@@ -27,8 +27,11 @@ class CursesEventHandlerImp : public EventHandlerImp
 
                 case KEY_MOUSE:
                 {
-
+                    #if defined(WIN32)
                     if ( nc_getmouse( &event ) == OK )
+                    #else
+                    if ( getmouse( &event ) == OK )
+                    #endif
                     {
                         mvprintw( 1, 1, "%d", event.bstate );
                         std::this_thread::sleep_for( seconds( 10 ) );

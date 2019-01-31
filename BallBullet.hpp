@@ -3,7 +3,6 @@
 
 #include "Ball.hpp"
 #include "BallState.hpp"
-#include "BallNull.hpp"
 
 class BallBullet : public BallState
 {
