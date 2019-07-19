@@ -77,6 +77,7 @@ int main()
                 if ( event.key.code == keyboard::key::Q )
                 {
                     endwin();
+                    fflush(stdout);
                     return 0;
                 }
 

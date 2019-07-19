@@ -15,9 +15,9 @@ public:
         // printf( "\033[?1003h\n" );
     }
 
-    ~curses_event_handler() = default;
+    ~curses_event_handler() override = default;
 
-    bool dev_get_event( event& t_event )
+    bool dev_get_event( event& t_event ) override
     {
         int c = wgetch( stdscr );
         MEVENT event;
