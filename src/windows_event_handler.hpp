@@ -30,7 +30,7 @@ public:
         }
     }
 
-    ~windows_event_handler()
+    ~windows_event_handler() override
     {
         SetConsoleMode( hStdin, fdwSaveOldMode );
     }
@@ -88,7 +88,7 @@ public:
         }
     }
 
-    bool dev_get_event( event& t_event )
+    bool dev_get_event( event& t_event ) override
     {
         if ( !ReadConsoleInput(
                 hStdin,         // input buffer handle
