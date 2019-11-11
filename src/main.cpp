@@ -1,22 +1,20 @@
-#include <curses.h>
-#include <cstdio>
-#include <mutex>
-#include <random>
-
 #include "ball.hpp"
 #include "ball_state.hpp"
-#include "block.hpp"
 #include "event_handler.hpp"
 #include "map.hpp"
 #include "map_drawing.hpp"
-#include "paddle.hpp"
+
+#include <cstdio>
+#include <curses.h>
+#include <mutex>
+#include <random>
 
 std::mutex m;
 std::mt19937 engine( static_cast<unsigned int>( time( nullptr ) ) );
 
 int random( int min, int max )
 {
-    return std::uniform_int_distribution<int>{ min, max }( engine );
+    return std::uniform_int_distribution<int> { min, max }( engine );
 }
 
 void init_color()
@@ -32,6 +30,9 @@ void init_color()
 
 int main()
 {
+    constexpr auto MIN_WIDTH { 120 };
+    constexpr auto MIN_HEIGHT { 50 };
+
     initscr();
     noecho();
     curs_set( 0 );
@@ -53,10 +54,10 @@ int main()
         map::instance()->init_blocks();
     }
 
-    if ( getmaxx( stdscr ) < 120 || getmaxy( stdscr ) < 50 )
+    if ( getmaxx( stdscr ) < MIN_WIDTH || getmaxy( stdscr ) < MIN_HEIGHT )
     {
-        map::instance()->set_message(
-                "Please resize your terminal to at least 120 x 50 characters before playing the game." );
+        map::instance()->set_message( "Please resize your terminal to at least 120 x 50 characters "
+                                      "before playing the game." );
     }
 
     map_drawing map_drawing;
@@ -72,57 +73,57 @@ int main()
 
         switch ( event.type )
         {
-            case event::type::key_pressed:
+        case event::type::key_pressed:
+        {
+            if ( event.key.code == keyboard::key::Q )
             {
-                if ( event.key.code == keyboard::key::Q )
-                {
-                    endwin();
-                    fflush(stdout);
-                    return 0;
-                }
+                endwin();
+                fflush( stdout );
+                return 0;
+            }
+
+            break;
+        }
+
+        case event::type::mouse_pressed:
+        {
+            map::instance()->set_message( "" );
+
+            switch ( event.mouse_button.button )
+            {
+            case mouse::button::button1:
+            {
+                map::instance()->get_paddle()->shoot();
 
                 break;
             }
 
-            case event::type::mouse_pressed:
+            case mouse::button::button3:
             {
-                map::instance()->set_message( "" );
-
-                switch ( event.mouse_button.button )
-                {
-                    case mouse::button::button1:
-                    {
-                        map::instance()->get_paddle()->shoot();
-
-                        break;
-                    }
-
-                    case mouse::button::button3:
-                    {
-                        map::instance()->get_paddle()->secondary_action();
-
-                        break;
-                    }
-
-                    default:
-                        break;
-                }
-
-                break;
-            }
-
-            case event::type::mouse_moved:
-            {
-                point new_position( map::instance()->get_paddle()->gety(),
-                                   event.mouse_move.x -
-                                   ( map::instance()->get_paddle()->width() / 2 ) );
-                map::instance()->get_paddle()->set_position( new_position );
+                map::instance()->get_paddle()->secondary_action();
 
                 break;
             }
 
             default:
                 break;
+            }
+
+            break;
+        }
+
+        case event::type::mouse_moved:
+        {
+            point new_position( map::instance()->get_paddle()->gety(),
+                                event.mouse_move.x -
+                                    ( map::instance()->get_paddle()->width() / 2 ) );
+            map::instance()->get_paddle()->set_position( new_position );
+
+            break;
+        }
+
+        default:
+            break;
         }
     }
 }

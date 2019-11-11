@@ -17,8 +17,7 @@ public:
     void draw( const ball* t_ball ) override
     {
         auto end = steady_clock::now();
-        auto left = duration -
-                    duration_cast<seconds>( end - start_time ).count();
+        auto left = duration - duration_cast<seconds>( end - start_time ).count();
 
         attron( COLOR_PAIR( static_cast<int>( entity::color_pair::cyan ) ) );
 
@@ -39,7 +38,6 @@ public:
         {
             t_ball->set_state( new ball_normal );
         }
-
     }
 
     ball::reflection_axis get_reflection_axis( const ball*, entity* entity ) const override
@@ -56,7 +54,7 @@ public:
 
 private:
     steady_clock::time_point start_time;
-    int duration{ 20 };
+    int duration { 20 };
 };
 
 #endif

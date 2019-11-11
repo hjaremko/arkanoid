@@ -1,7 +1,8 @@
-#include "../include/map.hpp"
-#include "../include/power.hpp"
-#include "../include/power_factory.hpp"
-#include "../include/power_movement.hpp"
+#include "map.hpp"
+
+#include "power.hpp"
+#include "power_factory.hpp"
+#include "power_movement.hpp"
 
 map* map::m_instance = nullptr;
 
@@ -65,8 +66,7 @@ void map::init_paddle()
     m_paddle->set_height( 1 );
     m_paddle->set_position( getmaxy( stdscr ) - 5, getmaxx( stdscr ) / 2 - 7 );
     auto tmp = new_ball();
-    tmp->set_position( m_paddle->gety() - 1, m_paddle->getx() +
-                                             m_paddle->width() / 2 );
+    tmp->set_position( m_paddle->gety() - 1, m_paddle->getx() + m_paddle->width() / 2 );
     m_paddle->get_ball( tmp );
     push_entity( m_paddle );
 }
@@ -80,7 +80,8 @@ void map::init_blocks()
     {
         for ( int j = 0; j < 11; ++j )
         {
-            auto tmp = new block( static_cast<entity::color_pair>( color % 5 + 1 ), A_BOLD,
+            auto tmp = new block( static_cast<entity::color_pair>( color % 5 + 1 ),
+                                  A_BOLD,
                                   point( i * 3 + starty, j * 6 + startx ) );
             tmp->set_height( 3 );
             tmp->set_width( 6 );
@@ -127,11 +128,13 @@ bool map::read_current_level()
 
             if ( breakable == 1 )
             {
-                tmp = new block( static_cast<entity::color_pair>( color ), bold_attr, point( y, x ) );
+                tmp =
+                    new block( static_cast<entity::color_pair>( color ), bold_attr, point( y, x ) );
             }
             else
             {
-                tmp = new unbreakable_block( static_cast<entity::color_pair>( color ), bold_attr, point( y, x ) );
+                tmp = new unbreakable_block(
+                    static_cast<entity::color_pair>( color ), bold_attr, point( y, x ) );
             }
 
             tmp->set_height( height );
@@ -179,7 +182,7 @@ void map::destroy( entity* t_entity )
         // *pos = nullptr;
         m_entities.erase( pos );
     }
-} 
+}
 
 void map::destroy_ball( ball* t_entity )
 {

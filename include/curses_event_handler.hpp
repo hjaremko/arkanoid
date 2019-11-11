@@ -24,44 +24,44 @@ public:
 
         switch ( c )
         {
-            case KEY_MOUSE:
+        case KEY_MOUSE:
+        {
+#if defined( WIN32 )
+            if ( nc_getmouse( &event ) == OK )
+#else
+            if ( getmouse( &event ) == OK )
+#endif
             {
-                #if defined(WIN32)
-                    if ( nc_getmouse( &event ) == OK )
-                #else
-                    if ( getmouse( &event ) == OK )
-                #endif
+                mvprintw( 1, 1, "%d", event.bstate );
+                std::this_thread::sleep_for( seconds( 10 ) );
+
+                if ( event.bstate & BUTTON1_CLICKED )
                 {
-                    mvprintw( 1, 1, "%d", event.bstate );
-                    std::this_thread::sleep_for( seconds( 10 ) );
-
-                    if ( event.bstate & BUTTON1_CLICKED )
-                    {
-                        t_event.type = event::type::mouse_pressed;
-                        t_event.mouse_button.button = mouse::button::button1;
-                    }
-                    else if ( event.bstate & BUTTON3_CLICKED )
-                    {
-                        t_event.type = event::type::mouse_pressed;
-                        t_event.mouse_button.button = mouse::button::button3;
-                    }
-                    else
-                    {
-                        t_event.type = event::type::mouse_moved;
-                        t_event.mouse_move.y = event.y;
-                        t_event.mouse_move.x = event.x;
-                    }
+                    t_event.type = event::type::mouse_pressed;
+                    t_event.mouse_button.button = mouse::button::button1;
                 }
-
-                break;
+                else if ( event.bstate & BUTTON3_CLICKED )
+                {
+                    t_event.type = event::type::mouse_pressed;
+                    t_event.mouse_button.button = mouse::button::button3;
+                }
+                else
+                {
+                    t_event.type = event::type::mouse_moved;
+                    t_event.mouse_move.y = event.y;
+                    t_event.mouse_move.x = event.x;
+                }
             }
-            case 'q':
-                t_event.type = event::type::key_pressed;
-                t_event.key.code = keyboard::key::Q;
 
-                break;
-            default:
-                break;
+            break;
+        }
+        case 'q':
+            t_event.type = event::type::key_pressed;
+            t_event.key.code = keyboard::key::Q;
+
+            break;
+        default:
+            break;
         }
 
         return true;

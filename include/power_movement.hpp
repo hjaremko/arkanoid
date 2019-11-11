@@ -1,9 +1,9 @@
 #ifndef POWERUPMOVEMENT_H
 #define POWERUPMOVEMENT_H
 
-#include <mutex>
-
 #include "power.hpp"
+
+#include <mutex>
 
 extern std::mutex m;
 
@@ -35,7 +35,7 @@ public:
     }
 
 private:
-    power* m_power{ nullptr };
+    power* m_power { nullptr };
 };
 
 #endif

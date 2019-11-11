@@ -1,4 +1,5 @@
 #include "ball.hpp"
+
 #include "ball_normal.hpp"
 
 ball::ball()
@@ -144,7 +145,8 @@ bool ball::is_stopped() const
 //         return 0;
 //     }
 
-//     return ( ( ( a.y - b.y ) / ( a.x - b.x ) ) * x + ( a.y - ( ( a.y - b.y ) / ( a.x - b.x ) ) * a.x ) );
+//     return ( ( ( a.y - b.y ) / ( a.x - b.x ) ) * x + ( a.y - ( ( a.y - b.y ) / ( a.x - b.x ) ) *
+//     a.x ) );
 // }
 
 // void plot() const
@@ -159,9 +161,9 @@ bool ball::is_stopped() const
 //         }
 //     }
 // }
-// 
+//
 // bool areSame( double a, double b )
 // {
 //     return std::abs( a - b ) < 0.000001;
 // }
-// 
+//

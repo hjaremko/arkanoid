@@ -1,16 +1,16 @@
 #ifndef BALLSTATE_H
 #define BALLSTATE_H
 
-#include <chrono>
-
+#include "ball.hpp"
 #include "map.hpp"
 #include "paddle.hpp"
-#include "ball.hpp"
 
-using std::chrono::steady_clock;
+#include <chrono>
+
 using std::chrono::duration_cast;
-using std::chrono::seconds;
 using std::chrono::milliseconds;
+using std::chrono::seconds;
+using std::chrono::steady_clock;
 
 class ball_state
 {
@@ -35,7 +35,7 @@ public:
     }
 
 private:
-    bool m_null{ false };
+    bool m_null { false };
 };
 
 #endif

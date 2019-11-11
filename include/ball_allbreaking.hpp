@@ -16,8 +16,7 @@ public:
     void draw( const ball* t_ball ) override
     {
         auto end = std::chrono::steady_clock::now();
-        auto left = duration -
-                    duration_cast<seconds>( end - start_time ).count();
+        auto left = duration - duration_cast<seconds>( end - start_time ).count();
 
         attron( COLOR_PAIR( static_cast<int>( entity::color_pair::red ) ) | A_BOLD );
 
@@ -51,7 +50,7 @@ public:
     {
         auto axis = ball::reflection_axis::none;
 
-        if ( dynamic_cast<paddle*>( entity ) ) //bad
+        if ( dynamic_cast<paddle*>( entity ) ) // bad
         {
             axis = ball::reflection_axis::vertical;
         }
@@ -66,7 +65,7 @@ public:
 private:
     steady_clock::time_point start_time;
     point last_position;
-    int duration{ 10 };
+    int duration { 10 };
 };
 
 #endif

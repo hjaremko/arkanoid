@@ -17,8 +17,7 @@ public:
     void draw( const paddle* t_paddle ) const override
     {
         auto end = steady_clock::now();
-        auto left = duration -
-                    duration_cast<seconds>( end - start_time ).count();
+        auto left = duration - duration_cast<seconds>( end - start_time ).count();
 
         attron( COLOR_PAIR( t_paddle->get_color() ) | t_paddle->get_attributes() );
 
@@ -42,7 +41,6 @@ public:
 
         attrset( A_NORMAL );
 
-
         auto elapsed = duration_cast<seconds>( end - start_time ).count();
 
         if ( elapsed >= duration )
@@ -54,9 +52,8 @@ public:
     void secondary_action( paddle* t_paddle ) override
     {
         auto ball = t_paddle->get_ball( map::instance()->new_ball() );
-        ball->set_position( t_paddle->gety() - 1, t_paddle->getx() +
-                                                  static_cast<int>( t_paddle->width() / 2 ) );
-
+        ball->set_position( t_paddle->gety() - 1,
+                            t_paddle->getx() + static_cast<int>( t_paddle->width() / 2 ) );
 
         ball->set_state( new ball_bullet );
         t_paddle->shoot();
@@ -64,7 +61,7 @@ public:
 
 private:
     steady_clock::time_point start_time;
-    int duration{ 5 };
+    int duration { 5 };
 };
 
 #endif

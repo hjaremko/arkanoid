@@ -1,10 +1,10 @@
 #ifndef BALLNORMAL_H
 #define BALLNORMAL_H
 
-#include <thread>
-
 #include "ball.hpp"
 #include "ball_state.hpp"
+
+#include <thread>
 
 class ball_normal : public ball_state
 {
@@ -40,20 +40,19 @@ public:
     {
         auto axis = ball::reflection_axis::none;
         auto current_position = t_ball->get_position();
-        auto next_position    = t_ball->get_position() + t_ball->get_velocity();
-        auto entity_start     = entity->get_position();
-        auto entity_end       = entity->get_position() + point( entity->height() - 1,
-                                                                entity->width() - 1 );
-
+        auto next_position = t_ball->get_position() + t_ball->get_velocity();
+        auto entity_start = entity->get_position();
+        auto entity_end =
+            entity->get_position() + point( entity->height() - 1, entity->width() - 1 );
 
         if ( ( current_position.x < entity_start.x && next_position.x >= entity_start.x ) ||
-             ( current_position.x > entity_end.x   && next_position.x <= entity_end.x ) )
+             ( current_position.x > entity_end.x && next_position.x <= entity_end.x ) )
         {
             axis = static_cast<ball::reflection_axis>( axis | ball::reflection_axis::horizontal );
         }
 
         if ( ( current_position.y < entity_start.y && next_position.y >= entity_start.y ) ||
-             ( current_position.y > entity_end.y   && next_position.y <= entity_end.y ) )
+             ( current_position.y > entity_end.y && next_position.y <= entity_end.y ) )
         {
             axis = static_cast<ball::reflection_axis>( axis | ball::reflection_axis::vertical );
         }

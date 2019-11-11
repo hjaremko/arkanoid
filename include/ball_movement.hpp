@@ -1,10 +1,10 @@
 #ifndef BALLMOVEMENT_H
 #define BALLMOVEMENT_H
 
-#include <mutex>
-
 #include "ball.hpp"
 #include "map.hpp"
+
+#include <mutex>
 
 extern std::mutex m;
 int random( int min, int max );
@@ -52,14 +52,14 @@ public:
             }
         }
 
-        if ( m_ball->get_position().is_out() ) //TODO: ball->is_out()
+        if ( m_ball->get_position().is_out() ) // TODO: ball->is_out()
         {
             map::instance()->destroy_ball( m_ball );
         }
     }
 
 private:
-    ball* m_ball{ nullptr };
+    ball* m_ball { nullptr };
 };
 
 #endif

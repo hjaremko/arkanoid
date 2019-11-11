@@ -15,8 +15,7 @@ public:
     void draw( const ball* t_ball ) override
     {
         auto end_time = steady_clock::now();
-        auto time_left = duration -
-                         duration_cast<seconds>( end_time - start_time ).count();
+        auto time_left = duration - duration_cast<seconds>( end_time - start_time ).count();
 
         attron( COLOR_PAIR( static_cast<int>( entity::color_pair::magenta ) ) | A_BOLD );
 
@@ -43,7 +42,7 @@ public:
 
 private:
     steady_clock::time_point start_time;
-    int duration{ 5 };
+    int duration { 5 };
 };
 
 #endif

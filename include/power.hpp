@@ -18,7 +18,7 @@ public:
 
     ~power() override = default;
     virtual void apply() = 0;
-    virtual void createPower() = 0;
+    virtual void create_power() = 0;
 
     void draw() const override
     {

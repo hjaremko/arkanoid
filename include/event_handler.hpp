@@ -4,16 +4,16 @@
 #include "event.hpp"
 #include "event_handler_imp.hpp"
 
-#if defined(WIN32) || defined(_WIN32) || defined(__WIN32) && !defined(__CYGWIN__)
+#if defined( WIN32 ) || defined( _WIN32 ) || defined( __WIN32 ) && !defined( __CYGWIN__ )
 #include "windows_event_handler.hpp"
 #else
 #include "curses_event_handler.hpp"
 #endif
 
-#if defined(WIN32) || defined(_WIN32) || defined(__WIN32) && !defined(__CYGWIN__)
-template<class HandlerPolicy = windows_event_handler>
+#if defined( WIN32 ) || defined( _WIN32 ) || defined( __WIN32 ) && !defined( __CYGWIN__ )
+template <class HandlerPolicy = windows_event_handler>
 #else
-template<class HandlerPolicy = curses_event_handler>
+template <class HandlerPolicy = curses_event_handler>
 #endif
 struct event_handler : private HandlerPolicy
 {

@@ -3,16 +3,16 @@
 #ifndef MAP_H
 #define MAP_H
 
-#include <algorithm>
-#include <vector>
-#include <fstream>
-#include <sstream>
-#include <curses.h>
-
 #include "ball.hpp"
 #include "block.hpp"
 #include "entity.hpp"
 #include "paddle.hpp"
+
+#include <algorithm>
+#include <curses.h>
+#include <fstream>
+#include <sstream>
+#include <vector>
 
 class map
 {
@@ -46,17 +46,18 @@ public:
 
     static map* instance();
 
-    int current_level{ 1 };
+    int current_level { 1 };
+
 protected:
     map() = default;
 
 private:
     std::vector<entity*> m_entities;
     std::vector<ball*> m_balls;
-    std::string m_message{ "" };
-    paddle* m_paddle{ nullptr };
+    std::string m_message;
+    paddle* m_paddle { nullptr };
 
     static map* m_instance;
 };
 
-#endif //MAP_H
+#endif // MAP_H

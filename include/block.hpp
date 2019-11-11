@@ -1,10 +1,10 @@
 #ifndef BLOCK_H
 #define BLOCK_H
 
-#include <vector>
-#include <curses.h>
-
 #include "entity.hpp"
+
+#include <curses.h>
+#include <vector>
 
 class block : public entity
 {
@@ -14,20 +14,22 @@ public:
     void draw() const override;
     void set_look( char );
 
-    bool intersects( const point& t_point ) const override
+    [[nodiscard]] bool intersects( const point& t_point ) const override
     {
-        return t_point.y >= gety() && t_point.y < ( gety() + height() ) &&
-               t_point.x >= getx() && t_point.x < ( getx() + width() );
+        return t_point.y >= gety() && t_point.y < ( gety() + height() ) && t_point.x >= getx() &&
+               t_point.x < ( getx() + width() );
     }
 
 private:
-    char m_look{ '#' };
+    char m_look { '#' };
 };
 
 class unbreakable_block : public block
 {
 public:
-    unbreakable_block( color_pair t_color, chtype t_attributes, const point& t_point = point( 0, 0 ) )
+    unbreakable_block( color_pair t_color,
+                       chtype t_attributes,
+                       const point& t_point = point( 0, 0 ) )
     {
         set_color( t_color );
         set_attributes( t_attributes );
@@ -35,10 +37,10 @@ public:
         set_look( 'X' );
     }
 
-    bool is_destroyable() const override
+    [[nodiscard]] bool is_destroyable() const override
     {
         return false;
     }
 };
 
-#endif //BLOCK_H
+#endif // BLOCK_H

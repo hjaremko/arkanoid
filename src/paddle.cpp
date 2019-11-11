@@ -1,7 +1,7 @@
-#include "../include/paddle.hpp"
-#include "../include/ball_movement.hpp"
-#include "../include/paddle_barrier.hpp"
-#include "../include/paddle_normal.hpp"
+#include "paddle.hpp"
+
+#include "ball_movement.hpp"
+#include "paddle_barrier.hpp"
 
 paddle::paddle()
 {
@@ -94,8 +94,7 @@ int paddle::width() const
 
 bool paddle::intersects( const point& t_point ) const
 {
-    return gety() == t_point.y &&
-           t_point.x >= getx() && t_point.x < ( getx() + width() );
+    return gety() == t_point.y && t_point.x >= getx() && t_point.x < ( getx() + width() );
 }
 
 void paddle::set_state( paddle_state* t_state )

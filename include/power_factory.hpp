@@ -15,34 +15,34 @@ public:
 
         switch ( t_type )
         {
-            case ball_power::type::allbreaking:
-                power->set_color( entity::color_pair::red );
+        case ball_power::type::allbreaking:
+            power->set_color( entity::color_pair::red );
 
-                break;
-            case ball_power::type::slow:
-                power->set_color( entity::color_pair::yellow );
+            break;
+        case ball_power::type::slow:
+            power->set_color( entity::color_pair::yellow );
 
-                break;
-            case ball_power::type::fast:
-                power->set_color( entity::color_pair::magenta );
+            break;
+        case ball_power::type::fast:
+            power->set_color( entity::color_pair::magenta );
 
-                break;
-            case ball_power::type::sticky:
-                power->set_color( entity::color_pair::green );
+            break;
+        case ball_power::type::sticky:
+            power->set_color( entity::color_pair::green );
 
-                break;
-            case ball_power::type::extra:
-                power->set_color( entity::color_pair::white );
+            break;
+        case ball_power::type::extra:
+            power->set_color( entity::color_pair::white );
 
-                break;
-            case ball_power::type::weird:
-                power->set_color( entity::color_pair::cyan );
+            break;
+        case ball_power::type::weird:
+            power->set_color( entity::color_pair::cyan );
 
-                break;
-            case ball_power::type::none:
-                power = nullptr;
+            break;
+        case ball_power::type::none:
+            power = nullptr;
 
-                break;
+            break;
         }
 
         return power;
@@ -66,30 +66,30 @@ public:
 
         switch ( t_type )
         {
-            case paddle_power::type::shooter:
-                power->m_look = '^';
-                power->set_color( entity::color_pair::cyan );
+        case paddle_power::type::shooter:
+            power->m_look = '^';
+            power->set_color( entity::color_pair::cyan );
 
-                break;
-            case paddle_power::type::barrier:
-                power->m_look = '~';
-                power->set_color( entity::color_pair::green );
+            break;
+        case paddle_power::type::barrier:
+            power->m_look = '~';
+            power->set_color( entity::color_pair::green );
 
-                break;
-            case paddle_power::type::enlarge:
-                power->m_look = '+';
-                power->set_color( entity::color_pair::green );
+            break;
+        case paddle_power::type::enlarge:
+            power->m_look = '+';
+            power->set_color( entity::color_pair::green );
 
-                break;
-            case paddle_power::type::shrink:
-                power->m_look = '-';
-                power->set_color( entity::color_pair::red );
+            break;
+        case paddle_power::type::shrink:
+            power->m_look = '-';
+            power->set_color( entity::color_pair::red );
 
-                break;
-            case paddle_power::type::none:
-                power = nullptr;
+            break;
+        case paddle_power::type::none:
+            power = nullptr;
 
-                break;
+            break;
         }
 
         return power;

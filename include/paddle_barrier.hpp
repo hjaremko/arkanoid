@@ -11,7 +11,8 @@ public:
     {
         start_time = steady_clock::now();
 
-        m_barrier = new unbreakable_block( entity::color_pair::green, 0, point( getmaxy( stdscr ) - 2, 0 ) );
+        m_barrier = new unbreakable_block(
+            entity::color_pair::green, 0, point( getmaxy( stdscr ) - 2, 0 ) );
         m_barrier->set_width( getmaxx( stdscr ) );
         m_barrier->set_height( 1 );
         m_barrier->set_look( '~' );
@@ -30,8 +31,7 @@ public:
     void draw( const paddle* t_paddle ) const override
     {
         auto end = steady_clock::now();
-        auto left = duration -
-                    duration_cast<seconds>( end - start_time ).count();
+        auto left = duration - duration_cast<seconds>( end - start_time ).count();
 
         attron( COLOR_PAIR( t_paddle->get_color() ) | t_paddle->get_attributes() );
 
@@ -49,7 +49,6 @@ public:
 
         attrset( A_NORMAL );
 
-
         auto elapsed = duration_cast<seconds>( end - start_time ).count();
 
         if ( elapsed >= duration )
@@ -57,7 +56,6 @@ public:
             const_cast<paddle*>( t_paddle )->set_state( new paddle_normal );
             map::instance()->destroy( m_barrier );
         }
-
     }
 
     void secondary_action( paddle* ) override
@@ -66,8 +64,8 @@ public:
 
 private:
     steady_clock::time_point start_time;
-    unbreakable_block* m_barrier{ nullptr };
-    int duration{ 15 };
+    unbreakable_block* m_barrier { nullptr };
+    int duration { 15 };
 };
 
 #endif

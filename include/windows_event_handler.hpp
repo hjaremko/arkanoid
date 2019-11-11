@@ -1,9 +1,9 @@
 #ifndef WINDOWSEVENTHANDLERIMP_H
 #define WINDOWSEVENTHANDLERIMP_H
 
-#include <windows.h>
-
 #include "event.hpp"
+
+#include <windows.h>
 
 class windows_event_handler : public event_handler_imp
 {
@@ -63,39 +63,38 @@ public:
 
         switch ( mer.dwEventFlags )
         {
-            case 0:
+        case 0:
 
-                if ( mer.dwButtonState == FROM_LEFT_1ST_BUTTON_PRESSED )
-                {
-                    t_event.mouse_button.button = mouse::button::button1;
-                }
-                else if ( mer.dwButtonState == RIGHTMOST_BUTTON_PRESSED )
-                {
-                    t_event.mouse_button.button = mouse::button::button3;
-                }
+            if ( mer.dwButtonState == FROM_LEFT_1ST_BUTTON_PRESSED )
+            {
+                t_event.mouse_button.button = mouse::button::button1;
+            }
+            else if ( mer.dwButtonState == RIGHTMOST_BUTTON_PRESSED )
+            {
+                t_event.mouse_button.button = mouse::button::button3;
+            }
 
-                break;
-            case DOUBLE_CLICK:
-            case MOUSE_HWHEELED:
-            case MOUSE_MOVED:
-                t_event.type = event::type::mouse_moved;
-                t_event.mouse_move.y = mer.dwMousePosition.Y;
-                t_event.mouse_move.x = mer.dwMousePosition.X;
-                break;
+            break;
+        case DOUBLE_CLICK:
+        case MOUSE_HWHEELED:
+        case MOUSE_MOVED:
+            t_event.type = event::type::mouse_moved;
+            t_event.mouse_move.y = mer.dwMousePosition.Y;
+            t_event.mouse_move.x = mer.dwMousePosition.X;
+            break;
 
-            default:
-                break;
+        default:
+            break;
         }
     }
 
     bool dev_get_event( event& t_event ) override
     {
-        if ( !ReadConsoleInput(
-                hStdin,         // input buffer handle
-                irInBuf,        // buffer to read into
-                128,            // size of read buffer
-                &cNumRead ) )
-        {   // number of records read
+        if ( !ReadConsoleInput( hStdin,  // input buffer handle
+                                irInBuf, // buffer to read into
+                                128,     // size of read buffer
+                                &cNumRead ) )
+        { // number of records read
             ErrorExit( "ReadConsoleInput" );
         }
 
@@ -103,29 +102,28 @@ public:
         {
             switch ( irInBuf[ i ].EventType )
             {
-                case KEY_EVENT: // keyboard input
-                    // KeyEventProc( irInBuf[ i ].event.key_event );
-                    if ( irInBuf[ i ].Event.KeyEvent.wVirtualKeyCode == 0x51 )
-                    {
-                        t_event.type = event::type::key_pressed;
-                        t_event.key.code = keyboard::key::Q;
-                    }
+            case KEY_EVENT: // keyboard input
+                // KeyEventProc( irInBuf[ i ].event.key_event );
+                if ( irInBuf[ i ].Event.KeyEvent.wVirtualKeyCode == 0x51 )
+                {
+                    t_event.type = event::type::key_pressed;
+                    t_event.key.code = keyboard::key::Q;
+                }
 
-                    break;
+                break;
 
-                case MOUSE_EVENT: // mouse_button input
-                    MouseEventProc( irInBuf[ i ].Event.MouseEvent, t_event );
+            case MOUSE_EVENT: // mouse_button input
+                MouseEventProc( irInBuf[ i ].Event.MouseEvent, t_event );
 
-                    break;
+                break;
 
-                    // case WINDOW_BUFFER_SIZE_EVENT: // disregard scrn buf. resizing
-                    // case FOCUS_EVENT:              // disregard focus events
-                    // case MENU_EVENT:               // disregard menu events
-                default:
-                    // ErrorExit("unknown event type");
-                    break;
+                // case WINDOW_BUFFER_SIZE_EVENT: // disregard scrn buf. resizing
+                // case FOCUS_EVENT:              // disregard focus events
+                // case MENU_EVENT:               // disregard menu events
+            default:
+                // ErrorExit("unknown event type");
+                break;
             }
-
         }
 
         return cNumRead > 0;
@@ -137,7 +135,7 @@ private:
     DWORD cNumRead;
     DWORD fdwMode;
     DWORD i;
-    INPUT_RECORD irInBuf[128];
+    INPUT_RECORD irInBuf[ 128 ];
 };
 
 #endif
