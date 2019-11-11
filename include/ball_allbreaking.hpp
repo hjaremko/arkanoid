@@ -2,8 +2,8 @@
 #define BALLALLBREAKING_H
 
 #include "ball.hpp"
-#include "ball_state.hpp"
 #include "ball_normal.hpp"
+#include "ball_state.hpp"
 
 class ball_allbreaking : public ball_normal
 {

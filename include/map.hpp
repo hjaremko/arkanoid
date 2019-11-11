@@ -9,9 +9,9 @@
 #include <sstream>
 #include <curses.h>
 
-#include "entity.hpp"
-#include "block.hpp"
 #include "ball.hpp"
+#include "block.hpp"
+#include "entity.hpp"
 #include "paddle.hpp"
 
 class map

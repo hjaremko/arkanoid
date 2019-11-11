@@ -1,4 +1,4 @@
-#include "entity.hpp"
+#include "../include/entity.hpp"
 
 void entity::set_position( int t_y, int t_x )
 {

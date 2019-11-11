@@ -1,8 +1,8 @@
 #ifndef PADDLESTATE_H
 #define PADDLESTATE_H
 
-#include "paddle.hpp"
 #include "ball_state.hpp"
+#include "paddle.hpp"
 
 class paddle_state
 {

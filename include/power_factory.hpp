@@ -1,9 +1,9 @@
 #ifndef POWERUPFACTORY_H
 #define POWERUPFACTORY_H
 
-#include "power.hpp"
 #include "ball_power.hpp"
 #include "paddle_power.hpp"
+#include "power.hpp"
 
 class ball_power_factory
 {

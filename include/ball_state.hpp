@@ -4,8 +4,8 @@
 #include <chrono>
 
 #include "map.hpp"
-#include "src/ball.hpp"
 #include "paddle.hpp"
+#include "ball.hpp"
 
 using std::chrono::steady_clock;
 using std::chrono::duration_cast;

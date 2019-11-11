@@ -3,13 +3,13 @@
 #include <mutex>
 #include <random>
 
-#include "map.hpp"
-#include "block.hpp"
-#include "paddle.hpp"
 #include "ball.hpp"
-#include "map_drawing.hpp"
 #include "ball_state.hpp"
+#include "block.hpp"
 #include "event_handler.hpp"
+#include "map.hpp"
+#include "map_drawing.hpp"
+#include "paddle.hpp"
 
 std::mutex m;
 std::mt19937 engine( static_cast<unsigned int>( time( nullptr ) ) );

@@ -1,9 +1,9 @@
 #ifndef PADDLEPOWERUP_H
 #define PADDLEPOWERUP_H
 
-#include "power.hpp"
-#include "paddle_shooter.hpp"
 #include "paddle_barrier.hpp"
+#include "paddle_shooter.hpp"
+#include "power.hpp"
 
 class paddle_power : public power
 {

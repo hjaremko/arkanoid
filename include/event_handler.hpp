@@ -1,8 +1,8 @@
 #ifndef EVENTHANDLER_H
 #define EVENTHANDLER_H
 
-#include "event_handler_imp.hpp"
 #include "event.hpp"
+#include "event_handler_imp.hpp"
 
 #if defined(WIN32) || defined(_WIN32) || defined(__WIN32) && !defined(__CYGWIN__)
 #include "windows_event_handler.hpp"

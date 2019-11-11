@@ -1,7 +1,7 @@
 #ifndef MAPDRAWING_H
 #define MAPDRAWING_H
 
-#include "src/map.hpp"
+#include "map.hpp"
 
 class map_drawing
 {

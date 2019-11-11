@@ -2,8 +2,8 @@
 #define CURSESEVENTHANDLERIMP_H
 
 #include "curses.h"
-#include "event_handler_imp.hpp"
 #include "event.hpp"
+#include "event_handler_imp.hpp"
 
 class curses_event_handler : public event_handler_imp
 {

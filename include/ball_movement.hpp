@@ -3,8 +3,8 @@
 
 #include <mutex>
 
-#include "map.hpp"
 #include "ball.hpp"
+#include "map.hpp"
 
 extern std::mutex m;
 int random( int min, int max );

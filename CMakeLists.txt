@@ -1,32 +1,43 @@
-cmake_minimum_required( VERSION 3.10.2 )
+cmake_minimum_required(VERSION 3.12)
+project(arkanoid CXX)
 
-project( arkanoid )
+set(CMAKE_CXX_STANDARD 17)
 
-find_package( Curses REQUIRED )
+set(CMAKE_SOURCE_DIR "${PROJECT_SOURCE_DIR}/src")
+set(CMAKE_BINARY_DIR ${PROJECT_SOURCE_DIR})
+set(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/bin)
+set(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/lib)
 
-set( CMAKE_SOURCE_DIR "${PROJECT_SOURCE_DIR}/src" )
-set( CMAKE_BINARY_DIR ${PROJECT_SOURCE_DIR} )
-set( EXECUTABLE_OUTPUT_PATH ${CMAKE_BINARY_DIR} )
-set( LIBRARY_OUTPUT_PATH ${CMAKE_BINARY_DIR} )
+include_directories("include")
 
-set( CMAKE_CXX_STANDARD 17 )
-include_directories( "${PROJECT_SOURCE_DIR}" )
-include_directories( "${CURSES_INCLUDE_DIR}" )
-link_directories( "${CURSES_INCLUDE_DIR}" )
-link_libraries( ${CURSES_LIBRARIES} )
-link_libraries( pthread )
+add_library(project_warnings INTERFACE)
 
-if ( "${CMAKE_CXX_COMPILER_ID}" MATCHES "(GNU|Clang)" )
-    set( CMAKE_CXX_FLAGS "-O3 -Wall -Wextra -Wshadow -Wnon-virtual-dtor -Wpedantic -Wold-style-cast -Wcast-align -Wunused -Woverloaded-virtual" )
+if (MSVC)
+    target_compile_options(project_warnings INTERFACE /W4)
+else()
+    target_compile_options(project_warnings
+                         INTERFACE
+#                         -Werror
+                         -Wall
+                         -Wextra
+                         -Wshadow
+                         -Wnon-virtual-dtor
+                         -Wold-style-cast
+                         -Wcast-align
+                         -Wunused
+                         -Woverloaded-virtual
+                         -Wpedantic
+                         -Wconversion
+                         -Wsign-conversion
+                         -Wmisleading-indentation
+                         -Wduplicated-cond
+                         -Wduplicated-branches
+                         -Wlogical-op
+                         -Wnull-dereference
+                         -Wuseless-cast
+                         -Wdouble-promotion
+                         -Wformat=2
+                         )
 endif()
 
-set( TARGET_SOURCES
-    ${CMAKE_SOURCE_DIR}/main.cpp
-    ${CMAKE_SOURCE_DIR}/Entity.cpp
-    ${CMAKE_SOURCE_DIR}/Block.cpp
-    ${CMAKE_SOURCE_DIR}/Paddle.cpp
-    ${CMAKE_SOURCE_DIR}/Ball.cpp
-    ${CMAKE_SOURCE_DIR}/Map.cpp
-)
-
-add_executable( ${PROJECT_NAME} ${TARGET_SOURCES} )
+add_subdirectory(src)

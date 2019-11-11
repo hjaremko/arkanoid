@@ -35,7 +35,7 @@ public:
         return ball::reflection_axis::horizontal;
     }
 
-    void set_state( ball* t_ball, ball_state* t_state ) override
+    void set_state( ball*, ball_state* ) override
     {
     }
 };

@@ -1,7 +1,7 @@
-#include "map.hpp"
-#include "power.hpp"
-#include "power_factory.hpp"
-#include "power_movement.hpp"
+#include "../include/map.hpp"
+#include "../include/power.hpp"
+#include "../include/power_factory.hpp"
+#include "../include/power_movement.hpp"
 
 map* map::m_instance = nullptr;
 

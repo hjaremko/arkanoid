@@ -1,4 +1,4 @@
-#include "block.hpp"
+#include "../include/block.hpp"
 
 block::block( color_pair t_color, chtype t_attributes, const point& t_point = point( 0, 0 ) )
 {

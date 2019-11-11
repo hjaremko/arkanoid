@@ -60,7 +60,7 @@ public:
 
     }
 
-    void secondary_action( paddle* t_paddle ) override
+    void secondary_action( paddle* ) override
     {
     }
 

@@ -1,7 +1,7 @@
-#include "paddle.hpp"
-#include "ball_movement.hpp"
-#include "paddle_normal.hpp"
-#include "paddle_barrier.hpp"
+#include "../include/paddle.hpp"
+#include "../include/ball_movement.hpp"
+#include "../include/paddle_barrier.hpp"
+#include "../include/paddle_normal.hpp"
 
 paddle::paddle()
 {

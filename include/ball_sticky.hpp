@@ -1,9 +1,8 @@
 #ifndef BALLSTICKY_H
 #define BALLSTICKY_H
 
-#include "src/ball_normal.hpp"
 #include "ball_state.hpp"
-
+#include "ball_normal.hpp"
 
 class ball_sticky : public ball_normal
 {

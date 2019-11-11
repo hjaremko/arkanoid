@@ -1,12 +1,12 @@
 #ifndef BALLPOWERUP_H
 #define BALLPOWERUP_H
 
-#include "power.hpp"
-#include "src/ball_allbreaking.hpp"
 #include "ball_slow.hpp"
-#include "src/ball_fast.hpp"
 #include "ball_sticky.hpp"
 #include "ball_weird.hpp"
+#include "power.hpp"
+#include "ball_allbreaking.hpp"
+#include "ball_fast.hpp"
 
 class ball_power : public power
 {

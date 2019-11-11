@@ -1,10 +1,10 @@
 #ifndef PADDLESHOOTER_H
 #define PADDLESHOOTER_H
 
-#include "paddle.hpp"
-#include "paddle_state.hpp"
-#include "paddle_normal.hpp"
 #include "ball_bullet.hpp"
+#include "paddle.hpp"
+#include "paddle_normal.hpp"
+#include "paddle_state.hpp"
 
 class paddle_shooter : public paddle_state
 {

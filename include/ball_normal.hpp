@@ -1,6 +1,8 @@
 #ifndef BALLNORMAL_H
 #define BALLNORMAL_H
 
+#include <thread>
+
 #include "ball.hpp"
 #include "ball_state.hpp"
 

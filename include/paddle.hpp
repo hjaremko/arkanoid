@@ -5,8 +5,8 @@
 #include <chrono>
 #include <curses.h>
 
-#include "entity.hpp"
 #include "ball.hpp"
+#include "entity.hpp"
 #include "point.hpp"
 
 class paddle_state;

@@ -42,7 +42,7 @@ public:
 
     }
 
-    ball::reflection_axis get_reflection_axis( const ball* t_ball, entity* entity ) const override
+    ball::reflection_axis get_reflection_axis( const ball*, entity* entity ) const override
     {
         auto axis = random( ball::reflection_axis::horizontal, ball::reflection_axis::none - 1 );
 
