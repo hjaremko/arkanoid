@@ -5,7 +5,7 @@ find_package(Curses REQUIRED)
 find_package(Threads REQUIRED)
 
 include_directories("${CURSES_INCLUDE_DIR}")
-link_directories("${CURSES_INCLUDE_DIR}")
+link_directories("${CURSES_INCLUDE_DIRS}")
 
 set(SOURCE_FILES main.cpp
         ball.cpp

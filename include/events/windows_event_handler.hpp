@@ -3,7 +3,7 @@
 
 #include "event.hpp"
 
-#include <windows.h>
+#include <Windows.h>
 
 class windows_event_handler : public event_handler_imp
 {
@@ -22,7 +22,6 @@ public:
             ErrorExit( "GetConsoleMode" );
         }
 
-        // Enable the window and mouse_button input events.
         fdwMode = ENABLE_WINDOW_INPUT | ENABLE_MOUSE_INPUT;
         if ( !SetConsoleMode( hStdin, fdwMode ) )
         {
@@ -41,7 +40,7 @@ public:
 
         // Restore input mode on exit.
         SetConsoleMode( hStdin, fdwSaveOldMode );
-        endwin();
+        //        endwin();
         ExitProcess( 0 );
     }
 
@@ -53,7 +52,7 @@ public:
     //     printf("key released\n");
     // }
 
-    void MouseEventProc( MOUSE_EVENT_RECORD mer, event& t_event )
+    static void MouseEventProc( MOUSE_EVENT_RECORD mer, event& t_event )
     {
 #ifndef MOUSE_HWHEELED
 #define MOUSE_HWHEELED 0x0008
@@ -88,13 +87,21 @@ public:
         }
     }
 
-    bool dev_get_event( event& t_event ) override
+    auto dev_get_event( event& t_event ) -> bool override
     {
-        if ( !ReadConsoleInput( hStdin,  // input buffer handle
-                                irInBuf, // buffer to read into
-                                128,     // size of read buffer
-                                &cNumRead ) )
-        { // number of records read
+//        DWORD console_events = 0;
+//        GetNumberOfConsoleInputEvents( hStdin, &console_events );
+//
+//        if ( console_events <= 0UL )
+//        {
+//            return false;
+//        }
+
+        if ( !ReadConsoleInput( hStdin,       // input buffer handle
+                                irInBuf,      // buffer to read into
+                                128,          // size of read buffer
+                                &cNumRead ) ) // number of records read
+        {
             ErrorExit( "ReadConsoleInput" );
         }
 
@@ -131,11 +138,11 @@ public:
 
 private:
     HANDLE hStdin;
-    DWORD fdwSaveOldMode;
-    DWORD cNumRead;
+    DWORD fdwSaveOldMode { 0 };
+    DWORD cNumRead { 0 };
     DWORD fdwMode;
-    DWORD i;
-    INPUT_RECORD irInBuf[ 128 ];
+    DWORD i { 0 };
+    INPUT_RECORD irInBuf[ 128 ] {};
 };
 
 #endif

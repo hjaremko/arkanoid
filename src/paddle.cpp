@@ -1,111 +1,89 @@
-#include "paddle.hpp"
+#include "paddle/paddle.hpp"
 
-#include "ball_movement.hpp"
-#include "paddle_barrier.hpp"
+#include "paddle/paddle_normal.hpp"
 
-paddle::paddle()
+#include <utility>
+
+paddle::paddle() : state_( std::make_unique<paddle_normal>() )
 {
-    m_state = new paddle_normal;
-}
-
-paddle::~paddle()
-{
-    delete m_state;
-
-    for ( auto& ball : m_balls )
-    {
-        delete ball;
-        ball = nullptr;
-    }
-
-    m_balls.clear();
 }
 
 void paddle::draw() const
 {
-    m_state->draw( this );
-}
+    state_->draw( *this );
 
-void paddle::move( const int t_y, const int t_x )
-{
-    set_position( point( gety() + t_y, getx() + t_x ) );
-
-    for ( auto& ball : m_balls )
+    for ( auto& ball : balls_ )
     {
-        ball->set_position( ball->gety() - 1, ball->getx() + t_x );
+        ball->draw();
     }
 }
 
-ball* paddle::get_ball( ball* t_ball )
+void paddle::catch_ball( paddle::ball_ptr ball )
 {
-    t_ball->set_stopped( true );
-    m_balls.push_back( t_ball );
-
-    return t_ball;
+    ball->set_stopped( true );
+    //    ball->set_speed( ball::DEF_SPEED );
+    ball->reflect( ball->get_reflection_axis( *this ) );
+    balls_.insert( std::move( ball ) );
 }
 
-void paddle::shoot()
+auto paddle::release_balls() -> std::unordered_set<paddle::ball_ptr>
 {
-    for ( auto& ball : m_balls )
+    for ( auto& ball : balls_ )
     {
         ball->set_stopped( false );
-        ball_movement bm( ball );
-        std::thread shooting_thread( bm );
-        shooting_thread.detach();
     }
 
-    m_balls.clear();
+    return std::move( balls_ );
 }
 
-void paddle::secondary_action()
+auto paddle::secondary_action() -> std::any
 {
-    m_state->secondary_action( this );
+    return state_->secondary_action( *this );
 }
 
-void paddle::set_position( const point& t_pos )
+void paddle::set_position( const point& pos )
 {
-    for ( auto& ball : m_balls )
+    for ( auto& ball : balls_ )
     {
-        ball->move_by( 0, t_pos.getx() - getx() );
+        ball->move_by( 0, pos.getx() - getx() );
     }
 
-    entity::set_position( t_pos );
+    entity::set_position( pos );
 }
 
-void paddle::set_position( int t_y, int t_x )
+void paddle::set_position( int y, int x )
 {
-    for ( auto& ball : m_balls )
+    for ( auto& ball : balls_ )
     {
-        ball->move_by( 0, t_x - getx() );
+        ball->move_by( 0, x - getx() );
     }
 
-    entity::set_position( t_y, t_x );
+    entity::set_position( y, x );
 }
 
-void paddle::set_width( int t_width )
+void paddle::set_width( int width )
 {
-    m_width = t_width;
+    width_ = width;
 }
 
-int paddle::width() const
+auto paddle::width() const -> int
 {
-    return m_width;
+    return width_;
 }
 
-bool paddle::intersects( const point& t_point ) const
+auto paddle::intersects( const point& point ) const -> bool
 {
-    return gety() == t_point.y && t_point.x >= getx() && t_point.x < ( getx() + width() );
+    return state_->intersects( *this, point );
 }
 
-void paddle::set_state( paddle_state* t_state )
+void paddle::set_state( paddle::state_ptr state )
 {
-    delete m_state;
-    m_state = t_state;
+    state_ = std::move( state );
 }
 
-void paddle::change_size_by( const int t_value )
+void paddle::change_size_by( const int value )
 {
-    set_width( width() + t_value );
+    set_width( width() + value );
 
     if ( width() < MIN_WIDTH )
     {
@@ -117,7 +95,22 @@ void paddle::change_size_by( const int t_value )
     }
 }
 
-bool paddle::is_destroyable() const
+auto paddle::is_destroyable() const -> bool
 {
     return false;
+}
+
+auto make_paddle() -> paddle
+{
+    auto paddle_ { paddle {} };
+    paddle_.set_width( 15 );
+    paddle_.set_height( 1 );
+    paddle_.set_position( getmaxy( stdscr ) - 5, getmaxx( stdscr ) / 2 - 7 );
+
+    auto tmp = std::make_unique<ball>();
+    tmp->set_position( paddle_.gety() - 1,
+                       paddle_.getx() + paddle_.width() / 2 );
+    paddle_.catch_ball( std::move( tmp ) );
+
+    return paddle_;
 }

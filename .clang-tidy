@@ -1,0 +1,1 @@
+Checks:           'modernize-*,performance-*,readability-*,hicpp-*,misc-*,-cert-err58-cpp,-misc-non-private-member-variables-in-classes'

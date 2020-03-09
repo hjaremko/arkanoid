@@ -3,7 +3,6 @@
 
 #include "entity.hpp"
 
-#include <curses.h>
 #include <vector>
 
 class block : public entity
@@ -14,33 +13,14 @@ public:
     void draw() const override;
     void set_look( char );
 
-    [[nodiscard]] bool intersects( const point& t_point ) const override
+    [[nodiscard]] auto intersects( const ::point& point ) const -> bool override
     {
-        return t_point.y >= gety() && t_point.y < ( gety() + height() ) && t_point.x >= getx() &&
-               t_point.x < ( getx() + width() );
+        return point.y >= gety() && point.y < ( gety() + height() ) &&
+               point.x >= getx() && point.x < ( getx() + width() );
     }
 
 private:
-    char m_look { '#' };
-};
-
-class unbreakable_block : public block
-{
-public:
-    unbreakable_block( color_pair t_color,
-                       chtype t_attributes,
-                       const point& t_point = point( 0, 0 ) )
-    {
-        set_color( t_color );
-        set_attributes( t_attributes );
-        entity::set_position( t_point );
-        set_look( 'X' );
-    }
-
-    [[nodiscard]] bool is_destroyable() const override
-    {
-        return false;
-    }
+    char look_ { '#' };
 };
 
 #endif // BLOCK_H

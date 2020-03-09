@@ -14,30 +14,30 @@ add_library(project_warnings INTERFACE)
 
 if (MSVC)
     target_compile_options(project_warnings INTERFACE /W4)
-else()
+else ()
     target_compile_options(project_warnings
-                         INTERFACE
-#                         -Werror
-                         -Wall
-                         -Wextra
-                         -Wshadow
-                         -Wnon-virtual-dtor
-                         -Wold-style-cast
-                         -Wcast-align
-                         -Wunused
-                         -Woverloaded-virtual
-                         -Wpedantic
-                         -Wconversion
-                         -Wsign-conversion
-                         -Wmisleading-indentation
-                         -Wduplicated-cond
-                         -Wduplicated-branches
-                         -Wlogical-op
-                         -Wnull-dereference
-                         -Wuseless-cast
-                         -Wdouble-promotion
-                         -Wformat=2
-                         )
-endif()
+            INTERFACE
+            #                         -Werror
+            -Wall
+            -Wextra
+            -Wshadow
+            -Wnon-virtual-dtor
+            -Wold-style-cast
+            -Wcast-align
+            -Wunused
+            -Woverloaded-virtual
+            -Wpedantic
+            -Wconversion
+            -Wsign-conversion
+            -Wmisleading-indentation
+            -Wduplicated-cond
+            -Wduplicated-branches
+            -Wlogical-op
+            -Wnull-dereference
+            -Wuseless-cast
+            -Wdouble-promotion
+            -Wformat=2
+            )
+endif ()
 
 add_subdirectory(src)

@@ -1,63 +1,124 @@
+#ifndef ARKANOID_MAP_HPP
+#define ARKANOID_MAP_HPP
+
+#include "paddle/paddle.hpp"
+#include "power/power.hpp"
+#include "unbreakable_block.hpp"
+
+#include <fstream>
+#include <memory>
+#include <sstream>
+#include <unordered_set>
 #include <utility>
 
-#ifndef MAP_H
-#define MAP_H
-
-#include "ball.hpp"
-#include "block.hpp"
-#include "entity.hpp"
-#include "paddle.hpp"
-
-#include <algorithm>
-#include <curses.h>
-#include <fstream>
-#include <sstream>
-#include <vector>
-
+namespace arkanoid
+{
 class map
 {
 public:
-    ~map();
+    using entitiy_set_t = std::unordered_set<std::shared_ptr<entity>>;
+    using ball_set_t = std::unordered_set<std::unique_ptr<ball>>;
+    using power_set_t = std::unordered_set<std::shared_ptr<power>>;
+
+    explicit map( int level_id = 1 );
+
+    void barrier_on();
+    void barrier_off();
     void draw() const;
-    void destroyAt( unsigned int );
-    void destroy( entity* );
-    void destroy_ball( ball* );
-    void push_entity( entity* );
-    void init_paddle();
-    void init_blocks();
     void spawn_power( const point& t_point );
-    ball* new_ball();
-    ball* get_ball( unsigned int ) const;
-    entity* get_entity_at( unsigned int ) const;
-    paddle* get_paddle() const;
-    std::vector<entity*>& get_entities();
-    std::vector<ball*>& get_balls();
-    bool read_current_level();
 
-    void set_message( std::string t_msg )
+    template <class T>
+    void destroy( const T& it )
     {
-        m_message = std::move( t_msg );
+        entities_.erase( it );
     }
 
-    void draw_message()
+    [[nodiscard]] auto get_paddle() const -> std::shared_ptr<paddle>
     {
-        mvprintw( 1, 5, "%s", m_message.c_str() );
+        return paddle_;
     }
 
-    static map* instance();
+    auto get_entities() -> entitiy_set_t&
+    {
+        return entities_;
+    }
 
-    int current_level { 1 };
+    auto get_balls() -> ball_set_t&
+    {
+        return balls_;
+    }
 
-protected:
-    map() = default;
+    auto get_powers() -> power_set_t&
+    {
+        return powers_;
+    }
+
+    //    void set_message( std::string t_msg )
+    //    {
+    //        m_message = std::move( t_msg );
+    //    }
+
+    //    void draw_message()
+    //    {
+    //        mvprintw( 1, 5, "%s", m_message.c_str() );
+    //    }
 
 private:
-    std::vector<entity*> m_entities;
-    std::vector<ball*> m_balls;
-    std::string m_message;
-    paddle* m_paddle { nullptr };
+    auto read_level( int ) -> bool;
+    void init_blocks();
 
-    static map* m_instance;
+    entitiy_set_t entities_;
+    ball_set_t balls_;
+    power_set_t powers_;
+
+    //    std::string message_;
+    std::shared_ptr<paddle> paddle_;
+    std::shared_ptr<unbreakable_block> barrier_;
+};
+} // namespace arkanoid
+
+struct block_data
+{
+    int y = 0;
+    int x = 0;
+    int width = 0;
+    int height = 0;
+    int color = 1;
+    int bold = 1;
+    int breakable = 1;
+
+    [[nodiscard]] auto to_shared_ptr() const -> std::shared_ptr<block>
+    {
+        auto tmp = std::shared_ptr<block>();
+        auto bold_attr = ( bold != 0 ? A_BOLD : 0 );
+
+        if ( breakable == 1 )
+        {
+            tmp = std::make_shared<block>(
+                static_cast<entity::color_pair>( color ),
+                bold_attr,
+                point( y, x ) );
+        }
+        else
+        {
+            tmp = std::make_shared<unbreakable_block>(
+                static_cast<entity::color_pair>( color ),
+                bold_attr,
+                point( y, x ) );
+        }
+
+        tmp->set_height( height );
+        tmp->set_width( width );
+
+        return tmp;
+    }
+
+    friend auto operator>>( std::istream& os, block_data& data )
+        -> std::istream&
+    {
+        return os >> data.y >> data.x >> data.width >> data.height >>
+               data.color >> data.bold >> data.breakable;
+    }
 };
 
 #endif // MAP_H

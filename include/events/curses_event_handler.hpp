@@ -1,9 +1,10 @@
 #ifndef CURSESEVENTHANDLERIMP_H
 #define CURSESEVENTHANDLERIMP_H
 
-#include "curses.h"
 #include "event.hpp"
 #include "event_handler_imp.hpp"
+
+#include <curses.h>
 
 class curses_event_handler : public event_handler_imp
 {
@@ -17,7 +18,7 @@ public:
 
     ~curses_event_handler() override = default;
 
-    bool dev_get_event( event& t_event ) override
+    auto dev_get_event( event& t_event ) -> bool override
     {
         int c = wgetch( stdscr );
         MEVENT event;
@@ -33,7 +34,7 @@ public:
 #endif
             {
                 mvprintw( 1, 1, "%d", event.bstate );
-                std::this_thread::sleep_for( seconds( 10 ) );
+//                std::this_thread::sleep_for( seconds( 10 ) );
 
                 if ( event.bstate & BUTTON1_CLICKED )
                 {
