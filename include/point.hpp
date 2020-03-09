@@ -6,28 +6,29 @@
 class point
 {
 public:
-    point() {};
-    point( int t_y, int t_x ) : y( t_y ), x( t_x )
+    point() = default;
+    point( int _y, int _x ) : y( _y ), x( _x )
     {
     }
 
-    int getx() const
+    // TODO: get<>
+    [[nodiscard]] auto getx() const -> int
     {
         return x;
     }
 
-    int gety() const
+    [[nodiscard]] auto gety() const -> int
     {
         return y;
     }
 
-    bool is_out()
+    auto is_out() -> bool
     {
         return ( gety() < 0 || gety() > getmaxy( stdscr ) || getx() < -1 ||
                  getx() > getmaxx( stdscr ) );
     }
 
-    point& operator+=( const point& rhs )
+    auto operator+=( const point& rhs ) -> point&
     {
         y += rhs.y;
         x += rhs.x;
@@ -39,7 +40,7 @@ public:
     int x { 0 };
 };
 
-inline point operator+( point lhs, const point& rhs )
+inline auto operator+( point lhs, const point& rhs ) -> point
 {
     lhs += rhs;
     return lhs;

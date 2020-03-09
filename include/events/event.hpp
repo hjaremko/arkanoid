@@ -46,9 +46,6 @@ struct event
         mouse_moved
     };
 
-    event() = default;
-    virtual ~event() = default;
-
     type type { type::unknown };
     key_event key;
     mouse_button_event mouse_button;

@@ -1,73 +1,61 @@
-#include "ball.hpp"
+#include "ball/ball.hpp"
 
-#include "ball_normal.hpp"
+#include "ball/ball_normal.hpp"
 
-ball::ball()
+ball::ball() : state_( std::make_shared<ball_normal>() )
 {
-    m_state = new ball_normal;
 }
 
 void ball::draw() const
 {
-    m_state->draw( this );
+    state_->draw( *this );
 }
 
-void ball::move_by( int t_y, int t_x )
+void ball::move_by( int y, int x )
 {
-    set_position( gety() + t_y, getx() + t_x );
+    set_position( gety() + y, getx() + x );
 }
 
-void ball::move_by( const point& t_point )
+void ball::move_by( const point& point )
 {
-    set_position( get_position() + t_point );
+    move_by( point.y, point.x );
 }
 
 void ball::shoot()
 {
-    m_state->shoot( this );
+    state_->shoot( *this );
 }
 
-void ball::reflect( reflection_axis t_axis )
+void ball::reflect( reflection_axis axis )
 {
-    m_state->reflect( this, t_axis );
+    state_->reflect( *this, axis );
 }
 
-bool ball::intersects( const point& t_point ) const
+auto ball::intersects( const point& point ) const -> bool
 {
-    return getx() == t_point.y && getx() == t_point.x;
+    return getx() == point.y && getx() == point.x;
 }
 
-point ball::get_velocity() const
+auto ball::get_velocity() const -> point
 {
-    return m_velocity;
+    return velocity_;
 }
 
-entity* ball::collides() const
+auto ball::get_reflection_axis( const entity& entity ) const
+    -> ball::reflection_axis
 {
-    for ( auto& entity : map::instance()->get_entities() )
-    {
-        if ( entity->intersects( get_position() + get_velocity() ) )
-        {
-            return entity;
-        }
-    }
-
-    return nullptr;
+    return state_->get_reflection_axis( *this, entity );
 }
 
-ball::reflection_axis ball::get_reflection_axis( entity* entity ) const
-{
-    return m_state->get_reflection_axis( this, entity );
-}
-
-ball::reflection_axis ball::get_wall_reflection_axis() const
+auto ball::get_wall_reflection_axis() const -> ball::reflection_axis
 {
     auto axis = reflection_axis::none;
     auto nextPosition = get_position() + get_velocity();
 
     if ( ( nextPosition.x >= getmaxx( stdscr ) || nextPosition.x < 0 ) )
     {
-        axis = static_cast<reflection_axis>( axis | reflection_axis::horizontal );
+        axis =
+            static_cast<reflection_axis>( axis | reflection_axis::horizontal );
     }
 
     if ( nextPosition.y < 0 )
@@ -78,92 +66,57 @@ ball::reflection_axis ball::get_wall_reflection_axis() const
     return axis;
 }
 
-int ball::get_speed() const
+auto ball::get_speed() const -> arkanoid::system_clock::ticks_type
 {
-    return m_speed;
+    return speed_;
 }
 
-void ball::set_speed( int t_speed )
+void ball::set_speed( arkanoid::system_clock::ticks_type speed )
 {
-    m_speed = t_speed;
-}
+    speed_ = speed;
 
-void ball::change_speed_by( int t_value )
-{
-    m_speed += t_value;
-
-    if ( m_speed < MIN_SPEED )
+    if ( speed_ < MIN_SPEED )
     {
-        m_speed = MIN_SPEED;
+        speed_ = MIN_SPEED;
     }
 }
 
-char ball::get_look() const
+void ball::change_speed_by( arkanoid::system_clock::ticks_type value )
 {
-    return m_look;
+    set_speed( speed_ + value );
 }
 
-void ball::set_velocity( const point& t_velocity )
+ auto ball::get_look() const -> char
 {
-    m_velocity = t_velocity;
+    return look_;
 }
 
-void ball::set_vectorY( int t_value )
+void ball::set_vectorY( int value )
 {
-    m_velocity.y = t_value;
+    velocity_.y = value;
 }
 
-void ball::set_vectorX( int t_value )
+void ball::set_vectorX( int value )
 {
-    m_velocity.x = t_value;
+    velocity_.x = value;
 }
 
-void ball::set_state( ball_state* t_state )
+void ball::set_state( state_ptr state )
 {
-    m_state->set_state( this, t_state );
+    state_ = std::move( state );
 }
 
-ball_state* ball::get_state() const
+auto ball::get_state() const -> ball_state&
 {
-    return m_state;
+    return *state_;
 }
 
-void ball::set_stopped( const bool t_stop )
+void ball::set_stopped( const bool is_stopped )
 {
-    m_stopped = t_stop;
+    is_stopped_ = is_stopped;
 }
 
-bool ball::is_stopped() const
+auto ball::is_stopped() const -> bool
 {
-    return m_stopped;
+    return is_stopped_;
 }
-
-// double moveFunction( point a, point b, double x ) const
-// {
-//     if ( ( a.x - b.x ) == 0 || ( a.x - b.x ) == 0 )
-//     {
-//         return 0;
-//     }
-
-//     return ( ( ( a.y - b.y ) / ( a.x - b.x ) ) * x + ( a.y - ( ( a.y - b.y ) / ( a.x - b.x ) ) *
-//     a.x ) );
-// }
-
-// void plot() const
-// {
-//     for ( int x = 0; x < getmaxx( stdscr ); ++x )
-//     {
-//         int y = round( moveFunction( startPos, second, x ) );
-
-//         if ( y > 0 && y < getmaxy( stdscr ) - 1 )
-//         {
-//             mvprintw( y, x+1, "*" );
-//         }
-//     }
-// }
-//
-// bool areSame( double a, double b )
-// {
-//     return std::abs( a - b ) < 0.000001;
-// }
-//

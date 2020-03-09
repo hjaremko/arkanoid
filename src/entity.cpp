@@ -1,86 +1,86 @@
 #include "entity.hpp"
 
-void entity::set_position( int t_y, int t_x )
+void entity::set_position( int y, int x )
 {
-    m_position = point( t_y, t_x );
+    position_ = point( y, x );
 }
 
-void entity::set_position( const point& t_pos )
+void entity::set_position( const point& position )
 {
-    m_position = t_pos;
+    position_ = position;
 }
 
-void entity::set_color( color_pair t_color )
+void entity::set_color( color_pair color )
 {
-    m_color = static_cast<int>( t_color );
+    color_ = static_cast<int>( color );
 }
 
-void entity::set_attributes( chtype t_attributes )
+void entity::set_attributes( chtype attributes )
 {
-    m_attributes = t_attributes;
+    attributes_ = attributes;
 }
 
-point entity::get_position() const
+auto entity::get_position() const -> point
 {
-    return m_position;
+    return position_;
 }
 
-int entity::gety() const
+auto entity::gety() const -> int
 {
-    return m_position.y;
+    return position_.y;
 }
 
-int entity::getx() const
+auto entity::getx() const -> int
 {
-    return m_position.x;
+    return position_.x;
 }
 
-void entity::sety( const int t_y )
+void entity::sety( const int y )
 {
-    m_position.y = t_y;
+    position_.y = y;
 }
 
-void entity::setx( const int t_x )
+void entity::setx( const int x )
 {
-    m_position.x = t_x;
+    position_.x = x;
 }
 
-void entity::set_width( int t_width )
+void entity::set_width( int width )
 {
-    m_width = t_width;
+    width_ = width;
 }
 
-void entity::set_height( int t_height )
+void entity::set_height( int height )
 {
-    m_height = t_height;
+    height_ = height;
 }
 
-int entity::width() const
+auto entity::width() const -> int
 {
-    return m_width;
+    return width_;
 }
 
-int entity::height() const
+auto entity::height() const -> int
 {
-    return m_height;
+    return height_;
 }
 
-bool entity::is_destroyable() const
+auto entity::is_destroyable() const -> bool
 {
     return true;
 }
 
-bool entity::is_collideable() const
+auto entity::can_collide() const -> bool
 {
     return true;
 }
 
-int entity::get_color() const
+auto entity::get_color() const -> int
 {
-    return m_color;
+    return color_;
 }
 
-chtype entity::get_attributes() const
+auto entity::get_attributes() const -> chtype
 {
-    return m_attributes;
+    return attributes_;
 }
